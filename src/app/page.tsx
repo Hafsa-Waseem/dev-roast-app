@@ -1,3 +1,29 @@
+import { RoastForm } from '@/components/roast-form';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Code2 } from 'lucide-react';
+
 export default function Home() {
-  return <></>;
+  return (
+    <main className="flex min-h-dvh w-full flex-col items-center justify-center bg-background p-4">
+      <Card className="w-full max-w-lg z-10 shadow-2xl border-primary/20">
+        <CardHeader className="text-center">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <div className="p-3 bg-primary/10 rounded-full">
+              <Code2 className="h-8 w-8 text-primary" />
+            </div>
+          </div>
+          <CardTitle className="text-3xl font-bold font-headline">Roast-My-Code</CardTitle>
+          <CardDescription className="pt-2 text-base">
+            Enter your name and favorite language. Prepare to be humbled by our AI.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <RoastForm />
+        </CardContent>
+      </Card>
+      <footer className="z-10 mt-8 text-center text-sm text-muted-foreground">
+        <p>Built with Next.js, Gemini, and a questionable sense of humor.</p>
+      </footer>
+    </main>
+  );
 }
