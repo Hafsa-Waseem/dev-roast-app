@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useEffect, useRef, useState, useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { handleGenerateRoast } from '@/app/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -50,7 +50,7 @@ function SubmitButton() {
 }
 
 export function RoastForm() {
-  const [state, formAction] = useFormState(handleGenerateRoast, initialState);
+  const [state, formAction] = useActionState(handleGenerateRoast, initialState);
   const [language, setLanguage] = useState(programmingLanguages[0]);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
