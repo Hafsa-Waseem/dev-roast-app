@@ -21,9 +21,6 @@ export default function Home() {
           <RoastForm />
         </CardContent>
       </Card>
-      <footer className="z-10 mt-8 text-center text-sm text-muted-foreground">
-        <p>Built with Next.js, Gemini, and a questionable sense of humor.</p>
-      </footer>
     </main>
   );
 }
