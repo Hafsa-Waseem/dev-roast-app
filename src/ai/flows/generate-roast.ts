@@ -14,9 +14,9 @@ import {z} from 'genkit';
 
 const GenerateRoastInputSchema = z.object({
   name: z.string().describe('The name of the person to roast.'),
-  programmingLanguage: z
+  programmingBattlefield: z
     .string()
-    .describe('The favorite programming language of the person to roast.'),
+    .describe('The favorite programming battlefield of the person to roast.'),
 });
 export type GenerateRoastInput = z.infer<typeof GenerateRoastInputSchema>;
 
@@ -33,12 +33,12 @@ const roastPrompt = ai.definePrompt({
   name: 'roastPrompt',
   input: {schema: GenerateRoastInputSchema},
   output: {schema: GenerateRoastOutputSchema},
-  prompt: `You are a funny AI that generates roasts based on a person's name and their favorite programming language.
+  prompt: `You are a funny AI that generates roasts based on a person's name and their favorite programming battlefield.
 
   Name: {{{name}}}
-  Programming Language: {{{programmingLanguage}}}
+  Programming Battlefield: {{{programmingBattlefield}}}
 
-  Generate a roast that is humorous and sarcastic, targeting the programming language or developer culture associated with it.
+  Generate a roast that is humorous and sarcastic, targeting the programming battlefield or developer culture associated with it.
   `,
 });
 
