@@ -31,22 +31,18 @@ export default function RootLayout({
           `,
         }} />
 
-        {/* Adsterra Iframe Ad */}
-        <script dangerouslySetInnerHTML={{
-          __html: `
-            atOptions = {
-              'key' : 'bc2c6afb4f6e29c71bbc0aa6f917fd57',
-              'format' : 'iframe',
-              'height' : 300,
-              'width' : 160,
-              'params' : {}
-            };
-          `,
-        }} />
-        <script async src="//www.highperformanceformat.com/bc2c6afb4f6e29c71bbc0aa6f917fd57/invoke.js"></script>
+       <script type="text/javascript">
+	atOptions = {
+		'key' : 'bc2c6afb4f6e29c71bbc0aa6f917fd57',
+		'format' : 'iframe',
+		'height' : 300,
+		'width' : 160,
+		'params' : {}
+	};
+</script>
+<script type="text/javascript" src="//pierconditioner.com/bc2c6afb4f6e29c71bbc0aa6f917fd57/invoke.js"></script>
 
-        {/* Profitableratecpm Ad */}
-        <script async src="//pl27016940.profitableratecpm.com/ad/f9/99/adf99978c8b316ef8a2a33cc7f57f165.js"></script>
+        <script type='text/javascript' src='//pierconditioner.com/ad/f9/99/adf99978c8b316ef8a2a33cc7f57f165.js'></script>
 
       </head>
       <body className="font-body antialiased">
