@@ -52,6 +52,7 @@ export default function RootLayout({
       <body className="font-body antialiased">
         {children}
         <Toaster />
+         <script async src="//pierconditioner.com/ad/f9/99/adf99978c8b316ef8a2a33cc7f57f165.js"></script>
       </body>
     </html>
   );
