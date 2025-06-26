@@ -14,7 +14,7 @@ export default function Home() {
           </div>
           <CardTitle className="text-3xl font-bold font-headline">Roast-My-Code</CardTitle>
           <CardDescription className="pt-2 text-base">
-            Enter your name and favorite language. Prepare to be humbled by our AI.
+            Enter your name and favorite battlefield. Prepare to be humbled by our AI.
           </CardDescription>
         </CardHeader>
         <CardContent>

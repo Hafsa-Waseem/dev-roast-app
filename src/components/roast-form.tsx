@@ -17,54 +17,19 @@ const initialState = {
   errors: null,
 };
 
-const programmingLanguages = [
-  '.NET',
-  'Angular',
-  'Assembly',
-  'Bootstrap',
-  'C#',
-  'C++',
-  'COBOL',
-  'CSS',
-  'Django',
-  'Docker',
-  'Excel',
-  'Express.js',
-  'Flask',
-  'Fortran',
-  'Git',
-  'Go',
-  'Haskell',
-  'HTML',
-  'Java',
-  'JavaScript',
-  'jQuery',
-  'Kotlin',
-  'Kubernetes',
-  'Laravel',
-  'Lisp',
-  'Node.js',
-  'NumPy',
-  'Pandas',
-  'Perl',
-  'PHP',
-  'Python',
-  'PyTorch',
-  'React',
-  'Ruby',
-  'Ruby on Rails',
-  'Rust',
-  'Scala',
-  'SQL',
-  'Spring Boot',
-  'Svelte',
-  'Swift',
-  'Tailwind CSS',
-  'TensorFlow',
-  'TypeScript',
-  'Vim',
-  'Vue.js',
-  'WordPress',
+const programmingBattlefields = [
+  '.NET', 'ActionScript', 'Ada', 'Angular', 'APL', 'Assembly', 'AWK', 'Babel', 'Bash', 'Bootstrap',
+  'C', 'C#', 'C++', 'Chapel', 'Clojure', 'COBOL', 'CoffeeScript', 'Common Lisp', 'Crystal', 'CSS',
+  'D', 'Dart', 'Delphi', 'Django', 'Docker', 'Dylan', 'Eiffel', 'Elixir', 'Elm', 'Erlang', 'Excel',
+  'Express.js', 'F#', 'Factor', 'Flask', 'Forth', 'Fortran', 'Git', 'Go', 'Groovy', 'Haskell',
+  'Haxe', 'HTML', 'Idris', 'J', 'Java', 'JavaScript', 'Jira', 'jQuery', 'Julia', 'Kotlin', 'Kubernetes',
+  'LabVIEW', 'Laravel', 'Lisp', 'Logo', 'Lua', 'MATLAB', 'ML', 'Modula-2', 'Next.js', 'Nim', 'Node.js',
+  'NPM', 'NumPy', 'Objective-C', 'OCaml', 'OpenCL', 'Pandas', 'Pascal', 'Perl', 'PHP', 'PL/I',
+  'PostScript', 'PowerShell', 'Prolog', 'Puppet', 'PureScript', 'Python', 'PyTorch', 'Q', 'R', 'Racket',
+  'React', 'Reason', 'Rexx', 'Ring', 'Ruby', 'Ruby on Rails', 'Rust', 'S-PLUS', 'SAS', 'Scala', 'Scheme',
+  'Scratch', 'Simula', 'Smalltalk', 'SQL', 'Spring Boot', 'Svelte', 'Swift', 'Tailwind CSS', 'Tcl',
+  'TensorFlow', 'TypeScript', 'VBScript', 'Verilog', 'VHDL', 'Vim', 'Visual Basic', 'Vue.js', 'Webpack',
+  'WordPress', 'Z shell'
 ];
 
 function SubmitButton() {
@@ -88,7 +53,7 @@ function SubmitButton() {
 
 export function RoastForm() {
   const [state, formAction] = useActionState(handleGenerateRoast, initialState);
-  const [language, setLanguage] = useState(programmingLanguages[0]);
+  const [battlefield, setBattlefield] = useState(programmingBattlefields[0]);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -111,15 +76,15 @@ export function RoastForm() {
           {state.errors?.name && <p className="text-sm font-medium text-destructive">{state.errors.name[0]}</p>}
         </div>
         <div className="space-y-2">
-          <Label>Technology to Roast</Label>
-          <Select name="programmingLanguage" value={language} onValueChange={setLanguage}>
+          <Label>Choose your Battlefield</Label>
+          <Select name="programmingBattlefield" value={battlefield} onValueChange={setBattlefield}>
             <SelectTrigger>
-              <SelectValue placeholder="Select a technology" />
+              <SelectValue placeholder="Select a battlefield" />
             </SelectTrigger>
             <SelectContent>
-              {programmingLanguages.map((lang) => (
-                <SelectItem key={lang} value={lang}>
-                  {lang}
+              {programmingBattlefields.map((bf) => (
+                <SelectItem key={bf} value={bf}>
+                  {bf}
                 </SelectItem>
               ))}
             </SelectContent>

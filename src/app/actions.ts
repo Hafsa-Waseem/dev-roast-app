@@ -5,14 +5,14 @@ import { z } from 'zod';
 
 const schema = z.object({
   name: z.string().min(1, 'Name is required.'),
-  programmingLanguage: z.string(),
+  programmingBattlefield: z.string(),
 });
 
 export async function handleGenerateRoast(prevState: any, formData: FormData) {
   try {
     const validatedFields = schema.safeParse({
       name: formData.get('name'),
-      programmingLanguage: formData.get('programmingLanguage'),
+      programmingBattlefield: formData.get('programmingBattlefield'),
     });
 
     if (!validatedFields.success) {
@@ -25,7 +25,7 @@ export async function handleGenerateRoast(prevState: any, formData: FormData) {
 
     const input: GenerateRoastInput = {
       name: validatedFields.data.name,
-      programmingLanguage: validatedFields.data.programmingLanguage,
+      programmingBattlefield: validatedFields.data.programmingBattlefield,
     };
 
     const result = await generateRoast(input);
