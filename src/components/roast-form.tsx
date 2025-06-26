@@ -18,16 +18,53 @@ const initialState = {
 };
 
 const programmingLanguages = [
-  'JavaScript',
-  'Python',
-  'Java',
-  'C++',
-  'TypeScript',
-  'Rust',
-  'Go',
-  'PHP',
+  '.NET',
+  'Angular',
+  'Assembly',
+  'Bootstrap',
   'C#',
+  'C++',
+  'COBOL',
+  'CSS',
+  'Django',
+  'Docker',
+  'Excel',
+  'Express.js',
+  'Flask',
+  'Fortran',
+  'Git',
+  'Go',
+  'Haskell',
+  'HTML',
+  'Java',
+  'JavaScript',
+  'jQuery',
+  'Kotlin',
+  'Kubernetes',
+  'Laravel',
+  'Lisp',
+  'Node.js',
+  'NumPy',
+  'Pandas',
+  'Perl',
+  'PHP',
+  'Python',
+  'PyTorch',
+  'React',
+  'Ruby',
+  'Ruby on Rails',
+  'Rust',
+  'Scala',
+  'SQL',
+  'Spring Boot',
+  'Svelte',
   'Swift',
+  'Tailwind CSS',
+  'TensorFlow',
+  'TypeScript',
+  'Vim',
+  'Vue.js',
+  'WordPress',
 ];
 
 function SubmitButton() {
@@ -74,10 +111,10 @@ export function RoastForm() {
           {state.errors?.name && <p className="text-sm font-medium text-destructive">{state.errors.name[0]}</p>}
         </div>
         <div className="space-y-2">
-          <Label>Favorite Programming Language</Label>
+          <Label>Technology to Roast</Label>
           <Select name="programmingLanguage" value={language} onValueChange={setLanguage}>
             <SelectTrigger>
-              <SelectValue placeholder="Select a language" />
+              <SelectValue placeholder="Select a technology" />
             </SelectTrigger>
             <SelectContent>
               {programmingLanguages.map((lang) => (
