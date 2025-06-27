@@ -12,7 +12,7 @@ export default function ArticlesPage() {
             This section is coming soon! We're gathering the most entertaining and bizarre stories from the world of tech.
           </p>
           <p>
-            Prepare for deep dives into the history of the `<blink>` tag, the programmer who automated his job, and much more.
+            Prepare for deep dives into the history of the `&lt;blink&gt;` tag, the programmer who automated his job, and much more.
           </p>
         </CardContent>
       </Card>
