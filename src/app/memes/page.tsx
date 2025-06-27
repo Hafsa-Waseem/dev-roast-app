@@ -26,6 +26,18 @@ const memes = [
     hint: 'javascript framework',
     caption: 'Another day, another new JavaScript framework to learn.',
   },
+  {
+    src: 'https://placehold.co/600x400.png',
+    alt: 'Meme about "works on my machine"',
+    hint: 'developer computer',
+    caption: 'The classic developer excuse that is technically true and completely useless.',
+  },
+  {
+    src: 'https://placehold.co/600x400.png',
+    alt: 'Meme about legacy code',
+    hint: 'programmer code',
+    caption: 'Trying to understand code written by someone who left the company 5 years ago.',
+  },
 ];
 
 export default function MemesPage() {
