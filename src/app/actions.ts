@@ -6,6 +6,7 @@ import { z } from 'zod';
 const schema = z.object({
   name: z.string().min(1, 'Name is required.'),
   programmingBattlefield: z.string(),
+  jobRole: z.string(),
 });
 
 export async function handleGenerateRoast(prevState: any, formData: FormData) {
@@ -13,6 +14,7 @@ export async function handleGenerateRoast(prevState: any, formData: FormData) {
     const validatedFields = schema.safeParse({
       name: formData.get('name'),
       programmingBattlefield: formData.get('programmingBattlefield'),
+      jobRole: formData.get('jobRole'),
     });
 
     if (!validatedFields.success) {
@@ -26,6 +28,7 @@ export async function handleGenerateRoast(prevState: any, formData: FormData) {
     const input: GenerateRoastInput = {
       name: validatedFields.data.name,
       programmingBattlefield: validatedFields.data.programmingBattlefield,
+      jobRole: validatedFields.data.jobRole,
     };
 
     const result = await generateRoast(input);

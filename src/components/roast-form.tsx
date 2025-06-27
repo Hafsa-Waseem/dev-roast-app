@@ -17,6 +17,12 @@ const initialState = {
   errors: null,
 };
 
+const jobRoles = [
+  'Frontend Developer', 'Backend Developer', 'Full Stack Developer', 'DevOps Engineer', 'Data Scientist',
+  'Project Manager', 'QA Engineer', 'UI/UX Designer', 'Intern', 'Tech Lead', 'Cybersecurity Analyst',
+  'Database Administrator', 'Cloud Engineer', 'Mobile Developer', 'Student'
+];
+
 const programmingBattlefields = [
   '.NET', 'ActionScript', 'Ada', 'Angular', 'APL', 'Assembly', 'AWK', 'Babel', 'Bash', 'Bootstrap',
   'C', 'C#', 'C++', 'Chapel', 'Clojure', 'COBOL', 'CoffeeScript', 'Common Lisp', 'Crystal', 'CSS',
@@ -53,7 +59,8 @@ function SubmitButton() {
 
 export function RoastForm() {
   const [state, formAction] = useActionState(handleGenerateRoast, initialState);
-  const [battlefield, setBattlefield] = useState(programmingBattlefields[0]);
+  const [battlefield, setBattlefield] = useState(programmingBattlefields[Math.floor(Math.random() * programmingBattlefields.length)]);
+  const [role, setRole] = useState(jobRoles[0]);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -61,7 +68,7 @@ export function RoastForm() {
     if (state.message === 'An unexpected error occurred.') {
       toast({
         title: 'Error',
-        description: 'Failed to generate roast. Please try again.',
+        description: 'Failed to generate roast. The AI might be on a coffee break. Please try again.',
         variant: 'destructive',
       });
     }
@@ -74,6 +81,21 @@ export function RoastForm() {
           <Label htmlFor="name">Your Name</Label>
           <Input id="name" name="name" placeholder="e.g., Ada Lovelace" required />
           {state.errors?.name && <p className="text-sm font-medium text-destructive">{state.errors.name[0]}</p>}
+        </div>
+        <div className="space-y-2">
+          <Label>Your Job Role</Label>
+          <Select name="jobRole" value={role} onValueChange={setRole}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select your role" />
+            </SelectTrigger>
+            <SelectContent>
+              {jobRoles.map((r) => (
+                <SelectItem key={r} value={r}>
+                  {r}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         <div className="space-y-2">
           <Label>Choose your Battlefield</Label>

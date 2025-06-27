@@ -5,20 +5,20 @@ export default function AboutPage() {
     <div className="container mx-auto max-w-4xl py-12 px-4">
       <Card>
         <CardHeader>
-          <CardTitle className="text-3xl">About Us</CardTitle>
+          <CardTitle className="text-3xl">About Roast-My-Code</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4 text-muted-foreground">
           <p>
-            Welcome to Roast-My-Code, the premier destination for developers who don't take themselves too seriously. Our mission is to inject a bit of humor and humility into the often-intense world of software development.
+            Welcome to Roast-My-Code, the only corner of the internet where your code's feelings are not a priority. Our mission is to inject a lethal dose of humor into the caffeine-fueled, sleep-deprived world of software development.
           </p>
           <p>
-            Born from a late-night coding session and fueled by too much coffee, this platform uses cutting-edge AI to generate witty and sarcastic roasts based on your favorite programming languages, frameworks, and tools. It's all in good fun, of course!
+            Born from a syntax error at 3 AM and a questionable life choice, this platform uses a highly sophisticated (and sarcastic) AI to craft witty roasts based on your chosen programming battlefield. It's all in good fun, of course... unless the AI is right.
           </p>
           <p>
-            We believe that a good laugh can be the best way to de-stress and bond with fellow developers. Whether you're a seasoned pro who remembers debugging with print statements or a bootcamp grad who thinks Git is just a fancy save button, there's a roast here for you.
+            We believe that a good laugh can be the best debugger. Whether you're a Senior Dev who still googles how to center a div, or a Junior who thinks 'merge conflict' is a type of sandwich, our AI has a special roast simmering just for you.
           </p>
           <p>
-            Thanks for stopping by. Now go on, see what our AI has to say about your "battlefield." We promise it'll be (mostly) painless.
+            Thanks for stopping by. Now go on, feed our AI your details. We promise it'll only hurt your ego.
           </p>
         </CardContent>
       </Card>

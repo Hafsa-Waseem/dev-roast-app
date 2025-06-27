@@ -13,7 +13,7 @@ export default function ContactPage() {
         </CardHeader>
         <CardContent className="space-y-6">
             <p className="text-muted-foreground">
-              Have a suggestion, a bug report, or a particularly good roast idea? Drop us a line!
+              Have a suggestion, a bug report, or a particularly good roast idea? We'd love to hear it. Your message will be promptly reviewed by our highly trained team of pigeons.
             </p>
             <form className="space-y-4">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -30,7 +30,7 @@ export default function ContactPage() {
                 <Label htmlFor="message">Message</Label>
                 <Textarea id="message" placeholder="Your message..." />
               </div>
-              <Button type="submit" disabled>Send Message (Coming Soon)</Button>
+              <Button type="submit">Send to the Void</Button>
             </form>
         </CardContent>
       </Card>
