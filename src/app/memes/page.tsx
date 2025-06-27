@@ -3,37 +3,37 @@ import Image from 'next/image';
 
 const memes = [
   {
-    src: 'https://placehold.co/600x400.png',
+    src: 'https://placehold.co/600x400/3498db/ffffff.png',
     alt: 'Meme about debugging',
     hint: 'debugging programming',
     caption: 'That feeling when you fix one bug and two new ones appear.',
   },
   {
-    src: 'https://placehold.co/600x400.png',
+    src: 'https://placehold.co/600x400/e74c3c/ffffff.png',
     alt: 'Meme about Stack Overflow',
     hint: 'stack overflow',
     caption: 'Me after copying and pasting code from Stack Overflow without understanding it.',
   },
   {
-    src: 'https://placehold.co/600x400.png',
+    src: 'https://placehold.co/600x400/f1c40f/ffffff.png',
     alt: 'Meme about project managers',
     hint: 'project manager',
     caption: '"It\'s a simple feature, should only take an hour." - Famous last words.',
   },
   {
-    src: 'https://placehold.co/600x400.png',
+    src: 'https://placehold.co/600x400/9b59b6/ffffff.png',
     alt: 'Meme about JavaScript frameworks',
     hint: 'javascript framework',
     caption: 'Another day, another new JavaScript framework to learn.',
   },
   {
-    src: 'https://placehold.co/600x400.png',
+    src: 'https://placehold.co/600x400/1abc9c/ffffff.png',
     alt: 'Meme about "works on my machine"',
     hint: 'developer computer',
     caption: 'The classic developer excuse that is technically true and completely useless.',
   },
   {
-    src: 'https://placehold.co/600x400.png',
+    src: 'https://placehold.co/600x400/34495e/ffffff.png',
     alt: 'Meme about legacy code',
     hint: 'programmer code',
     caption: 'Trying to understand code written by someone who left the company 5 years ago.',
