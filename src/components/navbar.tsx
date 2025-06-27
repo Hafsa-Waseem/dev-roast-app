@@ -11,6 +11,7 @@ import { Button } from './ui/button';
 import { useState } from 'react';
 
 const navLinks = [
+  { href: '/', label: 'Home' },
   { href: '/blogs', label: 'Blogs' },
   { href: '/articles', label: 'Articles' },
   { href: '/memes', label: 'Memes' },
