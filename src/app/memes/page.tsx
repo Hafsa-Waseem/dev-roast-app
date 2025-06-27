@@ -1,29 +1,61 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
+
+const memes = [
+  {
+    src: 'https://placehold.co/600x400.png',
+    alt: 'Meme about debugging',
+    hint: 'debugging programming',
+    caption: 'That feeling when you fix one bug and two new ones appear.',
+  },
+  {
+    src: 'https://placehold.co/600x400.png',
+    alt: 'Meme about Stack Overflow',
+    hint: 'stack overflow',
+    caption: 'Me after copying and pasting code from Stack Overflow without understanding it.',
+  },
+  {
+    src: 'https://placehold.co/600x400.png',
+    alt: 'Meme about project managers',
+    hint: 'project manager',
+    caption: '"It\'s a simple feature, should only take an hour." - Famous last words.',
+  },
+  {
+    src: 'https://placehold.co/600x400.png',
+    alt: 'Meme about JavaScript frameworks',
+    hint: 'javascript framework',
+    caption: 'Another day, another new JavaScript framework to learn.',
+  },
+];
 
 export default function MemesPage() {
   return (
-    <div className="container mx-auto max-w-4xl py-12 px-4">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-3xl">Tech Memes</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4 text-center text-muted-foreground">
-          <p>
-            Our meme conveyor belt is currently being debugged. Please stand by for a fresh batch of high-quality, compiler-approved memes.
-          </p>
-          <div className="flex justify-center">
-            <Image 
-              src="https://placehold.co/600x400.png"
-              alt="Funny meme placeholder"
-              width={600}
-              height={400}
-              data-ai-hint="programming humor"
-              className="rounded-lg"
-            />
-          </div>
-        </CardContent>
-      </Card>
+    <div className="container mx-auto max-w-5xl py-12 px-4">
+      <div className="space-y-8">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold">Freshly Compiled Memes</h1>
+          <p className="text-muted-foreground mt-2">For your procrastination pleasure. Guaranteed to be 100% relatable.</p>
+        </div>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
+          {memes.map((meme, index) => (
+            <Card key={index}>
+              <CardContent className="p-0">
+                <Image
+                  src={meme.src}
+                  alt={meme.alt}
+                  width={600}
+                  height={400}
+                  data-ai-hint={meme.hint}
+                  className="rounded-t-lg w-full object-cover"
+                />
+                 <div className="p-4">
+                  <p className="text-center text-muted-foreground font-medium">{meme.caption}</p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

@@ -17,6 +17,7 @@ const GenerateRoastInputSchema = z.object({
   programmingBattlefield: z
     .string()
     .describe('The favorite programming battlefield of the person to roast.'),
+  jobRole: z.string().describe('The job role of the person to roast.'),
 });
 export type GenerateRoastInput = z.infer<typeof GenerateRoastInputSchema>;
 
@@ -33,12 +34,13 @@ const roastPrompt = ai.definePrompt({
   name: 'roastPrompt',
   input: {schema: GenerateRoastInputSchema},
   output: {schema: GenerateRoastOutputSchema},
-  prompt: `You are a funny AI that generates roasts based on a person's name and their favorite programming battlefield.
+  prompt: `You are a witty and sarcastic AI that generates roasts for people in the tech industry. The roast should be funny, clever, and specific to their details.
 
   Name: {{{name}}}
-  Programming Battlefield: {{{programmingBattlefield}}}
+  Job Role: {{{jobRole}}}
+  Favorite Programming Battlefield: {{{programmingBattlefield}}}
 
-  Generate a roast that is humorous and sarcastic, targeting the programming battlefield or developer culture associated with it.
+  Generate a roast that humorously targets their job role and their chosen programming battlefield. Be creative and a little edgy, but keep it in good fun.
   `,
 });
 

@@ -1,19 +1,27 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Zap } from 'lucide-react';
 
 export default function InteractivePage() {
   return (
     <div className="container mx-auto max-w-4xl py-12 px-4">
-      <Card>
+      <Card className="text-center">
         <CardHeader>
-          <CardTitle className="text-3xl">Interactive Fun</CardTitle>
+          <div className="mx-auto bg-primary/10 rounded-full w-fit p-4 mb-4">
+            <Zap className="h-10 w-10 text-primary" />
+          </div>
+          <CardTitle className="text-3xl">CSS Battle Royale</CardTitle>
+          <CardDescription className="text-base">The ultimate test of frontend survival.</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4 text-center text-muted-foreground">
+        <CardContent className="space-y-4 text-muted-foreground">
           <p>
-            Interactive experiences are being coded as we speak! Soon you'll be able to play games like "CSS Battle Royale" or "Bug Hunt Safari."
+            Can you replicate a complex design using only CSS before the timer runs out? Compete against other developers in a fast-paced, real-time arena where only one `div` can be victorious.
           </p>
-          <div className="flex justify-center">
-            <Button disabled>Coming Soon!</Button>
+          <p>
+            Features include Flexbox Frenzy, Grid Gauntlet, and the dreaded `!important` Power-up.
+          </p>
+          <div className="flex justify-center pt-4">
+            <Button size="lg" disabled>Launch Game (Compiling Shaders...)</Button>
           </div>
         </CardContent>
       </Card>

@@ -1,21 +1,54 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+
+const blogPosts = [
+  {
+    title: 'Why Your Code Doesn\'t Work: It\'s Probably DNS',
+    author: 'A Frustrated SysAdmin',
+    date: 'July 20, 2024',
+    excerpt: 'It\'s never not DNS. In this post, we explore the five stages of debugging grief, from denial ("It\'s can\'t be DNS") to acceptance ("It was DNS").',
+  },
+  {
+    title: 'The Art of Naming Variables: From `x` to `totalRevenueInUSDAfterTaxesAndFees`',
+    author: 'Captain Obvious',
+    date: 'July 15, 2024',
+    excerpt: 'Join us on a journey through the evolution of a developer\'s variable naming strategy, a tale of despair, clarity, and eventual carpal tunnel syndrome.',
+  },
+  {
+    title: '10 Signs You Might Be a JavaScript Developer',
+    author: 'Framework Fanatic',
+    date: 'July 10, 2024',
+    excerpt: 'If you\'ve ever debated the merits of 5 different ways to write a for-loop or believe `[] + {}` is a valid form of artistic expression, this post is for you.',
+  },
+  {
+    title: 'How to Explain APIs to Your Parents',
+    author: 'Family Tech Support',
+    date: 'July 5, 2024',
+    excerpt: 'A practical guide to using metaphors like "magic restaurant waiters" to explain complex technical concepts to your loved ones, so you can finally enjoy a holiday meal in peace.',
+  },
+];
 
 export default function BlogsPage() {
   return (
     <div className="container mx-auto max-w-4xl py-12 px-4">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-3xl">Developer Blogs</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4 text-muted-foreground">
-          <p>
-            Our blog section is currently under construction. We're busy brewing up some insightful and humorous articles about the developer life.
-          </p>
-          <p>
-            Check back soon for posts on topics like "Why Your Code Doesn't Work (It's Probably DNS)", "The Art of Naming Variables", and "10 Signs You Might Be a JavaScript Developer."
-          </p>
-        </CardContent>
-      </Card>
+      <div className="space-y-8">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold">Developer Blogs</h1>
+          <p className="text-muted-foreground mt-2">Insights and ramblings from our team of code monkeys.</p>
+        </div>
+        <div className="space-y-6">
+          {blogPosts.map((post, index) => (
+            <Card key={index}>
+              <CardHeader>
+                <CardTitle>{post.title}</CardTitle>
+                <CardDescription>By {post.author} on {post.date}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">{post.excerpt}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
