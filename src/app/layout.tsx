@@ -33,6 +33,10 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+         {/* Google Adsense */}
+        <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5699659351458850" crossOrigin="anonymous" />
+
       </head>
       <body className="font-body antialiased flex flex-col min-h-dvh">
         <Navbar />
@@ -42,9 +46,7 @@ export default function RootLayout({
         <Footer />
         <Toaster />
 
-        {/* Google Adsense */}
-        <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5699659351458850" crossOrigin="anonymous" />
-
+       
         {/* Google Analytics */}
         <Script async src="https://www.googletagmanager.com/gtag/js?id=G-QB1N9YWEGY" />
         <Script id="gtag-init" dangerouslySetInnerHTML={{
