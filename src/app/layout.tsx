@@ -65,7 +65,7 @@ export default function RootLayout({
               'key' : 'bc2c6afb4f6e29c71bbc0aa6f917fd57',
               'format' : 'iframe',
               'height' : 300,
-              'width' : 160,
+              'width' : 900,
               'params' : {}
             };
           `,
