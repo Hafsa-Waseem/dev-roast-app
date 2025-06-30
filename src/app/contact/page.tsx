@@ -1,37 +1,32 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
+import { Github, Linkedin } from 'lucide-react';
 
 export default function ContactPage() {
   return (
     <div className="container mx-auto max-w-4xl py-12 px-4">
       <Card>
-        <CardHeader>
-          <CardTitle className="text-3xl">Contact Us</CardTitle>
+        <CardHeader className="text-center">
+          <CardTitle className="text-3xl">Connect With Me</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-6">
-            <p className="text-muted-foreground">
-              Have a suggestion, a bug report, or a particularly good roast idea? We'd love to hear it. Your message will be promptly reviewed by our highly trained team of pigeons.
+        <CardContent className="space-y-6 text-center">
+            <p className="text-muted-foreground px-4">
+              I'd love to connect with you! Feel free to follow my work, send a message, or check out my projects.
             </p>
-            <form className="space-y-4">
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Name</Label>
-                  <Input id="name" placeholder="Your Name" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" placeholder="your@email.com" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="message">Message</Label>
-                <Textarea id="message" placeholder="Your message..." />
-              </div>
-              <Button type="submit">Send to the Void</Button>
-            </form>
+            <div className="flex justify-center items-center gap-4 pt-4">
+             <Button asChild>
+                <a href="https://www.linkedin.com/in/hafsa-waseem4" target="_blank" rel="noopener noreferrer">
+                  <Linkedin />
+                  LinkedIn
+                </a>
+              </Button>
+              <Button asChild>
+                 <a href="https://github.com/Hafsa-Waseem" target="_blank" rel="noopener noreferrer">
+                  <Github />
+                  GitHub
+                </a>
+              </Button>
+            </div>
         </CardContent>
       </Card>
     </div>
