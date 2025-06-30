@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Confetti from 'react-confetti';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
-import { Terminal, Lightbulb, CheckCircle2, XCircle } from 'lucide-react';
+import { Terminal, Lightbulb, CheckCircle2, XCircle, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
 const quizQuestions = [
@@ -52,6 +53,19 @@ export default function InteractivePage() {
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
   const [isAnswered, setIsAnswered] = useState(false);
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const currentQuestion = quizQuestions[currentQuestionIndex];
   const isCorrect = selectedOption === currentQuestion.answer;
@@ -86,15 +100,28 @@ export default function InteractivePage() {
   if (showResult) {
     // We need to add the final point if the last question was answered correctly
     const finalScore = isCorrect ? score + 1 : score;
+    const isWinner = finalScore > quizQuestions.length / 2;
+
     return (
       <div className="container mx-auto max-w-2xl py-12 px-4 flex items-center justify-center min-h-[60vh]">
-        <Card className="text-center w-full transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
+        {isWinner && windowSize.width > 0 && <Confetti width={windowSize.width} height={windowSize.height} recycle={false} />}
+        <Card className="text-center w-full transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl animate-in fade-in-50">
           <CardHeader>
-            <CardTitle className="text-3xl">Quiz Complete!</CardTitle>
-            <CardDescription className="text-lg">You've reached the end of the JavaScript Quirks Quiz.</CardDescription>
+            <div className="flex justify-center items-center mb-4">
+              {isWinner ? (
+                <ThumbsUp className="h-16 w-16 text-green-500" />
+              ) : (
+                <ThumbsDown className="h-16 w-16 text-red-500" />
+              )}
+            </div>
+            <CardTitle className="text-3xl">{isWinner ? 'Congratulations!' : 'Better Luck Next Time!'}</CardTitle>
+            <CardDescription className="text-lg">You've completed the JavaScript Quirks Quiz.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <p className="text-4xl font-bold">Your Score: {finalScore} / {quizQuestions.length}</p>
+            <p className={`text-5xl font-bold ${isWinner ? 'text-green-500' : 'text-red-500'}`}>
+              {finalScore} / {quizQuestions.length}
+            </p>
+            <p className="text-muted-foreground">{isWinner ? "You're a true JavaScript wizard!" : "Don't worry, these questions are tricky!"}</p>
             <Button onClick={handleRestartQuiz} size="lg">
               Play Again
             </Button>
