@@ -10,7 +10,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="w-full border-t border-card-foreground/10 bg-card/20 backdrop-blur-xl">
+    <footer className="w-full border-t border-border bg-background/80 backdrop-blur-lg">
       <div className="container flex flex-col items-center justify-center gap-4 py-8 md:flex-row md:justify-between">
         <p className="text-sm text-foreground">
           © {new Date().getFullYear()} Roast-My-Code. All rights reserved.
