@@ -4,8 +4,8 @@ import { Code2 } from 'lucide-react';
 
 export default function Home() {
   return (
-    <div className="flex w-full flex-col items-center justify-center bg-background p-4 py-12 md:py-24">
-      <Card className="w-full max-w-lg z-10 shadow-2xl border-primary/20">
+    <div className="flex w-full flex-col items-center justify-center p-4 py-12 md:py-24">
+      <Card className="w-full max-w-lg z-10">
         <CardHeader className="text-center">
           <div className="flex items-center justify-center gap-2 mb-2">
             <div className="p-3 bg-primary/10 rounded-full">
