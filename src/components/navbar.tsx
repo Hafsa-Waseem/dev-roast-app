@@ -32,7 +32,7 @@ export function Navbar() {
         </div>
         <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
           {navLinks.map(link => (
-            <Link key={link.href} href={link.href} className="transition-colors hover:text-foreground/80 text-foreground/60">
+            <Link key={link.href} href={link.href} className="transition-colors hover:text-foreground/80 text-foreground">
               {link.label}
             </Link>
           ))}

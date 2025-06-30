@@ -12,12 +12,12 @@ export function Footer() {
   return (
     <footer className="w-full border-t border-card-foreground/10 bg-card/20 backdrop-blur-xl">
       <div className="container flex flex-col items-center justify-center gap-4 py-8 md:flex-row md:justify-between">
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-foreground">
           © {new Date().getFullYear()} Roast-My-Code. All rights reserved.
         </p>
         <nav className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
           {footerLinks.map(link => (
-            <Link key={link.href} href={link.href} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+            <Link key={link.href} href={link.href} className="text-sm text-foreground transition-colors hover:text-foreground/80">
               {link.label}
             </Link>
           ))}
