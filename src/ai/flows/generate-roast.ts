@@ -47,6 +47,18 @@ const roastPrompt = ai.definePrompt({
 
   Generate a roast that humorously targets their job role and their chosen programming battlefield. Be creative and a little edgy, but keep it in good fun.
   `,
+  config: {
+    safetySettings: [
+        {
+            category: 'HARM_CATEGORY_HARASSMENT',
+            threshold: 'BLOCK_ONLY_HIGH',
+        },
+        {
+            category: 'HARM_CATEGORY_HATE_SPEECH',
+            threshold: 'BLOCK_ONLY_HIGH',
+        },
+    ],
+  },
 });
 
 
@@ -64,6 +76,16 @@ const generateRoastFlow = ai.defineFlow(
         prompt: `Generate a funny, high-quality cartoon avatar of a ${input.jobRole} who uses ${input.programmingBattlefield}. The character should look comically frustrated or overwhelmed by their technology choice. The style should be vibrant, expressive, and suitable for a web profile picture. No text in the image.`,
         config: {
           responseModalities: ['TEXT', 'IMAGE'],
+          safetySettings: [
+            {
+                category: 'HARM_CATEGORY_HARASSMENT',
+                threshold: 'BLOCK_ONLY_HIGH',
+            },
+            {
+                category: 'HARM_CATEGORY_HATE_SPEECH',
+                threshold: 'BLOCK_ONLY_HIGH',
+            },
+          ],
         },
       }),
     ]);
