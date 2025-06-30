@@ -33,7 +33,24 @@ const articles = [
     title: 'A Beginner\'s Guide to Impostor Syndrome in Tech',
     description: 'Feeling like a fraud? You\'re not alone. This article explores why so many developers feel like impostors and offers practical tips for building confidence and recognizing your own expertise.',
   },
+  {
+    title: 'Debugging with `console.log()`: An Advanced Guide',
+    description: 'Explore the nuanced art of sprinkling `console.log("here")`, `console.log("here2")`, and `console.log("wtf")` throughout your codebase to find that one elusive bug.',
+  },
+  {
+    title: 'The Great Semicolon Debate: To Use or Not to Use?',
+    description: 'A philosophical exploration into one of programming\'s most divisive topics. We interview developers from both sides of the aisle. Tensions run high.',
+  },
+  {
+    title: 'How to Center a Div: The Final, Ultimate, No-Seriously-This-Time Guide',
+    description: 'We\'ve tried everything, from Flexbox to Grid to ancient CSS hacks involving tables. This guide promises to be the last one you\'ll ever need. Maybe.',
+  },
+  {
+    title: 'API Documentation: A Guide to Writing Something People Will Actually Read',
+    description: 'Learn how to write API docs that are clear, concise, and don\'t require a degree in archaeology to decipher. Your fellow developers will thank you.',
+  },
 ];
+
 
 export default function ArticlesPage() {
   return (
@@ -45,7 +62,7 @@ export default function ArticlesPage() {
         </div>
         <div className="grid gap-6 md:grid-cols-2">
           {articles.map((article, index) => (
-            <Card key={index}>
+            <Card key={index} className="transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
               <CardHeader>
                 <CardTitle>{article.title}</CardTitle>
               </CardHeader>

@@ -49,6 +49,30 @@ const blogPosts = [
     date: 'June 20, 2024',
     excerpt: 'Unravel the mysteries of React performance optimization. This post explains when to use `useMemo` and `useCallback`, and when you\'re just prematurely optimizing.',
   },
+  {
+    title: 'Regex: Mastering the Dark Arts of String Manipulation',
+    author: 'Pattern Whisperer',
+    date: 'June 18, 2024',
+    excerpt: 'A beginner-friendly introduction to Regular Expressions. By the end of this post, you\'ll be able to write cryptic patterns that even you won\'t understand in a week.',
+  },
+  {
+    title: 'The Imposter\'s Guide to Sounding Smart in Tech Meetings',
+    author: 'Corporate Chameleon',
+    date: 'June 15, 2024',
+    excerpt: 'Learn key phrases like "Does it scale?", "What about the user experience?", and "Let\'s take this offline" to sound like a seasoned professional.',
+  },
+  {
+    title: 'Why Agile Isn\'t Working For You: You\'re Probably Doing It Wrong',
+    author: 'Scrum Master Supreme',
+    date: 'June 12, 2024',
+    excerpt: 'A tough-love look at common Agile anti-patterns. Are your daily stand-ups actually daily sitting-down-for-an-hour-meetings? This post is for you.',
+  },
+  {
+    title: 'How I Explained End-to-End Encryption to My Goldfish',
+    author: 'Paranoid Polly',
+    date: 'June 10, 2024',
+    excerpt: 'A story of patience, perseverance, and a very confused goldfish. Security concepts explained in the simplest terms possible.',
+  },
 ];
 
 export default function BlogsPage() {
@@ -61,7 +85,7 @@ export default function BlogsPage() {
         </div>
         <div className="space-y-6">
           {blogPosts.map((post, index) => (
-            <Card key={index}>
+            <Card key={index} className="transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl">
               <CardHeader>
                 <CardTitle>{post.title}</CardTitle>
                 <CardDescription>By {post.author} on {post.date}</CardDescription>
