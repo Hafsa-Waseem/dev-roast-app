@@ -22,6 +22,7 @@ export async function handleGenerateRoast(prevState: any, formData: FormData) {
         message: 'Validation failed',
         errors: validatedFields.error.flatten().fieldErrors,
         roast: null,
+        imageUrl: null,
       };
     }
 
@@ -36,6 +37,7 @@ export async function handleGenerateRoast(prevState: any, formData: FormData) {
     return {
       message: 'Success',
       roast: result.roast,
+      imageUrl: result.imageUrl,
       errors: null,
     };
   } catch (error) {
@@ -43,6 +45,7 @@ export async function handleGenerateRoast(prevState: any, formData: FormData) {
     return {
       message: 'An unexpected error occurred.',
       roast: null,
+      imageUrl: null,
       errors: null,
     };
   }

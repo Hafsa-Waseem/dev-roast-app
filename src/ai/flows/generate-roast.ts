@@ -23,6 +23,7 @@ export type GenerateRoastInput = z.infer<typeof GenerateRoastInputSchema>;
 
 const GenerateRoastOutputSchema = z.object({
   roast: z.string().describe('The generated roast.'),
+  imageUrl: z.string().describe('A data URI of the generated image.'),
 });
 export type GenerateRoastOutput = z.infer<typeof GenerateRoastOutputSchema>;
 
@@ -32,8 +33,12 @@ export async function generateRoast(input: GenerateRoastInput): Promise<Generate
 
 const roastPrompt = ai.definePrompt({
   name: 'roastPrompt',
-  input: {schema: GenerateRoastInputSchema},
-  output: {schema: GenerateRoastOutputSchema},
+  input: {schema: z.object({
+    name: GenerateRoastInputSchema.shape.name,
+    jobRole: GenerateRoastInputSchema.shape.jobRole,
+    programmingBattlefield: GenerateRoastInputSchema.shape.programmingBattlefield,
+  })},
+  output: {schema: z.object({ roast: GenerateRoastOutputSchema.shape.roast })},
   prompt: `You are a witty and sarcastic AI that generates roasts for people in the tech industry. The roast should be funny, clever, and specific to their details.
 
   Name: {{{name}}}
@@ -44,6 +49,7 @@ const roastPrompt = ai.definePrompt({
   `,
 });
 
+
 const generateRoastFlow = ai.defineFlow(
   {
     name: 'generateRoastFlow',
@@ -51,7 +57,20 @@ const generateRoastFlow = ai.defineFlow(
     outputSchema: GenerateRoastOutputSchema,
   },
   async input => {
-    const {output} = await roastPrompt(input);
-    return output!;
+    const [roastResult, imageResult] = await Promise.all([
+      roastPrompt(input),
+      ai.generate({
+        model: 'googleai/gemini-2.0-flash-preview-image-generation',
+        prompt: `Generate a funny, high-quality cartoon avatar of a ${input.jobRole} who uses ${input.programmingBattlefield}. The character should look comically frustrated or overwhelmed by their technology choice. The style should be vibrant, expressive, and suitable for a web profile picture. No text in the image.`,
+        config: {
+          responseModalities: ['TEXT', 'IMAGE'],
+        },
+      }),
+    ]);
+    
+    const roast = roastResult.output?.roast || 'The AI is speechless. You are unroastable.';
+    const imageUrl = imageResult.media?.url || '';
+
+    return { roast, imageUrl };
   }
 );

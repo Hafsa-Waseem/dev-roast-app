@@ -1,16 +1,19 @@
 'use client';
 
+import Image from 'next/image';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Copy, Share2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Separator } from './ui/separator';
+import { Skeleton } from './ui/skeleton';
 
 type RoastCardProps = {
   roast: string;
+  imageUrl: string | null;
 };
 
-export function RoastCard({ roast }: RoastCardProps) {
+export function RoastCard({ roast, imageUrl }: RoastCardProps) {
   const { toast } = useToast();
 
   const handleCopy = () => {
@@ -53,6 +56,21 @@ export function RoastCard({ roast }: RoastCardProps) {
   return (
     <Card className="bg-secondary/50 border-dashed">
       <CardContent className="p-6">
+        {imageUrl ? (
+          <div className="relative aspect-square w-full max-w-sm mx-auto mb-4 overflow-hidden rounded-lg">
+            <Image
+              src={imageUrl}
+              alt="Generated Roast Avatar"
+              fill
+              className="object-cover"
+              sizes="(max-width: 640px) 100vw, 384px"
+            />
+          </div>
+        ) : (
+          <div className="flex justify-center mb-4">
+             <Skeleton className="h-[384px] w-[384px] max-w-sm rounded-lg" />
+          </div>
+        )}
         <p className="text-lg text-center font-medium leading-relaxed">{roast}</p>
         <Separator className="my-4" />
         <div className="flex justify-center gap-2">
