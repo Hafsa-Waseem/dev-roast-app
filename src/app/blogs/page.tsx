@@ -25,6 +25,30 @@ const blogPosts = [
     date: 'July 5, 2024',
     excerpt: 'A practical guide to using metaphors like "magic restaurant waiters" to explain complex technical concepts to your loved ones, so you can finally enjoy a holiday meal in peace.',
   },
+  {
+    title: 'The Singleton Pattern: A Lonely Dev\'s Guide to Global State',
+    author: 'Archie Tect',
+    date: 'July 2, 2024',
+    excerpt: 'Exploring the most misunderstood design pattern. Is it a powerful tool for managing state, or a glorified global variable in a trench coat? Let\'s find out.',
+  },
+  {
+    title: 'Code Comments: Lies, Damn Lies, and Outdated Documentation',
+    author: 'Cynical Coder',
+    date: 'June 28, 2024',
+    excerpt: 'A deep dive into the art of writing comments that are more confusing than the code itself. We analyze famous examples like `// This is a hack, I know.`',
+  },
+  {
+    title: 'Surviving Your First Code Review Without Crying',
+    author: 'The Intern',
+    date: 'June 25, 2024',
+    excerpt: 'A junior developer\'s guide to navigating the perilous waters of code reviews. Learn how to interpret feedback like "This is... interesting" and "Could you explain your thought process here?"',
+  },
+  {
+    title: 'A Deep Dive into `useMemo` and `useCallback`: A Love Story',
+    author: 'React Romantic',
+    date: 'June 20, 2024',
+    excerpt: 'Unravel the mysteries of React performance optimization. This post explains when to use `useMemo` and `useCallback`, and when you\'re just prematurely optimizing.',
+  },
 ];
 
 export default function BlogsPage() {

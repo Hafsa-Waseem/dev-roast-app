@@ -17,6 +17,22 @@ const articles = [
     title: 'The Programmer Who Replaced Himself with a Rubber Duck',
     description: 'In a stunning feat of management, one tech lead found that a simple rubber duck was more effective at solving problems than his senior engineer. We interview the duck.',
   },
+  {
+    title: 'Demystifying the Event Loop: How JavaScript Keeps Its Cool',
+    description: 'Ever wondered how JavaScript handles asynchronous tasks without breaking a sweat? This educational piece breaks down the event loop, callback queue, and call stack in simple terms.',
+  },
+  {
+    title: 'Git Gud: Beyond `commit`, `push`, and `pray`',
+    description: 'Learn to wield Git like a pro. We cover interactive rebasing, cherry-picking, and how to fix that commit you just pushed to the main branch by mistake. Your coworkers will thank you.',
+  },
+  {
+    title: 'Why Is My Laptop Fan Spinning? A Chrome Tab\'s Autobiography',
+    description: 'A harrowing first-person account from a single Chrome tab that has consumed 8GB of RAM. A story of ambition, memory leaks, and the eternal struggle to stay open.',
+  },
+  {
+    title: 'A Beginner\'s Guide to Impostor Syndrome in Tech',
+    description: 'Feeling like a fraud? You\'re not alone. This article explores why so many developers feel like impostors and offers practical tips for building confidence and recognizing your own expertise.',
+  },
 ];
 
 export default function ArticlesPage() {
@@ -24,8 +40,8 @@ export default function ArticlesPage() {
     <div className="container mx-auto max-w-4xl py-12 px-4">
       <div className="space-y-8">
         <div className="text-center">
-          <h1 className="text-4xl font-bold">Fun Tech Articles</h1>
-          <p className="text-muted-foreground mt-2">Questionable wisdom from the tech trenches.</p>
+          <h1 className="text-4xl font-bold">Fun & Educational Articles</h1>
+          <p className="text-muted-foreground mt-2">Questionable wisdom and actual knowledge from the tech trenches.</p>
         </div>
         <div className="grid gap-6 md:grid-cols-2">
           {articles.map((article, index) => (
