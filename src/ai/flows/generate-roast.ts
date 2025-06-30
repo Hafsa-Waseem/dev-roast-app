@@ -23,7 +23,6 @@ export type GenerateRoastInput = z.infer<typeof GenerateRoastInputSchema>;
 
 const GenerateRoastOutputSchema = z.object({
   roast: z.string().describe('The generated roast.'),
-  imageUrl: z.string().describe('A data URI of the generated image.'),
 });
 export type GenerateRoastOutput = z.infer<typeof GenerateRoastOutputSchema>;
 
@@ -55,7 +54,7 @@ const roastPrompt = ai.definePrompt({
         },
         {
             category: 'HARM_CATEGORY_HATE_SPEECH',
-            threshold: 'BLOCK_ONLY_HIGH',
+            threshold: 'BLOCK_NONE',
         },
     ],
   },
@@ -69,30 +68,8 @@ const generateRoastFlow = ai.defineFlow(
     outputSchema: GenerateRoastOutputSchema,
   },
   async input => {
-    const [roastResult, imageResult] = await Promise.all([
-      roastPrompt(input),
-      ai.generate({
-        model: 'googleai/gemini-2.0-flash-preview-image-generation',
-        prompt: `Generate a funny, high-quality cartoon avatar of a ${input.jobRole} who uses ${input.programmingBattlefield}. The character should look comically frustrated or overwhelmed by their technology choice. The style should be vibrant, expressive, and suitable for a web profile picture. No text in the image.`,
-        config: {
-          responseModalities: ['TEXT', 'IMAGE'],
-          safetySettings: [
-            {
-                category: 'HARM_CATEGORY_HARASSMENT',
-                threshold: 'BLOCK_NONE',
-            },
-            {
-                category: 'HARM_CATEGORY_HATE_SPEECH',
-                threshold: 'BLOCK_ONLY_HIGH',
-            },
-          ],
-        },
-      }),
-    ]);
-    
+    const roastResult = await roastPrompt(input);
     const roast = roastResult.output?.roast || 'The AI is speechless. You are unroastable.';
-    const imageUrl = imageResult.media?.url || '';
-
-    return { roast, imageUrl };
+    return { roast };
   }
 );

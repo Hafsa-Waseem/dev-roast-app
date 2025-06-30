@@ -14,7 +14,6 @@ import { useToast } from '@/hooks/use-toast';
 const initialState = {
   message: null,
   roast: null,
-  imageUrl: null,
   errors: null,
 };
 
@@ -46,7 +45,7 @@ function SubmitButton() {
       {pending ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Brewing Roast & Avatar...
+          Brewing Roast...
         </>
       ) : (
         <>
@@ -118,7 +117,7 @@ export function RoastForm() {
 
       {state.roast && (
         <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-          <RoastCard roast={state.roast} imageUrl={state.imageUrl} />
+          <RoastCard roast={state.roast} />
         </div>
       )}
     </div>
