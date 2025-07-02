@@ -16,7 +16,7 @@ const navLinks = [
   { href: '/blogs', label: 'Blogs' },
   { href: '/articles', label: 'Articles' },
   { href: '/memes', label: 'Memes' },
-  { href: '/interactive', label: 'Interactive' },
+  { href: '/interactive', label: 'Quiz' },
   { href: '/resources', label: 'Resources' },
   { href: '/admin/upload', label: 'Admin' },
 ];
@@ -26,7 +26,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-lg">
-      <div className="container flex h-14 items-center">
+      <div className="container flex h-14 items-center px-4">
         <div className="mr-4 flex items-center">
           <Link href="/" className="flex items-center gap-2">
             <Code2 className="h-6 w-6 text-primary" />
