@@ -6,12 +6,12 @@ export default async function ResourcesPage() {
 
   return (
     <div className="bg-background">
-      <div className="container mx-auto max-w-5xl py-12 px-4 sm:py-16 lg:py-20">
+      <div className="container mx-auto max-w-7xl py-12 px-4 sm:py-16 lg:py-20">
         <div className="space-y-12">
           <div className="text-center">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">Developer's Toolkit</h1>
+            <h1 className="text-4xl font-bold tracking-tight text-primary sm:text-5xl lg:text-6xl">Resources</h1>
             <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-              Hand-picked guides and cheat sheets to level up your skills. Ready for download.
+              A collection of hand-picked guides and cheat sheets to help you on your development journey.
             </p>
           </div>
 

@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Download, FileText, Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
 
 type Resource = {
   id: string;
@@ -31,12 +32,12 @@ export function ResourceList({ initialResources }: ResourceListProps) {
   }, [searchTerm, initialResources]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       <div className="relative max-w-lg mx-auto">
         <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
         <Input
           type="search"
-          placeholder="Search for guides, cheat sheets..."
+          placeholder="Search for resources..."
           className="w-full rounded-full pl-12 pr-4 py-2 h-11"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -44,28 +45,31 @@ export function ResourceList({ initialResources }: ResourceListProps) {
       </div>
 
       {filteredResources.length > 0 ? (
-        <div className="space-y-8">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {filteredResources.map((resource) => (
-            <Card key={resource.id} className="overflow-hidden shadow-lg transition-all duration-300 ease-in-out hover:shadow-2xl hover:-translate-y-1 md:grid md:grid-cols-12 md:items-center">
-              <div className="md:col-span-2 flex items-center justify-center p-6 bg-primary/10">
-                 <FileText className="h-16 w-16 text-primary" />
-              </div>
-              <div className="p-6 md:col-span-7">
-                <h3 className="text-2xl font-semibold text-card-foreground">
+            <Card key={resource.id} className="bg-card text-card-foreground rounded-lg shadow-lg flex flex-col overflow-hidden transition-transform duration-300 hover:-translate-y-1">
+              <CardContent className="p-6 flex flex-col flex-grow items-center text-center">
+                <div className="p-4 bg-secondary rounded-full mb-4">
+                  <FileText className="h-10 w-10 text-primary" />
+                </div>
+                <Badge variant="secondary" className="mb-3">
+                  PDF Resource
+                </Badge>
+                <h3 className="text-xl font-bold text-primary mb-2">
                   {resource.title}
                 </h3>
-                <p className="mt-3 text-base text-muted-foreground line-clamp-3">
+                <p className="text-muted-foreground text-sm line-clamp-3 flex-grow">
                   {resource.description}
                 </p>
-              </div>
-              <div className="px-6 pb-6 md:p-6 md:col-span-3">
+              </CardContent>
+              <CardFooter className="p-4 mt-auto border-t">
                  <Button asChild className="w-full">
                   <a href={resource.href} download>
                     <Download className="mr-2 h-4 w-4" />
-                    Download PDF
+                    Download
                   </a>
                 </Button>
-              </div>
+              </CardFooter>
             </Card>
           ))}
         </div>
