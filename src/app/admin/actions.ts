@@ -6,6 +6,42 @@ import { addPost, deletePost, updatePost } from '@/lib/posts';
 import { revalidatePath } from 'next/cache';
 import fs from 'fs/promises';
 import path from 'path';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+
+// --- Admin Login Action ---
+const loginSchema = z.object({
+  secretKey: z.string().min(1, 'Secret key is required.'),
+});
+
+export async function handleAdminLogin(prevState: any, formData: FormData) {
+  const validatedFields = loginSchema.safeParse({
+    secretKey: formData.get('secretKey'),
+  });
+
+  if (!validatedFields.success) {
+    return { message: 'Secret key cannot be empty.' };
+  }
+
+  const adminSecret = process.env.ADMIN_SECRET_KEY;
+
+  if (!adminSecret) {
+     return { message: 'Admin secret key is not configured on the server.' };
+  }
+
+  if (validatedFields.data.secretKey === adminSecret) {
+    cookies().set('admin_token', adminSecret, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      path: '/',
+      maxAge: 60 * 60 * 24, // 1 day
+    });
+    redirect('/admin/upload');
+  } else {
+    return { message: 'Invalid secret key. Please try again.' };
+  }
+}
 
 // --- Upload Action ---
 const uploadSchema = z.object({

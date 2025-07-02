@@ -19,7 +19,6 @@ const navLinks = [
   { href: '/memes', label: 'Memes' },
   { href: '/interactive', label: 'Quiz' },
   { href: '/resources', label: 'Resources' },
-  { href: '/admin/upload', label: 'Admin' },
 ];
 
 export function Navbar() {
