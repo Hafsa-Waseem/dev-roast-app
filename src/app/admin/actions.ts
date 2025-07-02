@@ -2,6 +2,7 @@
 
 import { z } from 'zod';
 import { addResource, deleteResource, updateResource } from '@/lib/resources';
+import { addPost, deletePost, updatePost } from '@/lib/posts';
 import { revalidatePath } from 'next/cache';
 import fs from 'fs/promises';
 import path from 'path';
@@ -120,4 +121,137 @@ export async function handleDeleteResource(prevState: any, formData: FormData) {
     revalidatePath('/resources');
 
     return { message: 'Resource deleted successfully.' };
+}
+
+
+// --- Post Actions ---
+
+const basePostSchema = z.object({
+  content: z.string().min(1, 'Content is required.'),
+  // These are optional at the base level
+  title: z.string().optional(),
+  author: z.string().optional(),
+  date: z.string().optional(),
+});
+
+const postSchema = z.discriminatedUnion("type", [
+  basePostSchema.extend({
+    type: z.literal("blog"),
+    title: z.string({ required_error: "Title is required for blogs." }).min(1, "Title is required for blogs."),
+    author: z.string({ required_error: "Author is required for blogs." }).min(1, "Author is required for blogs."),
+    date: z.string({ required_error: "Date is required for blogs." }).min(1, "Date is required for blogs."),
+  }),
+  basePostSchema.extend({
+    type: z.literal("article"),
+    title: z.string({ required_error: "Title is required for articles." }).min(1, "Title is required for articles."),
+  }),
+  basePostSchema.extend({
+    type: z.literal("meme"),
+  }),
+]);
+
+
+export async function handleAddPost(prevState: any, formData: FormData) {
+  const validatedFields = postSchema.safeParse({
+    type: formData.get('type'),
+    title: formData.get('title'),
+    content: formData.get('content'),
+    author: formData.get('author'),
+    date: formData.get('date'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      message: 'Validation failed. Please check your inputs.',
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+
+  try {
+    const postData = validatedFields.data;
+    await addPost({
+        type: postData.type,
+        title: postData.title || '',
+        content: postData.content,
+        author: postData.author,
+        date: postData.date
+    });
+    
+    revalidatePath('/admin/upload');
+    revalidatePath('/blogs');
+    revalidatePath('/articles');
+    revalidatePath('/memes');
+
+    return { message: `${postData.type.charAt(0).toUpperCase() + postData.type.slice(1)} added successfully.`, errors: null };
+  } catch (error) {
+    console.error('Add post failed:', error);
+    return { message: 'An unexpected error occurred.', errors: null };
+  }
+}
+
+export async function handleUpdatePost(prevState: any, formData: FormData) {
+    const validatedFields = postSchema.extend({id: z.string().min(1, "ID is missing")}).safeParse({
+        id: formData.get('id'),
+        type: formData.get('type'),
+        title: formData.get('title'),
+        content: formData.get('content'),
+        author: formData.get('author'),
+        date: formData.get('date'),
+    });
+
+    if (!validatedFields.success) {
+        return {
+            message: 'Validation failed.',
+            errors: validatedFields.error.flatten().fieldErrors,
+        };
+    }
+    
+    try {
+        const { id, ...postData } = validatedFields.data;
+        await updatePost(id, {
+            type: postData.type,
+            title: postData.title || '',
+            content: postData.content,
+            author: postData.author,
+            date: postData.date
+        });
+
+        revalidatePath('/admin/upload');
+        revalidatePath('/blogs');
+        revalidatePath('/articles');
+        revalidatePath('/memes');
+
+        return { message: 'Post updated successfully.', errors: null };
+    } catch (error) {
+        console.error('Update post failed:', error);
+        return { message: 'An unexpected error occurred.', errors: null };
+    }
+}
+
+
+const deletePostSchema = z.object({
+    id: z.string().min(1),
+});
+
+export async function handleDeletePost(prevState: any, formData: FormData) {
+    const validatedFields = deletePostSchema.safeParse({
+        id: formData.get('id'),
+    });
+
+    if (!validatedFields.success) {
+        return { message: 'Invalid post ID.' };
+    }
+
+    const deleted = await deletePost(validatedFields.data.id);
+
+    if (!deleted) {
+      return { message: 'Post not found.' };
+    }
+
+    revalidatePath('/admin/upload');
+    revalidatePath('/blogs');
+    revalidatePath('/articles');
+    revalidatePath('/memes');
+
+    return { message: 'Post deleted successfully.' };
 }
