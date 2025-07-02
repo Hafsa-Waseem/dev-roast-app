@@ -6,7 +6,7 @@ export default function PrivacyPage() {
       <Card>
         <CardHeader>
           <CardTitle className="text-3xl">Privacy Policy</CardTitle>
-          <CardDescription>Last Updated: July 2024</CardDescription>
+          <CardDescription>Last Updated: June 2025</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4 text-muted-foreground">
           <p>

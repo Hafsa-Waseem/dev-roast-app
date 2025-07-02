@@ -1,6 +1,4 @@
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { ArrowRight, Bot } from 'lucide-react';
+import { Bot } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -22,15 +20,6 @@ export default function Home() {
       >
         The only place where code gets a sense of humor. My AI is trained to dish out witty, sarcastic, and sometimes brutally honest roasts based on your tech stack. It's all in good fun... probably.
       </p>
-      <div 
-        className="animate-in fade-in-0 zoom-in-75 duration-700 ease-out delay-700"
-      >
-        <Button asChild size="lg" className="shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-shadow">
-          <Link href="/roast">
-            Let's Get Roasted <ArrowRight className="ml-2 h-5 w-5" />
-          </Link>
-        </Button>
-      </div>
     </div>
   );
 }

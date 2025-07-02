@@ -4,31 +4,31 @@ const blogPosts = [
   {
     title: 'Why Your Code Doesn\'t Work: It\'s Probably DNS',
     author: 'A Frustrated SysAdmin',
-    date: 'July 20, 2024',
+    date: 'June 20, 2025',
     excerpt: 'It\'s never not DNS. In this post, we explore the five stages of debugging grief, from denial ("It\'s can\'t be DNS") to acceptance ("It was DNS").',
   },
   {
     title: 'The Art of Naming Variables: From `x` to `totalRevenueInUSDAfterTaxesAndFees`',
     author: 'Captain Obvious',
-    date: 'July 15, 2024',
+    date: 'June 15, 2025',
     excerpt: 'Join us on a journey through the evolution of a developer\'s variable naming strategy, a tale of despair, clarity, and eventual carpal tunnel syndrome.',
   },
   {
     title: '10 Signs You Might Be a JavaScript Developer',
     author: 'Framework Fanatic',
-    date: 'July 10, 2024',
+    date: 'June 10, 2025',
     excerpt: 'If you\'ve ever debated the merits of 5 different ways to write a for-loop or believe `[] + {}` is a valid form of artistic expression, this post is for you.',
   },
   {
     title: 'How to Explain APIs to Your Parents',
     author: 'Family Tech Support',
-    date: 'July 5, 2024',
+    date: 'June 5, 2025',
     excerpt: 'A practical guide to using metaphors like "magic restaurant waiters" to explain complex technical concepts to your loved ones, so you can finally enjoy a holiday meal in peace.',
   },
   {
     title: 'The Singleton Pattern: A Lonely Dev\'s Guide to Global State',
     author: 'Archie Tect',
-    date: 'July 2, 2024',
+    date: 'June 2, 2025',
     excerpt: 'Exploring the most misunderstood design pattern. Is it a powerful tool for managing state, or a glorified global variable in a trench coat? Let\'s find out.',
   },
   {
