@@ -13,7 +13,7 @@ export function Footer() {
     <footer className="w-full border-t border-border bg-background/80 backdrop-blur-lg">
       <div className="container flex flex-col items-center justify-center gap-4 py-8 md:flex-row md:justify-between">
         <p className="text-sm text-foreground">
-          © {new Date().getFullYear()} Roast-My-Code. All rights reserved.
+          © {new Date().getFullYear()} haas.fry. All rights reserved.
         </p>
         <nav className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
           {footerLinks.map(link => (

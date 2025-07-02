@@ -35,7 +35,7 @@ export function RoastCard({ roast }: RoastCardProps) {
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Roast-My-Code',
+          title: 'haas.fry',
           text: roast,
         });
       } catch (error) {

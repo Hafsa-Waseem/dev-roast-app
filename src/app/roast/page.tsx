@@ -12,7 +12,7 @@ export default function RoastPage() {
               <Flame className="h-8 w-8 text-primary" />
             </div>
           </div>
-          <CardTitle className="text-3xl font-bold font-headline">Roast-My-Code</CardTitle>
+          <CardTitle className="text-3xl font-bold font-headline">haas.fry</CardTitle>
           <CardDescription className="pt-2 text-base">
             Enter your name and battlefield. Prepare to be humbled by our AI.
           </CardDescription>

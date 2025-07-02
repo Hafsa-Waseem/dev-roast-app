@@ -1,6 +1,6 @@
-# 🔥 Dev Roast App - AI-Powered Fun for Developers
+# 🔥 haas.fry - AI-Powered Fun for Developers
 
-Welcome to **Dev Roast App**, a developer-focused, AI-powered platform where you can roast yourself, your favorite programming language, or simply enjoy tech humor — all in good fun! Built with **Next.js**, **TypeScript**, **TailwindCSS**, and **Firebase**, this project blends modern web tech with AI-generated entertainment for the developer community.
+Welcome to **haas.fry**, a developer-focused, AI-powered platform where you can roast yourself, your favorite programming language, or simply enjoy tech humor — all in good fun! Built with **Next.js**, **TypeScript**, **TailwindCSS**, and **Firebase**, this project blends modern web tech with AI-generated entertainment for the developer community.
 
 ---
 
@@ -35,3 +35,5 @@ cd dev-roast-app
 npm install
 npm run dev
 
+
+```

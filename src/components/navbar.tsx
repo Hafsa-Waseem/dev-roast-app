@@ -30,7 +30,7 @@ export function Navbar() {
         <div className="mr-4 flex items-center">
           <Link href="/" className="flex items-center gap-2">
             <Code2 className="h-6 w-6 text-primary" />
-            <span className="font-bold">Roast-My-Code</span>
+            <span className="font-bold">haas.fry</span>
           </Link>
         </div>
         <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
@@ -52,7 +52,7 @@ export function Navbar() {
               <div className="flex flex-col p-6">
               <Link href="/" className="mb-8 flex items-center gap-2" onClick={() => setIsOpen(false)}>
                 <Code2 className="h-6 w-6 text-primary" />
-                <span className="font-bold">Roast-My-Code</span>
+                <span className="font-bold">haas.fry</span>
               </Link>
                 <nav className="flex flex-col space-y-4">
                   {navLinks.map(link => (

@@ -14,7 +14,7 @@ export default function Home() {
         className="text-4xl md:text-6xl font-extrabold tracking-tighter text-foreground mb-4
                    animate-in fade-in-0 slide-in-from-bottom-6 duration-700 ease-out delay-300"
       >
-        Welcome to <span className="text-primary">Roast-My-Code</span>
+        Welcome to <span className="text-primary">haas.fry</span>
       </h1>
       <p 
         className="max-w-2xl mx-auto text-lg text-muted-foreground mb-8

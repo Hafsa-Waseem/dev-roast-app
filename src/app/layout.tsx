@@ -6,19 +6,19 @@ import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
 
 export const metadata: Metadata = {
-  title: 'Roast My Code | AI Roasting App for Techies',
+  title: 'haas.fry | AI Roasting App for Techies',
   description: 'Get roasted by AI based on your tech battlefield! Developers, Marketers, Designers — no one is safe. Try it now.',
   keywords: ['AI Roast', 'Code Roast', 'Developer Fun', 'Tech Battlefield', 'Funny Programming Roast', 'AI Jokes', 'Developer Humor'],
   openGraph: {
-    title: 'Roast My Code | AI Roasting for Developers & Tech Enthusiasts',
+    title: 'haas.fry | AI Roasting for Developers & Tech Enthusiasts',
     description: 'Pick your tech battlefield and let AI roast you. Fun for Developers, Marketers, Designers, and more.',
     url: 'https://dev-roast-app.vercel.app/',
-    siteName: 'Roast My Code',
+    siteName: 'haas.fry',
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
-    title: 'Roast My Code | Fun AI Roasting',
+    title: 'haas.fry | Fun AI Roasting',
     description: 'Let AI roast your favorite tech skill. It’s free, fun, and shareable!',
     card: 'summary',
   },
