@@ -28,9 +28,14 @@ async function readResources(): Promise<Resource[]> {
   await ensureDataFileExists();
   try {
     const data = await fs.readFile(resourcesFilePath, 'utf-8');
+    // Handle empty file case
+    if (data.trim() === '') {
+        return [];
+    }
     return JSON.parse(data);
   } catch (error) {
-    console.error("Error reading resources file:", error);
+    console.error("Error reading or parsing resources file:", error);
+    // If file is corrupt or unreadable, treat as empty
     return [];
   }
 }
@@ -41,7 +46,12 @@ async function writeResources(resources: Resource[]): Promise<void> {
 }
 
 export async function getResources(): Promise<Resource[]> {
-  return await readResources();
+  try {
+    return await readResources();
+  } catch (error) {
+    console.error("Failed to get resources due to an unhandled error:", error);
+    return [];
+  }
 }
 
 export async function addResource(resource: Omit<Resource, 'id'>): Promise<Resource> {
