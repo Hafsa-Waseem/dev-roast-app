@@ -14,7 +14,7 @@ export default function RoastPage() {
           </div>
           <CardTitle className="text-3xl font-bold font-headline">haas.fry</CardTitle>
           <CardDescription className="pt-2 text-base">
-            Enter your name and battlefield. Prepare to be humbled by our AI.
+            Enter your name and battlefield. Prepare to be humbled by my AI.
           </CardDescription>
         </CardHeader>
         <CardContent>
