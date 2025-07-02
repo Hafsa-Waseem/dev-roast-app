@@ -14,11 +14,11 @@ import { useState } from 'react';
 const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/roast', label: 'Roast Me' },
+  { href: '/resources', label: 'Resources' },
+  { href: '/interactive', label: 'Quiz' },
+  { href: '/memes', label: 'Memes' },
   { href: '/blogs', label: 'Blogs' },
   { href: '/articles', label: 'Articles' },
-  { href: '/memes', label: 'Memes' },
-  { href: '/interactive', label: 'Quiz' },
-  { href: '/resources', label: 'Resources' },
 ];
 
 export function Navbar() {
