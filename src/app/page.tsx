@@ -18,7 +18,11 @@ export default function Home() {
         className="max-w-2xl mx-auto text-lg text-muted-foreground mb-8
                    animate-in fade-in-0 slide-in-from-bottom-8 duration-700 ease-out delay-500"
       >
-        The only place where code gets a sense of humor. My AI is trained to dish out witty, sarcastic, and sometimes brutally honest roasts based on your tech stack. It's all in good fun... probably.
+        It’s not just about roasting. It’s about learning, having fun, and grabbing some free resources along the way.
+        <br /><br />
+        <span className="font-medium text-foreground">💻 AI Roasts | 📚 Tech Quizzes | 📂 Handy PDF Tools</span>
+        <br /><br />
+        If you’re into tech, love exploring, or just here to have some fun try it out. You might learn something or end up roasted! 😄
       </p>
     </div>
   );
