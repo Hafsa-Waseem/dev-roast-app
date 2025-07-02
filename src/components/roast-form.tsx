@@ -59,10 +59,15 @@ function SubmitButton() {
 
 export function RoastForm() {
   const [state, formAction] = useActionState(handleGenerateRoast, initialState);
-  const [battlefield, setBattlefield] = useState(programmingBattlefields[Math.floor(Math.random() * programmingBattlefields.length)]);
+  const [battlefield, setBattlefield] = useState('');
   const [role, setRole] = useState(jobRoles[0]);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    // Set a random battlefield only on the client-side after hydration to avoid mismatch
+    setBattlefield(programmingBattlefields[Math.floor(Math.random() * programmingBattlefields.length)]);
+  }, []);
 
   useEffect(() => {
     if (state.message === 'An unexpected error occurred.') {
@@ -99,7 +104,7 @@ export function RoastForm() {
         </div>
         <div className="space-y-2">
           <Label>Choose your Battlefield</Label>
-          <Select name="programmingBattlefield" value={battlefield} onValueChange={setBattlefield}>
+          <Select key={battlefield} name="programmingBattlefield" value={battlefield} onValueChange={setBattlefield}>
             <SelectTrigger>
               <SelectValue placeholder="Select a battlefield" />
             </SelectTrigger>
