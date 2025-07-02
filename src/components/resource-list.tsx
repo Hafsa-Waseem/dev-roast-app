@@ -58,7 +58,7 @@ export function ResourceList({ initialResources }: ResourceListProps) {
                 <h3 className="text-xl font-bold text-primary mb-2">
                   {resource.title}
                 </h3>
-                <p className="text-muted-foreground text-sm line-clamp-3 flex-grow">
+                <p className="text-muted-foreground text-sm flex-grow">
                   {resource.description}
                 </p>
               </CardContent>
