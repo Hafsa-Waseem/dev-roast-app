@@ -8,14 +8,13 @@ export type Resource = {
   href: string;
 };
 
-// Ensure the data directory exists
 const dataDir = path.join(process.cwd(), 'src/data');
 const resourcesFilePath = path.join(dataDir, 'resources.json');
 
 async function ensureDataFileExists() {
     try {
         await fs.access(resourcesFilePath);
-    } catch (error) {
+    } catch (error: any) {
         if (error.code === 'ENOENT') {
             await fs.mkdir(dataDir, { recursive: true });
             await fs.writeFile(resourcesFilePath, '[]', 'utf-8');
@@ -68,12 +67,30 @@ export async function updateResource(id: string, updatedData: Partial<Omit<Resou
 }
 
 export async function deleteResource(id: string): Promise<boolean> {
-  let resources = await readResources();
-  const initialLength = resources.length;
-  resources = resources.filter(r => r.id !== id);
-  if (resources.length === initialLength) {
+  const resources = await readResources();
+  const resourceToDelete = resources.find(r => r.id === id);
+
+  if (!resourceToDelete) {
     return false; // Not found
   }
-  await writeResources(resources);
+
+  // Delete the associated file from public/pdfs
+  try {
+    if (resourceToDelete.href.startsWith('/pdfs/')) {
+        const filePath = path.join(process.cwd(), 'public', resourceToDelete.href);
+        await fs.unlink(filePath);
+    }
+  } catch (error: any) {
+    // If file doesn't exist, ENOENT error code. We can ignore that.
+    if (error.code !== 'ENOENT') {
+        console.error(`Failed to delete file for resource ${id}:`, error);
+        // We might choose to not proceed with metadata deletion if file deletion fails.
+        // For now, we will log the error and continue to delete the metadata.
+    }
+  }
+
+  const updatedResources = resources.filter(r => r.id !== id);
+  await writeResources(updatedResources);
+  
   return true;
 }

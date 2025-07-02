@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Loader2, UploadCloud, Trash2, FilePenLine } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 const initialUploadState = { message: '', errors: null };
 const initialEditState = { message: '', errors: null };
@@ -55,7 +55,6 @@ export function AdminResourceManager({ initialResources }: AdminResourceManagerP
 
   const [editingResource, setEditingResource] = useState<Resource | null>(null);
 
-  // Effect for upload notifications
   useEffect(() => {
     if (uploadState?.message) {
       toast({
@@ -106,8 +105,10 @@ export function AdminResourceManager({ initialResources }: AdminResourceManagerP
         <CardContent className="space-y-4">
           {initialResources.map((resource) => (
             <div key={resource.id} className="flex items-center justify-between p-3 rounded-md border bg-secondary/30">
-              <p className="font-medium flex-grow">{resource.title}</p>
-              <div className="flex items-center gap-2">
+              <div className="flex-grow overflow-hidden">
+                <p className="font-medium truncate">{resource.title}</p>
+              </div>
+              <div className="flex items-center gap-2 flex-shrink-0">
                 <Button variant="ghost" size="icon" onClick={() => setEditingResource(resource)}>
                   <FilePenLine className="h-4 w-4" />
                   <span className="sr-only">Edit</span>
@@ -149,12 +150,13 @@ function EditResourceDialog({ resource, isOpen, onOpenChange }: { resource: Reso
     }
   }, [editState, toast, onOpenChange]);
   
-  // Reset form state when dialog opens for a new resource
   useEffect(() => {
-    if (isOpen) {
-      formRef.current?.reset();
+    if (!isOpen) {
+      // Reset form errors when dialog is closed
+      editState.errors = null;
+      editState.message = '';
     }
-  }, [isOpen]);
+  }, [isOpen, editState]);
 
   if (!resource) return null;
   
@@ -199,32 +201,32 @@ function DeleteResourceButton({ resourceId }: { resourceId: string }) {
   }, [deleteState, toast]);
 
   return (
-    <form action={deleteAction}>
-        <input type="hidden" name="id" value={resourceId} />
-        <AlertDialog>
-            <AlertDialogTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive hover:bg-destructive/10">
-                    <Trash2 className="h-4 w-4" />
-                    <span className="sr-only">Delete</span>
-                </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-                <AlertDialogHeader>
-                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete the resource.
-                    </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction asChild>
-                        <Button type="submit" className="bg-destructive hover:bg-destructive/90">
-                            Yes, delete it
-                        </Button>
-                    </AlertDialogAction>
-                </AlertDialogFooter>
-            </AlertDialogContent>
-        </AlertDialog>
-    </form>
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="ghost" size="icon" className="text-destructive hover:text-destructive hover:bg-destructive/10">
+          <Trash2 className="h-4 w-4" />
+          <span className="sr-only">Delete</span>
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <form action={deleteAction}>
+          <input type="hidden" name="id" value={resourceId} />
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the resource and its associated file.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button type="submit" className="bg-destructive hover:bg-destructive/90">
+                Yes, delete it
+              </Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </form>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
