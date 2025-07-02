@@ -141,14 +141,12 @@ export default function InteractivePage() {
           <CardDescription>Test your knowledge of JavaScript's tricky parts. Question {currentQuestionIndex + 1} of {quizQuestions.length}.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-            <Card className="bg-secondary/30">
-                <CardContent className="p-4 space-y-2">
-                    <div className="font-medium">{currentQuestion.question}</div>
-                    <pre className="bg-background/50 p-4 rounded-md text-sm whitespace-pre-wrap font-code">
-                        <code>{currentQuestion.code}</code>
-                    </pre>
-                </CardContent>
-            </Card>
+            <div className="p-4 space-y-2 rounded-lg bg-secondary/30">
+                <div className="font-medium">{currentQuestion.question}</div>
+                <pre className="bg-background/50 p-4 rounded-md text-sm whitespace-pre-wrap font-code">
+                    <code>{currentQuestion.code}</code>
+                </pre>
+            </div>
 
             <RadioGroup
                 value={selectedOption || ''}
