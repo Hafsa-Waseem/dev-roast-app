@@ -5,7 +5,7 @@ export default async function ResourcesPage() {
   const resources = await getResources();
 
   return (
-    <div className="bg-background">
+    <div>
       <div className="container mx-auto max-w-7xl py-12 px-4 sm:py-16 lg:py-20">
         <div className="space-y-12">
           <div className="text-center">

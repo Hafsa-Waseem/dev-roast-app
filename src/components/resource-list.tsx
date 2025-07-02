@@ -62,7 +62,7 @@ export function ResourceList({ initialResources }: ResourceListProps) {
                   {resource.description}
                 </p>
               </CardContent>
-              <CardFooter className="p-4 mt-auto border-t">
+              <CardFooter className="p-4 mt-auto border-t border-card-foreground/10">
                  <Button asChild className="w-full">
                   <a href={resource.href} download>
                     <Download className="mr-2 h-4 w-4" />
