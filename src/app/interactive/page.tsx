@@ -142,8 +142,8 @@ export default function InteractivePage() {
         </CardHeader>
         <CardContent className="space-y-6">
             <Card className="bg-secondary/30">
-                <CardContent className="p-4">
-                    <p className="font-medium mb-2">{currentQuestion.question}</p>
+                <CardContent className="p-4 space-y-2">
+                    <div className="font-medium">{currentQuestion.question}</div>
                     <pre className="bg-background/50 p-4 rounded-md text-sm whitespace-pre-wrap font-code">
                         <code>{currentQuestion.code}</code>
                     </pre>
