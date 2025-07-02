@@ -7,6 +7,7 @@ export function middleware(request: NextRequest) {
 
   // If there's no secret key set in the environment, anyone can access admin.
   // This is for ease of development but insecure for production.
+  // The login action itself will prevent login if the key is not set.
   if (!adminSecret) {
     return NextResponse.next();
   }
