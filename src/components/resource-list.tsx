@@ -47,9 +47,9 @@ export function ResourceList({ initialResources }: ResourceListProps) {
       {filteredResources.length > 0 ? (
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {filteredResources.map((resource) => (
-            <Card key={resource.id} className="bg-card text-card-foreground rounded-lg shadow-lg flex flex-col overflow-hidden transition-transform duration-300 hover:-translate-y-1">
+            <Card key={resource.id} className="flex flex-col overflow-hidden transition-transform duration-300 hover:-translate-y-1">
               <CardContent className="p-6 flex flex-col flex-grow items-center text-center">
-                <div className="p-4 bg-secondary rounded-full mb-4">
+                <div className="p-4 bg-primary/10 rounded-full mb-4">
                   <FileText className="h-10 w-10 text-primary" />
                 </div>
                 <Badge variant="secondary" className="mb-3">
@@ -74,7 +74,7 @@ export function ResourceList({ initialResources }: ResourceListProps) {
           ))}
         </div>
       ) : (
-         <div className="text-center py-16 px-4 border-2 border-dashed rounded-lg">
+         <div className="text-center py-16 px-4 rounded-2xl border border-dashed border-card-foreground/20 bg-card/20 backdrop-blur-xl shadow-lg">
             <FileText className="mx-auto h-12 w-12 text-muted-foreground" />
             <h3 className="mt-4 text-lg font-medium">No Resources Found</h3>
             <p className="mt-2 text-sm text-muted-foreground">
