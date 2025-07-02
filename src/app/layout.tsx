@@ -38,7 +38,7 @@ export default function RootLayout({
         <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5699659351458850" crossOrigin="anonymous" />
 
       </head>
-      <body className="font-body antialiased flex flex-col min-h-dvh">
+      <body className="font-body antialiased flex flex-col min-h-dvh" suppressHydrationWarning>
         <div className="fixed inset-0 -z-10 h-full w-full bg-background" style={{
           background: 'linear-gradient(-45deg, hsl(var(--background)), hsl(var(--secondary)), hsl(var(--accent)), hsl(var(--background)))',
           backgroundSize: '400% 400%',

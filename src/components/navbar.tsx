@@ -2,7 +2,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Code2, Menu, Flame } from 'lucide-react';
+import { Code2, Menu } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
