@@ -10,19 +10,19 @@ export default function PrivacyPage() {
         </CardHeader>
         <CardContent className="space-y-4 text-muted-foreground">
           <p>
-            We take your privacy as seriously as a semicolon in C++. Which is to say, very seriously.
+            I take your privacy as seriously as a semicolon in C++. Which is to say, very seriously.
           </p>
-          <h3 className="font-semibold text-foreground pt-4">Information We Collect</h3>
+          <h3 className="font-semibold text-foreground pt-4">Information I Collect</h3>
           <p>
-            We collect the name and programming battlefield you provide to generate your roast. We do not store this information after the roast is generated. We also use standard analytics tools (like Google Analytics) and ads (Google AdSense, Adsterra) which may use cookies and collect anonymous data about your visit.
+            I collect the name and programming battlefield you provide to generate your roast. This information is not stored after the roast is generated. This site also uses standard analytics tools (like Google Analytics) and ads (Google AdSense, Adsterra) which may use cookies and collect anonymous data about your visit.
           </p>
-           <h3 className="font-semibold text-foreground pt-4">How We Use Information</h3>
+           <h3 className="font-semibold text-foreground pt-4">How Information Is Used</h3>
           <p>
-            The information you enter is sent to an AI model to create a roast. It is not used for any other purpose. Analytics data helps us understand site traffic. Ad providers use data to show relevant ads.
+            The information you enter is sent to an AI model to create a roast. It is not used for any other purpose. Analytics data helps me understand site traffic. Ad providers use data to show relevant ads.
           </p>
           <h3 className="font-semibold text-foreground pt-4">Your Choices</h3>
           <p>
-            You are not required to provide any personal information to use the main feature of our site. You can manage cookies through your browser settings.
+            You are not required to provide any personal information to use the main feature of this site. You can manage cookies through your browser settings.
           </p>
         </CardContent>
       </Card>

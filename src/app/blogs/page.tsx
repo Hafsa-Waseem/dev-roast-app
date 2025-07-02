@@ -81,7 +81,7 @@ export default function BlogsPage() {
       <div className="space-y-8">
         <div className="text-center">
           <h1 className="text-4xl font-bold">Developer Blogs</h1>
-          <p className="text-muted-foreground mt-2">Insights and ramblings from our team of code monkeys.</p>
+          <p className="text-muted-foreground mt-2">Insights and ramblings from the developer behind this app.</p>
         </div>
         <div className="space-y-6">
           {blogPosts.map((post, index) => (
