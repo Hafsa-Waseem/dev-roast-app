@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "title": "The Ultimate Guide to React Hooks",
+    "description": "A comprehensive PDF covering everything you need to know about React Hooks, from useState to custom hooks.",
+    "href": "/pdfs/react-hooks-guide.pdf"
+  },
+  {
+    "id": "2",
+    "title": "Mastering Tailwind CSS",
+    "description": "Learn how to build beautiful, custom designs with Tailwind CSS. This guide covers utility-first fundamentals, responsive design, and more.",
+    "href": "/pdfs/tailwind-css-guide.pdf"
+  },
+  {
+    "id": "3",
+    "title": "Next.js 14 Deep Dive",
+    "description": "Explore the latest features of Next.js, including the App Router, Server Actions, and advanced rendering techniques.",
+    "href": "/pdfs/nextjs-14-deep-dive.pdf"
+  },
+  {
+    "id": "4",
+    "title": "JavaScript Essentials for Developers",
+    "description": "A complete reference for modern JavaScript (ES6+), covering asynchronous programming, modules, and new syntax.",
+    "href": "/pdfs/javascript-essentials.pdf"
+  }
+]
