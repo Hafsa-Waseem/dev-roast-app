@@ -39,6 +39,11 @@ export default function RootLayout({
 
       </head>
       <body className="font-body antialiased flex flex-col min-h-dvh">
+        <div className="fixed inset-0 -z-10 h-full w-full bg-background" style={{
+          background: 'linear-gradient(-45deg, hsl(var(--background)), hsl(var(--secondary)), hsl(var(--accent)), hsl(var(--background)))',
+          backgroundSize: '400% 400%',
+          animation: 'gradient-move 15s ease infinite'
+        }} />
         <Navbar />
         <main className="flex-grow">
           {children}
