@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Loader2, UploadCloud, Trash2, FilePenLine } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 const initialState = {
   message: '',
@@ -111,8 +111,7 @@ export default function AdminUploadPage() {
       description: `Resource "${updatedTitle}" updated (simulated).`,
     });
     
-    // Close the dialog by resetting the editing state
-    setEditingResource(null);
+    setEditingResource(null); // Close the dialog
   };
 
   return (
@@ -151,36 +150,10 @@ export default function AdminUploadPage() {
             <div key={resource.id} className="flex items-center justify-between p-3 rounded-md border bg-secondary/30">
               <p className="font-medium flex-grow">{resource.title}</p>
               <div className="flex items-center gap-2">
-                <Dialog onOpenChange={(open) => !open && setEditingResource(null)}>
-                  <DialogTrigger asChild>
-                    <Button variant="ghost" size="icon" onClick={() => setEditingResource(resource)}>
-                      <FilePenLine className="h-4 w-4" />
-                      <span className="sr-only">Edit</span>
-                    </Button>
-                  </DialogTrigger>
-                  {editingResource && editingResource.id === resource.id && (
-                     <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Edit Resource</DialogTitle>
-                        </DialogHeader>
-                        <form onSubmit={handleEditSave} className="space-y-4">
-                           <div className="space-y-2">
-                              <Label htmlFor="edit-title">Resource Title</Label>
-                              <Input id="edit-title" name="title" defaultValue={editingResource.title} required />
-                            </div>
-                            <div className="space-y-2">
-                              <Label htmlFor="edit-description">Description</Label>
-                              <Textarea id="edit-description" name="description" defaultValue={editingResource.description} required />
-                            </div>
-                           <CardFooter className="px-0 pt-4">
-                             <DialogClose asChild>
-                                <Button type="submit" className="w-full">Save Changes</Button>
-                             </DialogClose>
-                           </CardFooter>
-                        </form>
-                      </DialogContent>
-                  )}
-                </Dialog>
+                <Button variant="ghost" size="icon" onClick={() => setEditingResource(resource)}>
+                  <FilePenLine className="h-4 w-4" />
+                  <span className="sr-only">Edit</span>
+                </Button>
                 
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
@@ -212,6 +185,31 @@ export default function AdminUploadPage() {
           )}
         </CardContent>
       </Card>
+
+      <Dialog open={!!editingResource} onOpenChange={(isOpen) => !isOpen && setEditingResource(null)}>
+        <DialogContent>
+          {editingResource && (
+            <>
+              <DialogHeader>
+                <DialogTitle>Edit Resource</DialogTitle>
+              </DialogHeader>
+              <form onSubmit={handleEditSave} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="edit-title">Resource Title</Label>
+                    <Input id="edit-title" name="title" defaultValue={editingResource.title} required />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="edit-description">Description</Label>
+                    <Textarea id="edit-description" name="description" defaultValue={editingResource.description} required />
+                  </div>
+                  <CardFooter className="px-0 pt-4">
+                    <Button type="submit" className="w-full">Save Changes</Button>
+                  </CardFooter>
+              </form>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
