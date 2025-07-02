@@ -14,11 +14,20 @@ export default function PrivacyPage() {
           </p>
           <h3 className="font-semibold text-foreground pt-4">Information I Collect</h3>
           <p>
+<<<<<<< HEAD
             I collect the name and programming battlefield you provide to generate your roast. This information is not stored after the roast is generated. This site also uses standard analytics tools (like Google Analytics) and ads (Google AdSense, Adsterra) which may use cookies and collect anonymous data about your visit.
+=======
+            We collect the name and programming battlefield you provide to generate your roast. 
+            We do not store this information after the roast is generated.
+>>>>>>> 3be46e32daeeabc7d5e1cd7b84cddc1c93277591
           </p>
            <h3 className="font-semibold text-foreground pt-4">How Information Is Used</h3>
           <p>
+<<<<<<< HEAD
             The information you enter is sent to an AI model to create a roast. It is not used for any other purpose. Analytics data helps me understand site traffic. Ad providers use data to show relevant ads.
+=======
+            The information you enter is sent to an AI model to create a roast. It is not used for any other purpose.
+>>>>>>> 3be46e32daeeabc7d5e1cd7b84cddc1c93277591
           </p>
           <h3 className="font-semibold text-foreground pt-4">Your Choices</h3>
           <p>
