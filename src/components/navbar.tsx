@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Code2, Menu } from 'lucide-react';
+import { Code2, Menu, Flame } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
@@ -12,6 +12,7 @@ import { useState } from 'react';
 
 const navLinks = [
   { href: '/', label: 'Home' },
+  { href: '/roast', label: 'Roast Me' },
   { href: '/blogs', label: 'Blogs' },
   { href: '/articles', label: 'Articles' },
   { href: '/memes', label: 'Memes' },
