@@ -35,7 +35,7 @@ export function Navbar() {
         </div>
         <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
           {navLinks.map(link => (
-            <Link key={link.href} href={link.href} className="text-foreground transition-all duration-300 hover:text-primary hover:scale-110 transform">
+            <Link key={link.label} href={link.href} className="text-foreground transition-all duration-300 hover:text-primary hover:scale-110 transform">
               {link.label}
             </Link>
           ))}
@@ -56,7 +56,7 @@ export function Navbar() {
               </Link>
                 <nav className="flex flex-col space-y-4">
                   {navLinks.map(link => (
-                    <Link key={link.href} href={link.href} className="text-lg font-medium transition-all duration-300 hover:text-primary hover:translate-x-2" onClick={() => setIsOpen(false)}>
+                    <Link key={link.label} href={link.href} className="text-lg font-medium transition-all duration-300 hover:text-primary hover:translate-x-2" onClick={() => setIsOpen(false)}>
                       {link.label}
                     </Link>
                   ))}
