@@ -4,35 +4,35 @@
 import { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Users, FileDown, Eye, LineChart } from 'lucide-react';
+import { Users, FileDown, Eye, LineChart, ArrowLeft, AlertTriangle } from 'lucide-react';
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
 
 // --- Helper Functions for Data Simulation ---
 const getRandomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1)) + min;
 
-const initialPages = [
-  { name: '/roast', views: getRandomInt(80, 200) },
-  { name: '/resources', views: getRandomInt(60, 180) },
-  { name: '/interactive', views: getRandomInt(50, 150) },
-  { name: '/memes', views: getRandomInt(40, 120) },
-  { name: '/blogs', views: getRandomInt(30, 100) },
-];
-
-const initialDownloads = [
-  { name: 'ChatGPT Prompts', downloads: getRandomInt(40, 100) },
-  { name: 'React Cheatsheet', downloads: getRandomInt(30, 90) },
-  { name: 'CSS Guide', downloads: getRandomInt(20, 80) },
-];
-
 export default function AnalyticsPage() {
-  const [activeUsers, setActiveUsers] = useState(getRandomInt(5, 20));
-  const [topPages, setTopPages] = useState(initialPages);
-  const [topDownloads, setTopDownloads] = useState(initialDownloads);
+  const [activeUsers, setActiveUsers] = useState(0);
+  const [topPages, setTopPages] = useState([]);
+  const [topDownloads, setTopDownloads] = useState([]);
 
   useEffect(() => {
+    // Set initial random values on mount to avoid hydration mismatch
+    setActiveUsers(getRandomInt(5, 20));
+    setTopPages([
+      { name: '/roast', views: getRandomInt(80, 200) },
+      { name: '/resources', views: getRandomInt(60, 180) },
+      { name: '/interactive', views: getRandomInt(50, 150) },
+      { name: '/memes', views: getRandomInt(40, 120) },
+      { name: '/blogs', views: getRandomInt(30, 100) },
+    ]);
+    setTopDownloads([
+      { name: 'ChatGPT Prompts', downloads: getRandomInt(40, 100) },
+      { name: 'React Cheatsheet', downloads: getRandomInt(30, 90) },
+      { name: 'CSS Guide', downloads: getRandomInt(20, 80) },
+    ]);
+
     const interval = setInterval(() => {
       // Simulate active users fluctuation
       setActiveUsers(prev => Math.max(0, prev + getRandomInt(-2, 2)));
@@ -146,12 +146,16 @@ export default function AnalyticsPage() {
           </CardContent>
         </Card>
       </div>
-       <Card className="mt-6 transition-shadow duration-300 hover:shadow-2xl">
+       <Card className="mt-6 border-destructive bg-destructive/5">
           <CardHeader>
-              <CardTitle>Disclaimer: Simulated Data</CardTitle>
+              <CardTitle className="text-destructive flex items-center gap-2"><AlertTriangle /> Important: Using Simulated Data</CardTitle>
           </CardHeader>
           <CardContent>
-              <p className="text-muted-foreground">Please note that this analytics dashboard is currently for demonstration purposes only and uses simulated data. The numbers update in real-time to show the functionality, but they do not reflect actual user traffic. To view real analytics, please check your configured Google Analytics account.</p>
+              <p className="text-muted-foreground leading-relaxed">
+                The Google Analytics script in your app is correctly <span className="font-semibold text-foreground">sending</span> data to Google. You can view your real data on the official Google Analytics website.
+                <br /><br />
+                Displaying that data back here in this dashboard is a more complex task. It requires setting up Google's Data API with special credentials from your Google Cloud account. Since I don't have access to that, this dashboard currently shows <span className="font-semibold text-foreground">simulated data</span> for demonstration purposes.
+              </p>
           </CardContent>
        </Card>
     </div>
