@@ -1,3 +1,4 @@
+
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -60,7 +61,7 @@ export async function addResource(resource: Omit<Resource, 'id'>): Promise<Resou
     id: Date.now().toString(),
     ...resource,
   };
-  resources.push(newResource);
+  resources.unshift(newResource);
   await writeResources(resources);
   return newResource;
 }
@@ -86,23 +87,19 @@ export async function deleteResource(id: string): Promise<boolean> {
   
   const resourceToDelete = resources[resourceIndex];
 
-  // If it's a local PDF, try to delete the physical file first.
+  // If it's a local PDF, try to delete the physical file.
   if (resourceToDelete.href.startsWith('/pdfs/')) {
     const filePath = path.join(process.cwd(), 'public', resourceToDelete.href);
     try {
       await fs.unlink(filePath);
     } catch (error: any) {
-      // If the file doesn't exist, we can ignore the error and proceed.
-      // For any other error (e.g., permissions), we should stop and report it.
-      if (error.code !== 'ENOENT') {
-        console.error(`Failed to delete file at ${filePath}:`, error);
-        // Re-throw the error to be caught by the server action.
-        throw new Error(`Failed to delete the physical file. Please check server permissions.`);
-      }
+      // If deleting the file fails (e.g., due to permissions), log the error but don't stop the process.
+      // The resource will still be removed from the list, which is the main goal for the user.
+      console.error(`Could not delete file at ${filePath}, but proceeding to remove from database. Error:`, error);
     }
   }
 
-  // If file deletion was successful (or not needed/failed gracefully), remove the metadata.
+  // Always remove the metadata entry, regardless of file deletion success.
   const updatedResources = resources.filter(r => r.id !== id);
   await writeResources(updatedResources);
   
