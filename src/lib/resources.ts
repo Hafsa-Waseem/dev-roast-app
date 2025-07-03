@@ -79,28 +79,15 @@ export async function updateResource(id: string, updatedData: Partial<Omit<Resou
 
 export async function deleteResource(id: string): Promise<boolean> {
   const resources = await readResources();
-  const resourceIndex = resources.findIndex(r => r.id === id);
+  const initialLength = resources.length;
+  const updatedResources = resources.filter(r => r.id !== id);
 
-  if (resourceIndex === -1) {
+  if (updatedResources.length === initialLength) {
     return false; // Not found
   }
-  
-  const resourceToDelete = resources[resourceIndex];
 
-  // If it's a local PDF, try to delete the physical file.
-  if (resourceToDelete.href.startsWith('/pdfs/')) {
-    const filePath = path.join(process.cwd(), 'public', resourceToDelete.href);
-    try {
-      await fs.unlink(filePath);
-    } catch (error: any) {
-      // If deleting the file fails (e.g., due to permissions), log the error but don't stop the process.
-      // The resource will still be removed from the list, which is the main goal for the user.
-      console.error(`Could not delete file at ${filePath}, but proceeding to remove from database. Error:`, error);
-    }
-  }
-
-  // Always remove the metadata entry, regardless of file deletion success.
-  const updatedResources = resources.filter(r => r.id !== id);
+  // Only update the JSON file, do not attempt to delete the physical file.
+  // This is because the hosting environment has a read-only filesystem.
   await writeResources(updatedResources);
   
   return true;
