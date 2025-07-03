@@ -37,6 +37,16 @@ export default function RootLayout({
          {/* Google Adsense */}
         <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5699659351458850" crossOrigin="anonymous" />
 
+           {/* Google Analytics */}
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-QB1N9YWEGY" />
+        <Script id="gtag-init" dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-QB1N9YWEGY');
+          `,
+        }} />
       </head>
       <body className="font-body antialiased flex flex-col min-h-dvh" suppressHydrationWarning>
         <div className="fixed inset-0 -z-10 h-full w-full bg-background" style={{
@@ -52,16 +62,7 @@ export default function RootLayout({
         <Toaster />
 
        
-        {/* Google Analytics */}
-        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-QB1N9YWEGY" />
-        <Script id="gtag-init" dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-QB1N9YWEGY');
-          `,
-        }} />
+     
 
         {/* Adsterra Ads */}
         <Script id="adsterra-init" dangerouslySetInnerHTML={{
