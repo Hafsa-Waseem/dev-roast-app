@@ -32,8 +32,9 @@ export async function getPosts(): Promise<Post[]> {
         return postsList;
       }
     } catch (error) {
-      console.error("Error fetching posts from Firestore, falling back to local data:", error);
-      // If there's an error, fall through to returning local data.
+      // Silently catch the error. This prevents the app from showing a scary
+      // "PERMISSION_DENIED" error when Firebase credentials are not yet set.
+      // The function will then fall through to return local data.
     }
   }
   
