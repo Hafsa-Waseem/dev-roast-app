@@ -256,6 +256,16 @@ function EditPostDialog({ post, isOpen, onOpenChange }: { post: Post | null, isO
   );
 }
 
+function DeletePostSubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" className="bg-destructive hover:bg-destructive/90" disabled={pending}>
+      {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+      Yes, delete it
+    </Button>
+  );
+}
+
 function DeletePostButton({ postId }: { postId: string }) {
   const [deleteState, deleteAction] = useActionState(handleDeletePost, initialDeleteState);
   const { toast } = useToast();
@@ -289,10 +299,7 @@ function DeletePostButton({ postId }: { postId: string }) {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction asChild>
-              <Button type="submit" className="bg-destructive hover:bg-destructive/90" disabled={useFormStatus().pending}>
-                {useFormStatus().pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Yes, delete it
-              </Button>
+              <DeletePostSubmitButton />
             </AlertDialogAction>
           </AlertDialogFooter>
         </form>

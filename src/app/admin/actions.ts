@@ -154,13 +154,21 @@ export async function handleEditResource(prevState: any, formData: FormData) {
         };
     }
 
-    const { id, title, description } = validatedFields.data;
-    await updateResource(id, { title, description });
+    try {
+        const { id, title, description } = validatedFields.data;
+        await updateResource(id, { title, description });
 
-    revalidatePath('/admin/upload');
-    revalidatePath('/resources');
-    
-    return { message: 'Resource updated successfully.', errors: null };
+        revalidatePath('/admin/upload');
+        revalidatePath('/resources');
+        
+        return { message: 'Resource updated successfully.', errors: null };
+    } catch (error) {
+        console.error('Resource update failed:', error);
+        return {
+            message: 'An unexpected error occurred while updating the resource.',
+            errors: null,
+        };
+    }
 }
 
 
@@ -178,16 +186,21 @@ export async function handleDeleteResource(prevState: any, formData: FormData) {
         return { message: 'Invalid resource ID.' };
     }
 
-    const deleted = await deleteResource(validatedFields.data.id);
+    try {
+        const deleted = await deleteResource(validatedFields.data.id);
 
-    if (!deleted) {
-      return { message: 'Resource not found.' };
+        if (!deleted) {
+          return { message: 'Resource not found.' };
+        }
+
+        revalidatePath('/admin/upload');
+        revalidatePath('/resources');
+
+        return { message: 'Resource deleted successfully.' };
+    } catch (error) {
+        console.error('Resource deletion failed:', error);
+        return { message: 'An unexpected error occurred during resource deletion.' };
     }
-
-    revalidatePath('/admin/upload');
-    revalidatePath('/resources');
-
-    return { message: 'Resource deleted successfully.' };
 }
 
 

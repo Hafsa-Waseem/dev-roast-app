@@ -208,6 +208,16 @@ function EditResourceDialog({ resource, isOpen, onOpenChange }: { resource: Reso
   );
 }
 
+function DeleteResourceSubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" className="bg-destructive hover:bg-destructive/90" disabled={pending}>
+      {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+      Yes, delete it
+    </Button>
+  );
+}
+
 function DeleteResourceButton({ resourceId }: { resourceId: string }) {
   const [deleteState, deleteAction] = useActionState(handleDeleteResource, initialDeleteState);
   const { toast } = useToast();
@@ -241,9 +251,7 @@ function DeleteResourceButton({ resourceId }: { resourceId: string }) {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction asChild>
-              <Button type="submit" className="bg-destructive hover:bg-destructive/90">
-                Yes, delete it
-              </Button>
+              <DeleteResourceSubmitButton />
             </AlertDialogAction>
           </AlertDialogFooter>
         </form>
