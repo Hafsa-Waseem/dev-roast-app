@@ -1,91 +1,65 @@
 
-import fs from 'fs/promises';
-import path from 'path';
+import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy, serverTimestamp } from 'firebase/firestore';
+import { db } from './firebase';
 
 export type Post = {
   id: string;
   type: 'blog' | 'article' | 'meme';
-  title: string; // Used for blog/article, can be empty for meme
-  content: string; // excerpt for blog/article, caption for meme
-  author?: string; // Optional, for blogs
-  date?: string; // Optional, for blogs
+  title: string;
+  content: string;
+  author?: string;
+  date?: string;
+  createdAt?: any;
 };
 
-const dataDir = path.join(process.cwd(), 'src/data');
-const postsFilePath = path.join(dataDir, 'posts.json');
-
-async function ensureDataFileExists() {
-    try {
-        await fs.access(postsFilePath);
-    } catch (error: any) {
-        if (error.code === 'ENOENT') {
-            await fs.mkdir(dataDir, { recursive: true });
-            await fs.writeFile(postsFilePath, '[]', 'utf-8');
-        } else {
-            throw error;
-        }
-    }
-}
-
-async function readPosts(): Promise<Post[]> {
-  await ensureDataFileExists();
-  try {
-    const data = await fs.readFile(postsFilePath, 'utf-8');
-    if (data.trim() === '') {
-        return [];
-    }
-    return JSON.parse(data);
-  } catch (error) {
-    console.error("Error reading or parsing posts file:", error);
-    return [];
-  }
-}
-
-async function writePosts(posts: Post[]): Promise<void> {
-  await ensureDataFileExists();
-  await fs.writeFile(postsFilePath, JSON.stringify(posts, null, 2), 'utf-8');
-}
+const postsCollection = collection(db, 'posts');
 
 export async function getPosts(): Promise<Post[]> {
   try {
-    return await readPosts();
+    const q = query(postsCollection, orderBy('createdAt', 'desc'));
+    const postsSnapshot = await getDocs(q);
+    const postsList = postsSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Post[];
+    return postsList;
   } catch (error) {
-    console.error("Failed to get posts due to an unhandled error:", error);
+    console.error("Error fetching posts from Firestore:", error);
     return [];
   }
 }
 
-export async function addPost(post: Omit<Post, 'id'>): Promise<Post> {
-  const posts = await readPosts();
-  const newPost: Post = {
-    id: Date.now().toString(),
-    ...post,
-  };
-  posts.unshift(newPost); // Add to the beginning
-  await writePosts(posts);
-  return newPost;
+export async function addPost(post: Omit<Post, 'id' | 'createdAt'>): Promise<Post> {
+  try {
+    const docRef = await addDoc(postsCollection, {
+      ...post,
+      createdAt: serverTimestamp()
+    });
+    return { id: docRef.id, ...post } as Post;
+  } catch (error) {
+    console.error("Error adding post to Firestore:", error);
+    throw new Error('Failed to add post to the database.');
+  }
 }
 
 export async function updatePost(id: string, updatedData: Partial<Omit<Post, 'id'>>): Promise<Post | null> {
-  const posts = await readPosts();
-  const postIndex = posts.findIndex(p => p.id === id);
-  if (postIndex === -1) {
+  try {
+    const postDoc = doc(db, 'posts', id);
+    await updateDoc(postDoc, updatedData);
+    return { id, ...updatedData } as Post;
+  } catch (error) {
+    console.error("Error updating post in Firestore:", error);
     return null;
   }
-  posts[postIndex] = { ...posts[postIndex], ...updatedData };
-  await writePosts(posts);
-  return posts[postIndex];
 }
 
 export async function deletePost(id: string): Promise<boolean> {
-  const posts = await readPosts();
-  const initialLength = posts.length;
-  const updatedPosts = posts.filter(p => p.id !== id);
-  
-  if (updatedPosts.length === initialLength) {
-    return false; // Not found
+  try {
+    const postDoc = doc(db, 'posts', id);
+    await deleteDoc(postDoc);
+    return true;
+  } catch (error) {
+    console.error("Error deleting post from Firestore:", error);
+    return false;
   }
-
-  await writePosts(updatedPosts);
-  return true;
 }

@@ -1,94 +1,63 @@
 
-import fs from 'fs/promises';
-import path from 'path';
+import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy, serverTimestamp } from 'firebase/firestore';
+import { db } from './firebase';
 
 export type Resource = {
   id: string;
   title: string;
   description: string;
   href: string;
+  createdAt?: any;
 };
 
-const dataDir = path.join(process.cwd(), 'src/data');
-const resourcesFilePath = path.join(dataDir, 'resources.json');
-
-async function ensureDataFileExists() {
-    try {
-        await fs.access(resourcesFilePath);
-    } catch (error: any) {
-        if (error.code === 'ENOENT') {
-            await fs.mkdir(dataDir, { recursive: true });
-            await fs.writeFile(resourcesFilePath, '[]', 'utf-8');
-        } else {
-            throw error;
-        }
-    }
-}
-
-async function readResources(): Promise<Resource[]> {
-  await ensureDataFileExists();
-  try {
-    const data = await fs.readFile(resourcesFilePath, 'utf-8');
-    // Handle empty file case
-    if (data.trim() === '') {
-        return [];
-    }
-    return JSON.parse(data);
-  } catch (error) {
-    console.error("Error reading or parsing resources file:", error);
-    // If file is corrupt or unreadable, treat as empty
-    return [];
-  }
-}
-
-async function writeResources(resources: Resource[]): Promise<void> {
-  await ensureDataFileExists();
-  await fs.writeFile(resourcesFilePath, JSON.stringify(resources, null, 2), 'utf-8');
-}
+const resourcesCollection = collection(db, 'resources');
 
 export async function getResources(): Promise<Resource[]> {
   try {
-    return await readResources();
+    const q = query(resourcesCollection, orderBy('createdAt', 'desc'));
+    const resourcesSnapshot = await getDocs(q);
+    const resourcesList = resourcesSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Resource[];
+    return resourcesList;
   } catch (error) {
-    console.error("Failed to get resources due to an unhandled error:", error);
+    console.error("Error fetching resources from Firestore:", error);
     return [];
   }
 }
 
-export async function addResource(resource: Omit<Resource, 'id'>): Promise<Resource> {
-  const resources = await readResources();
-  const newResource: Resource = {
-    id: Date.now().toString(),
-    ...resource,
-  };
-  resources.unshift(newResource);
-  await writeResources(resources);
-  return newResource;
+export async function addResource(resource: Omit<Resource, 'id' | 'createdAt'>): Promise<Resource> {
+  try {
+    const docRef = await addDoc(resourcesCollection, {
+      ...resource,
+      createdAt: serverTimestamp()
+    });
+    return { id: docRef.id, ...resource } as Resource;
+  } catch (error) {
+    console.error("Error adding resource to Firestore:", error);
+    throw new Error('Failed to add resource to the database.');
+  }
 }
 
 export async function updateResource(id: string, updatedData: Partial<Omit<Resource, 'id' | 'href'>>): Promise<Resource | null> {
-  const resources = await readResources();
-  const resourceIndex = resources.findIndex(r => r.id === id);
-  if (resourceIndex === -1) {
+  try {
+    const resourceDoc = doc(db, 'resources', id);
+    await updateDoc(resourceDoc, updatedData);
+    return { id, ...updatedData } as Resource;
+  } catch (error) {
+    console.error("Error updating resource in Firestore:", error);
     return null;
   }
-  resources[resourceIndex] = { ...resources[resourceIndex], ...updatedData };
-  await writeResources(resources);
-  return resources[resourceIndex];
 }
 
 export async function deleteResource(id: string): Promise<boolean> {
-  const resources = await readResources();
-  const initialLength = resources.length;
-  const updatedResources = resources.filter(r => r.id !== id);
-
-  if (updatedResources.length === initialLength) {
-    return false; // Not found
+  try {
+    const resourceDoc = doc(db, 'resources', id);
+    await deleteDoc(resourceDoc);
+    return true;
+  } catch (error) {
+    console.error("Error deleting resource from Firestore:", error);
+    return false;
   }
-
-  // Only update the JSON file, do not attempt to delete the physical file.
-  // This is because the hosting environment has a read-only filesystem.
-  await writeResources(updatedResources);
-  
-  return true;
 }
