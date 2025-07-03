@@ -197,9 +197,9 @@ export async function handleDeleteResource(prevState: any, formData: FormData) {
         revalidatePath('/resources');
 
         return { message: 'Resource deleted successfully.' };
-    } catch (error) {
+    } catch (error: any) {
         console.error('Resource deletion failed:', error);
-        return { message: 'An unexpected error occurred during resource deletion.' };
+        return { message: error.message || 'An unexpected error occurred during resource deletion.' };
     }
 }
 
@@ -322,16 +322,21 @@ export async function handleDeletePost(prevState: any, formData: FormData) {
         return { message: 'Invalid post ID.' };
     }
 
-    const deleted = await deletePost(validatedFields.data.id);
+    try {
+        const deleted = await deletePost(validatedFields.data.id);
 
-    if (!deleted) {
-      return { message: 'Post not found.' };
+        if (!deleted) {
+          return { message: 'Post not found.' };
+        }
+
+        revalidatePath('/admin/upload');
+        revalidatePath('/blogs');
+        revalidatePath('/articles');
+        revalidatePath('/memes');
+
+        return { message: 'Post deleted successfully.' };
+    } catch (error: any) {
+        console.error('Post deletion failed:', error);
+        return { message: 'An unexpected error occurred during post deletion.' };
     }
-
-    revalidatePath('/admin/upload');
-    revalidatePath('/blogs');
-    revalidatePath('/articles');
-    revalidatePath('/memes');
-
-    return { message: 'Post deleted successfully.' };
 }

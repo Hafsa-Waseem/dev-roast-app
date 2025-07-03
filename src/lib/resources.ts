@@ -78,27 +78,31 @@ export async function updateResource(id: string, updatedData: Partial<Omit<Resou
 
 export async function deleteResource(id: string): Promise<boolean> {
   const resources = await readResources();
-  const resourceToDelete = resources.find(r => r.id === id);
+  const resourceIndex = resources.findIndex(r => r.id === id);
 
-  if (!resourceToDelete) {
+  if (resourceIndex === -1) {
     return false; // Not found
   }
+  
+  const resourceToDelete = resources[resourceIndex];
 
-  // Delete the associated file from public/pdfs
-  try {
-    if (resourceToDelete.href.startsWith('/pdfs/')) {
-        const filePath = path.join(process.cwd(), 'public', resourceToDelete.href);
-        await fs.unlink(filePath);
-    }
-  } catch (error: any) {
-    // If file doesn't exist, ENOENT error code. We can ignore that.
-    if (error.code !== 'ENOENT') {
-        console.error(`Failed to delete file for resource ${id}:`, error);
-        // We might choose to not proceed with metadata deletion if file deletion fails.
-        // For now, we will log the error and continue to delete the metadata.
+  // If it's a local PDF, try to delete the physical file first.
+  if (resourceToDelete.href.startsWith('/pdfs/')) {
+    const filePath = path.join(process.cwd(), 'public', resourceToDelete.href);
+    try {
+      await fs.unlink(filePath);
+    } catch (error: any) {
+      // If the file doesn't exist, we can ignore the error and proceed.
+      // For any other error (e.g., permissions), we should stop and report it.
+      if (error.code !== 'ENOENT') {
+        console.error(`Failed to delete file at ${filePath}:`, error);
+        // Re-throw the error to be caught by the server action.
+        throw new Error(`Failed to delete the physical file. Please check server permissions.`);
+      }
     }
   }
 
+  // If file deletion was successful (or not needed/failed gracefully), remove the metadata.
   const updatedResources = resources.filter(r => r.id !== id);
   await writeResources(updatedResources);
   
