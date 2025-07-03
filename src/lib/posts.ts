@@ -1,6 +1,7 @@
 
 import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy, serverTimestamp } from 'firebase/firestore';
 import { db, isFirebaseConfigured } from './firebase';
+import postsData from '@/data/posts.json';
 
 export type Post = {
   id: string;
@@ -15,22 +16,29 @@ export type Post = {
 const postsCollectionName = 'posts';
 
 export async function getPosts(): Promise<Post[]> {
-  if (!db || !isFirebaseConfigured) {
-    return [];
+  // If Firebase is configured, try to fetch from it.
+  if (db && isFirebaseConfigured) {
+    try {
+      const postsCollection = collection(db, postsCollectionName);
+      const q = query(postsCollection, orderBy('createdAt', 'desc'));
+      const postsSnapshot = await getDocs(q);
+      
+      // If Firestore has data, return it.
+      if (!postsSnapshot.empty) {
+        const postsList = postsSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Post[];
+        return postsList;
+      }
+    } catch (error) {
+      console.error("Error fetching posts from Firestore, falling back to local data:", error);
+      // If there's an error, fall through to returning local data.
+    }
   }
-  try {
-    const postsCollection = collection(db, postsCollectionName);
-    const q = query(postsCollection, orderBy('createdAt', 'desc'));
-    const postsSnapshot = await getDocs(q);
-    const postsList = postsSnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as Post[];
-    return postsList;
-  } catch (error) {
-    console.error("Error fetching posts from Firestore:", error);
-    return [];
-  }
+  
+  // If Firebase is not configured, or if it's empty/errored, return local fallback data.
+  return postsData as Post[];
 }
 
 export async function addPost(post: Omit<Post, 'id' | 'createdAt'>): Promise<Post> {
@@ -77,3 +85,5 @@ export async function deletePost(id: string): Promise<boolean> {
     return false;
   }
 }
+
+    

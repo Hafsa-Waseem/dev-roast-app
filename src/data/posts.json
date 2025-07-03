@@ -1,2 +1,290 @@
 
-[]
+[
+  {
+    "id": "blog-1",
+    "type": "blog",
+    "title": "My First 'Hello World': A Love Story",
+    "content": "It wasn't just code; it was a promise. A promise of sleepless nights, endless debugging, and the sheer joy of seeing two words appear on a black screen. This is my story.",
+    "author": "A Caffeinated Dev",
+    "date": "June 1, 2025"
+  },
+  {
+    "id": "blog-2",
+    "type": "blog",
+    "title": "Debugging for Dummies: Crying is Step One",
+    "content": "Before you check your logic, before you google the error, the first and most crucial step in debugging is to have a good cry. Let's explore this therapeutic technique.",
+    "author": "The Code Therapist",
+    "date": "June 2, 2025"
+  },
+  {
+    "id": "blog-3",
+    "type": "blog",
+    "title": "Why I Chose Tabs Over Spaces, and Why I'm Right",
+    "content": "Let's end the debate once and for all. I present a completely biased, yet irrefutable argument for the superiority of tabs. Prepare to be convinced.",
+    "author": "A Stickler for Standards",
+    "date": "June 3, 2025"
+  },
+  {
+    "id": "blog-4",
+    "type": "blog",
+    "title": "Surviving a Code Review with Your Ego Intact",
+    "content": "A code review can feel like a personal attack. Here are five strategies to navigate feedback without questioning all your life choices.",
+    "author": "A Battle-Hardened Veteran",
+    "date": "June 4, 2025"
+  },
+  {
+    "id": "blog-5",
+    "type": "blog",
+    "title": "Imposter Syndrome: My Co-pilot in a World of Geniuses",
+    "content": "Every day I feel like a fraud in a sea of brilliant minds. Here's how I harness that feeling to constantly learn and grow (and panic a little).",
+    "author": "Just Another Developer",
+    "date": "June 5, 2025"
+  },
+  {
+    "id": "blog-6",
+    "type": "blog",
+    "title": "The Day I Almost Deployed to Production on a Friday",
+    "content": "A cautionary tale of hubris, over-confidence, and a last-minute `git reset --hard` that saved the weekend for the entire company.",
+    "author": "A Weekend Warrior",
+    "date": "June 6, 2025"
+  },
+  {
+    "id": "blog-7",
+    "type": "blog",
+    "title": "How I Explained APIs to My Grandma",
+    "content": "She wanted to know what I do all day. So I used a restaurant analogy. Now she thinks I'm a waiter for computers. Close enough.",
+    "author": "The Family Tech Support",
+    "date": "June 7, 2025"
+  },
+  {
+    "id": "blog-8",
+    "type": "blog",
+    "title": "10 Things I Wish I Knew as a Junior Developer",
+    "content": "Number one: it's okay to not know everything. Number two: Stack Overflow is not cheating. Read on for the other eight revelations.",
+    "author": "A Wiser Dev",
+    "date": "June 8, 2025"
+  },
+  {
+    "id": "blog-9",
+    "type": "blog",
+    "title": "The Art of Naming Variables: A Tragedy",
+    "content": "From 'data' to 'data2' to 'finalData', a gripping story of my descent into madness while trying to find the perfect variable name.",
+    "author": "A Semantic Storyteller",
+    "date": "June 9, 2025"
+  },
+  {
+    "id": "blog-10",
+    "type": "blog",
+    "title": "From Console.log to Senior Dev: A Journey",
+    "content": "My journey wasn't a straight line. It was more of a spaghetti-code-like path with lots of debugging and coffee. Here are the highlights.",
+    "author": "An Old-Timer",
+    "date": "June 10, 2025"
+  },
+  {
+    "id": "blog-11",
+    "type": "blog",
+    "title": "Why My Side Project Will Never Be Finished",
+    "content": "It's not about the destination; it's about the journey of adding new frameworks, refactoring everything, and never actually launching.",
+    "author": "A Serial Procrastinator",
+    "date": "June 11, 2025"
+  },
+  {
+    "id": "blog-12",
+    "type": "blog",
+    "title": "How Stack Overflow Saved My Degree",
+    "content": "A heartfelt thank you to the unsung heroes of my university education. You know who you are. Your copied-and-pasted answers got me through.",
+    "author": "A Grateful Graduate",
+    "date": "June 12, 2025"
+  },
+  {
+    "id": "blog-13",
+    "type": "blog",
+    "title": "A Developer's Guide to Looking Busy in Meetings",
+    "content": "Nodding thoughtfully, occasionally saying 'we need to consider scalability', and furiously typing notes that are actually just your grocery list.",
+    "author": "A Corporate Strategist",
+    "date": "June 13, 2025"
+  },
+  {
+    "id": "blog-14",
+    "type": "blog",
+    "title": "The Joys of CSS: A Tale of Centering a Div",
+    "content": "They said it was simple. They lied. This is the epic saga of one developer's quest to achieve the holy grail of web design.",
+    "author": "A CSS Survivor",
+    "date": "June 14, 2025"
+  },
+  {
+    "id": "blog-15",
+    "type": "blog",
+    "title": "My Relationship Status: In a Committed Relationship with my IDE",
+    "content": "It understands me. It completes me (my code, at least). It doesn't ask where this relationship is going. It's perfect.",
+    "author": "A Lone Wolf Coder",
+    "date": "June 15, 2025"
+  },
+  {
+    "id": "article-1",
+    "type": "article",
+    "title": "JavaScript's `this` Keyword Explained with Pizza",
+    "content": "Confused about `this`? Imagine you're at a pizza party. `this` is simply whoever is holding the pizza slice right now. Let's dive in."
+  },
+  {
+    "id": "article-2",
+    "type": "article",
+    "title": "A Fun Guide to Understanding Recursion",
+    "content": "To understand recursion, you must first understand recursion. We'll break down this confusing concept with Russian dolls and mirrors."
+  },
+  {
+    "id": "article-3",
+    "type": "article",
+    "title": "CSS Flexbox vs. Grid: The Ultimate Showdown",
+    "content": "In one corner, the one-dimensional champion, Flexbox! In the other, the two-dimensional titan, Grid! When to use which for your layout needs."
+  },
+  {
+    "id": "article-4",
+    "type": "article",
+    "title": "What Exactly is an API? A Simple Analogy",
+    "content": "An API is like a restaurant menu. It lists what you can order from the kitchen (the server) without having to know how the food is made."
+  },
+  {
+    "id": "article-5",
+    "type": "article",
+    "title": "Demystifying Docker in 5 Minutes",
+    "content": "Think of Docker as a magic lunchbox. It packs your application and all its needs, so it runs the same everywhere. No more 'it works on my machine'!"
+  },
+  {
+    "id": "article-6",
+    "type": "article",
+    "title": "Async/Await: The Hero JavaScript Deserved",
+    "content": "Tired of nested callbacks and 'pyramid of doom'? Async/await is here to make your asynchronous code look clean and synchronous."
+  },
+  {
+    "id": "article-7",
+    "type": "article",
+    "title": "The Difference Between UI and UX, Told with a Ketchup Bottle",
+    "content": "The fancy glass bottle is the UI (how it looks). The squeezable bottle that doesn't make a mess is the UX (how it feels to use)."
+  },
+  {
+    "id": "article-8",
+    "type": "article",
+    "title": "REST vs. GraphQL: A Friendly Debate",
+    "content": "REST is like ordering from a set menu, while GraphQL is like a buffet where you pick exactly what you want. Which one is better for your app?"
+  },
+  {
+    "id": "article-9",
+    "type": "article",
+    "title": "Git Gud: Mastering the Basics of Version Control",
+    "content": "Don't just copy-paste folders. Learn the basic Git commands that will save you from chaos and make you a better collaborator."
+  },
+  {
+    "id": "article-10",
+    "type": "article",
+    "title": "How to Write Clean Code That Your Future Self Will Thank You For",
+    "content": "Your greatest collaborator is you from six months ago, and that person has no memory. Write code for them. Here's how."
+  },
+  {
+    "id": "article-11",
+    "type": "article",
+    "title": "An Introduction to SQL Joins Using Coffee Shop Orders",
+    "content": "Ever wonder how to combine customer data with their orders? Let's use a coffee shop scenario to understand INNER, LEFT, and RIGHT joins."
+  },
+  {
+    "id": "article-12",
+    "type": "article",
+    "title": "Why TypeScript is Your Best Friend",
+    "content": "It's like having a helpful friend who constantly checks your code for silly mistakes before it even runs. Say goodbye to `undefined is not a function`."
+  },
+  {
+    "id": "article-13",
+    "type": "article",
+    "title": "Understanding Closures in JavaScript with a Secret Box",
+    "content": "A closure is like a function that carries a secret box (its lexical environment) with it, even after it has finished running."
+  },
+  {
+    "id": "article-14",
+    "type": "article",
+    "title": "The Web Vitals You Should Actually Care About",
+    "content": "LCP, FID, CLS. These aren't random acronyms; they're the keys to a faster, more user-friendly website. Let's break them down."
+  },
+  {
+    "id": "article-15",
+    "type": "article",
+    "title": "How 'Map, Filter, Reduce' Can Change Your Life",
+    "content": "Stop writing clunky `for` loops. These three functional methods will make your array manipulations cleaner, more readable, and more powerful."
+  },
+  {
+    "id": "meme-1",
+    "type": "meme",
+    "content": "'It works on my machine.'"
+  },
+  {
+    "id": "meme-2",
+    "type": "meme",
+    "content": "Feature: *exists*. Me: 'I can't live without it'. Also me 2 months later: *never uses it*."
+  },
+  {
+    "id": "meme-3",
+    "type": "meme",
+    "content": "Programming is 10% writing code and 90% figuring out why that code doesn't work."
+  },
+  {
+    "id": "meme-4",
+    "type": "meme",
+    "content": "My code doesn't have bugs, it just develops random unintended features."
+  },
+  {
+    "id": "meme-5",
+    "type": "meme",
+    "content": "I'm not lazy, I'm just on energy-saving mode."
+  },
+  {
+    "id": "meme-6",
+    "type": "meme",
+    "content": "There are two ways to write error-free programs; only the third one works."
+  },
+  {
+    "id": "meme-7",
+    "type": "meme",
+    "content": "Deleted code is debugged code."
+  },
+  {
+    "id": "meme-8",
+    "type": "meme",
+    "content": "Client: 'Can you make the logo bigger?'. Me: *zooms in 200%* 'Like this?'."
+  },
+  {
+    "id": "meme-9",
+    "type": "meme",
+    "content": "The six stages of debugging: 1. That can't happen. 2. It shouldn't happen. 3. Why is this happening? 4. Oh, I see. 5. How did that ever work? 6. It works now."
+  },
+  {
+    "id": "meme-10",
+    "type": "meme",
+    "content": "Me: 'I need to refactor this.' Also me: *if it works, don't touch it*."
+  },
+  {
+    "id": "meme-11",
+    "type": "meme",
+    "content": "When you finally fix a bug after 8 hours."
+  },
+  {
+    "id": "meme-12",
+    "type": "meme",
+    "content": "CSS is awesome."
+  },
+  {
+    "id": "meme-13",
+    "type": "meme",
+    "content": "My mind is like a browser. I have 19 tabs open, 3 are not responding, and I have no idea where the music is coming from."
+  },
+  {
+    "id": "meme-14",
+    "type": "meme",
+    "content": "That moment when you're trying to fix a bug and you end up creating 10 more."
+  },
+  {
+    "id": "meme-15",
+    "type": "meme",
+    "content": "Documentation? The code is self-documenting."
+  }
+]
+
+    

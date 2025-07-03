@@ -1,6 +1,7 @@
 
 import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy, serverTimestamp } from 'firebase/firestore';
 import { db, isFirebaseConfigured } from './firebase';
+import resourcesData from '@/data/resources.json';
 
 export type Resource = {
   id: string;
@@ -13,22 +14,29 @@ export type Resource = {
 const resourcesCollectionName = 'resources';
 
 export async function getResources(): Promise<Resource[]> {
-  if (!db || !isFirebaseConfigured) {
-    return [];
+   // If Firebase is configured, try to fetch from it.
+  if (db && isFirebaseConfigured) {
+    try {
+      const resourcesCollection = collection(db, resourcesCollectionName);
+      const q = query(resourcesCollection, orderBy('createdAt', 'desc'));
+      const resourcesSnapshot = await getDocs(q);
+
+      // If Firestore has data, return it.
+      if (!resourcesSnapshot.empty) {
+        const resourcesList = resourcesSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Resource[];
+        return resourcesList;
+      }
+    } catch (error) {
+      console.error("Error fetching resources from Firestore, falling back to local data:", error);
+      // If there's an error, fall through to returning local data.
+    }
   }
-  try {
-    const resourcesCollection = collection(db, resourcesCollectionName);
-    const q = query(resourcesCollection, orderBy('createdAt', 'desc'));
-    const resourcesSnapshot = await getDocs(q);
-    const resourcesList = resourcesSnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as Resource[];
-    return resourcesList;
-  } catch (error) {
-    console.error("Error fetching resources from Firestore:", error);
-    return [];
-  }
+
+  // If Firebase is not configured, or if it's empty/errored, return local fallback data.
+  return resourcesData as Resource[];
 }
 
 export async function addResource(resource: Omit<Resource, 'id' | 'createdAt'>): Promise<Resource> {
@@ -75,3 +83,5 @@ export async function deleteResource(id: string): Promise<boolean> {
     return false;
   }
 }
+
+    
