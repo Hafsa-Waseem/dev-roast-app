@@ -46,32 +46,40 @@ export function ResourceList({ initialResources }: ResourceListProps) {
 
       {filteredResources.length > 0 ? (
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {filteredResources.map((resource) => (
-            <Card key={resource.id} className="flex flex-col overflow-hidden transition-transform duration-300 hover:-translate-y-1">
-              <CardContent className="p-6 flex flex-col flex-grow items-center text-center">
-                <div className="p-4 bg-primary/10 rounded-full mb-4">
-                  <FileText className="h-10 w-10 text-primary" />
-                </div>
-                <Badge variant="secondary" className="mb-3">
-                  PDF Resource
-                </Badge>
-                <h3 className="text-xl font-bold text-primary mb-2">
-                  {resource.title}
-                </h3>
-                <p className="text-muted-foreground text-sm flex-grow">
-                  {resource.description}
-                </p>
-              </CardContent>
-              <CardFooter className="p-4 mt-auto border-t border-card-foreground/10">
-                 <Button asChild className="w-full">
-                  <a href={resource.href} download>
-                    <Download className="mr-2 h-4 w-4" />
-                    Download
-                  </a>
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
+          {filteredResources.map((resource) => {
+            const isExternal = resource.href.startsWith('http');
+            return (
+              <Card key={resource.id} className="flex flex-col overflow-hidden transition-transform duration-300 hover:-translate-y-1">
+                <CardContent className="p-6 flex flex-col flex-grow items-center text-center">
+                  <div className="p-4 bg-primary/10 rounded-full mb-4">
+                    <FileText className="h-10 w-10 text-primary" />
+                  </div>
+                  <Badge variant="secondary" className="mb-3">
+                    PDF Resource
+                  </Badge>
+                  <h3 className="text-xl font-bold text-primary mb-2">
+                    {resource.title}
+                  </h3>
+                  <p className="text-muted-foreground text-sm flex-grow">
+                    {resource.description}
+                  </p>
+                </CardContent>
+                <CardFooter className="p-4 mt-auto border-t border-card-foreground/10">
+                  <Button asChild className="w-full">
+                    <a
+                      href={resource.href}
+                      download={!isExternal}
+                      target={isExternal ? '_blank' : '_self'}
+                      rel={isExternal ? 'noopener noreferrer' : ''}
+                    >
+                      <Download className="mr-2 h-4 w-4" />
+                      Download
+                    </a>
+                  </Button>
+                </CardFooter>
+              </Card>
+            );
+          })}
         </div>
       ) : (
          <div className="text-center py-16 px-4 rounded-2xl border border-dashed border-card-foreground/20 bg-card/20 backdrop-blur-xl shadow-lg">

@@ -33,7 +33,7 @@ function UploadSubmitButton() {
   return (
     <Button type="submit" className="w-full" disabled={pending}>
       {pending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <UploadCloud className="mr-2 h-4 w-4" />}
-      {pending ? 'Uploading...' : 'Upload Resource'}
+      {pending ? 'Adding...' : 'Add Resource'}
     </Button>
   );
 }
@@ -73,7 +73,7 @@ export function AdminResourceManager({ initialResources }: AdminResourceManagerP
       <Card>
         <CardHeader>
           <CardTitle className="text-3xl">Admin Panel</CardTitle>
-          <CardDescription>Upload a new PDF resource for users to download.</CardDescription>
+          <CardDescription>Add a new resource by uploading a PDF or providing an external link.</CardDescription>
         </CardHeader>
         <CardContent>
           <form ref={uploadFormRef} action={uploadAction} className="space-y-6">
@@ -87,11 +87,30 @@ export function AdminResourceManager({ initialResources }: AdminResourceManagerP
               <Textarea id="description" name="description" placeholder="A short description of the resource." required />
               {uploadState.errors?.description && <p className="text-destructive text-sm">{uploadState.errors.description[0]}</p>}
             </div>
+            
             <div className="space-y-2">
-              <Label htmlFor="pdf">PDF File</Label>
-              <Input id="pdf" name="pdf" type="file" accept=".pdf" required />
+              <Label htmlFor="pdf">Upload PDF File</Label>
+              <Input id="pdf" name="pdf" type="file" accept=".pdf" />
               {uploadState.errors?.pdf && <p className="text-destructive text-sm">{uploadState.errors.pdf[0]}</p>}
             </div>
+
+            <div className="relative my-2">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-card px-2 text-muted-foreground">
+                  Or
+                </span>
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="link">External PDF Link</Label>
+              <Input id="link" name="link" type="url" placeholder="https://example.com/document.pdf" />
+              {uploadState.errors?.link && <p className="text-destructive text-sm">{uploadState.errors.link[0]}</p>}
+            </div>
+            
             <UploadSubmitButton />
           </form>
         </CardContent>
@@ -153,8 +172,10 @@ function EditResourceDialog({ resource, isOpen, onOpenChange }: { resource: Reso
   useEffect(() => {
     if (!isOpen) {
       // Reset form errors when dialog is closed
-      editState.errors = null;
-      editState.message = '';
+      if (editState) {
+        editState.errors = null;
+        editState.message = '';
+      }
     }
   }, [isOpen, editState]);
 
@@ -214,7 +235,7 @@ function DeleteResourceButton({ resourceId }: { resourceId: string }) {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the resource and its associated file.
+              This action cannot be undone. This will permanently delete the resource and its associated file if it was uploaded.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

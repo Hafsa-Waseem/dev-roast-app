@@ -44,20 +44,41 @@ export async function handleAdminLogin(prevState: any, formData: FormData) {
 }
 
 // --- Upload Action ---
-const uploadSchema = z.object({
-  title: z.string().min(1, 'Title is required.'),
-  description: z.string().min(1, 'Description is required.'),
-  pdf: z
-    .instanceof(File)
-    .refine(file => file.size > 0, 'PDF file is required.')
-    .refine(file => file.type === 'application/pdf', 'Only PDF files are allowed.'),
-});
+const uploadSchema = z
+  .object({
+    title: z.string().min(1, 'Title is required.'),
+    description: z.string().min(1, 'Description is required.'),
+    pdf: z.instanceof(File).optional(),
+    link: z.string().url('Please enter a valid URL.').optional().or(z.literal('')),
+  })
+  .superRefine((data, ctx) => {
+    const pdfProvided = data.pdf && data.pdf.size > 0;
+    const linkProvided = data.link && data.link.trim() !== '';
+
+    if (!pdfProvided && !linkProvided) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Either a PDF file or an external link must be provided.',
+        path: ['pdf'],
+      });
+    }
+
+    if (pdfProvided && linkProvided) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Please provide either a PDF file or a link, not both.',
+        path: ['link'],
+      });
+    }
+  });
+
 
 export async function handleUploadResource(prevState: any, formData: FormData) {
   const validatedFields = uploadSchema.safeParse({
     title: formData.get('title'),
     description: formData.get('description'),
     pdf: formData.get('pdf'),
+    link: formData.get('link'),
   });
 
   if (!validatedFields.success) {
@@ -67,35 +88,45 @@ export async function handleUploadResource(prevState: any, formData: FormData) {
     };
   }
   
-  const { title, description, pdf } = validatedFields.data;
+  const { title, description, pdf, link } = validatedFields.data;
   
   try {
-    // 1. Save the file to the public directory
-    const pdfsPath = path.join(process.cwd(), 'public', 'pdfs');
-    await fs.mkdir(pdfsPath, { recursive: true });
-    
-    const filePath = path.join(pdfsPath, pdf.name);
-    const fileBuffer = Buffer.from(await pdf.arrayBuffer());
-    await fs.writeFile(filePath, fileBuffer);
-  
-    // 2. Save metadata to JSON
+    let resourceHref = '';
+
+    // Case 1: PDF file is uploaded
+    if (pdf && pdf.size > 0) {
+        const pdfsPath = path.join(process.cwd(), 'public', 'pdfs');
+        await fs.mkdir(pdfsPath, { recursive: true });
+        
+        const safeFilename = pdf.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+        const filePath = path.join(pdfsPath, safeFilename);
+        const fileBuffer = Buffer.from(await pdf.arrayBuffer());
+        await fs.writeFile(filePath, fileBuffer);
+        resourceHref = `/pdfs/${safeFilename}`;
+    } 
+    // Case 2: External link is provided
+    else if (link) {
+        resourceHref = link;
+    }
+
+    // Save metadata to JSON
     await addResource({
       title,
       description,
-      href: `/pdfs/${pdf.name}`,
+      href: resourceHref,
     });
   
     revalidatePath('/admin/upload');
     revalidatePath('/resources');
   
     return {
-      message: `Resource "${title}" uploaded successfully.`,
+      message: `Resource "${title}" added successfully.`,
       errors: null,
     };
   } catch (error) {
-    console.error('File upload failed:', error);
+    console.error('Resource creation failed:', error);
     return {
-      message: 'An unexpected error occurred during file upload.',
+      message: 'An unexpected error occurred during resource creation.',
       errors: null,
     };
   }
