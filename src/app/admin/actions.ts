@@ -1,3 +1,4 @@
+
 'use server';
 
 import { z } from 'zod';
@@ -44,40 +45,17 @@ export async function handleAdminLogin(prevState: any, formData: FormData) {
 }
 
 // --- Upload Action ---
-const uploadSchema = z
-  .object({
-    title: z.string().min(1, 'Title is required.'),
-    description: z.string().min(1, 'Description is required.'),
-    pdf: z.instanceof(File).optional(),
-    link: z.string().url('Please enter a valid URL.').optional().or(z.literal('')),
-  })
-  .superRefine((data, ctx) => {
-    const pdfProvided = data.pdf && data.pdf.size > 0;
-    const linkProvided = data.link && data.link.trim() !== '';
-
-    if (!pdfProvided && !linkProvided) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Either a PDF file or an external link must be provided.',
-        path: ['pdf'],
-      });
-    }
-
-    if (pdfProvided && linkProvided) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Please provide either a PDF file or a link, not both.',
-        path: ['link'],
-      });
-    }
-  });
+const uploadSchema = z.object({
+  title: z.string().min(1, 'Title is required.'),
+  description: z.string().min(1, 'Description is required.'),
+  link: z.string().url('Please enter a valid URL.'),
+});
 
 
 export async function handleUploadResource(prevState: any, formData: FormData) {
   const validatedFields = uploadSchema.safeParse({
     title: formData.get('title'),
     description: formData.get('description'),
-    pdf: formData.get('pdf'),
     link: formData.get('link'),
   });
 
@@ -88,32 +66,13 @@ export async function handleUploadResource(prevState: any, formData: FormData) {
     };
   }
   
-  const { title, description, pdf, link } = validatedFields.data;
+  const { title, description, link } = validatedFields.data;
   
   try {
-    let resourceHref = '';
-
-    // Case 1: PDF file is uploaded
-    if (pdf && pdf.size > 0) {
-        const pdfsPath = path.join(process.cwd(), 'public', 'pdfs');
-        await fs.mkdir(pdfsPath, { recursive: true });
-        
-        const safeFilename = pdf.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-        const filePath = path.join(pdfsPath, safeFilename);
-        const fileBuffer = Buffer.from(await pdf.arrayBuffer());
-        await fs.writeFile(filePath, fileBuffer);
-        resourceHref = `/pdfs/${safeFilename}`;
-    } 
-    // Case 2: External link is provided
-    else if (link) {
-        resourceHref = link;
-    }
-
-    // Save metadata to JSON
     await addResource({
       title,
       description,
-      href: resourceHref,
+      href: link,
     });
   
     revalidatePath('/admin/upload');

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useActionState, useRef, useEffect, useState } from 'react';
@@ -73,7 +74,7 @@ export function AdminResourceManager({ initialResources }: AdminResourceManagerP
       <Card>
         <CardHeader>
           <CardTitle className="text-3xl">Admin Panel</CardTitle>
-          <CardDescription>Add a new resource by uploading a PDF or providing an external link.</CardDescription>
+          <CardDescription>Add a new resource by providing an external link.</CardDescription>
         </CardHeader>
         <CardContent>
           <form ref={uploadFormRef} action={uploadAction} className="space-y-6">
@@ -87,27 +88,10 @@ export function AdminResourceManager({ initialResources }: AdminResourceManagerP
               <Textarea id="description" name="description" placeholder="A short description of the resource." required />
               {uploadState.errors?.description && <p className="text-destructive text-sm">{uploadState.errors.description[0]}</p>}
             </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="pdf">Upload PDF File</Label>
-              <Input id="pdf" name="pdf" type="file" accept=".pdf" />
-              {uploadState.errors?.pdf && <p className="text-destructive text-sm">{uploadState.errors.pdf[0]}</p>}
-            </div>
-
-            <div className="relative my-2">
-              <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">
-                  Or
-                </span>
-              </div>
-            </div>
 
             <div className="space-y-2">
               <Label htmlFor="link">External PDF Link</Label>
-              <Input id="link" name="link" type="url" placeholder="https://example.com/document.pdf" />
+              <Input id="link" name="link" type="url" placeholder="https://example.com/document.pdf" required />
               {uploadState.errors?.link && <p className="text-destructive text-sm">{uploadState.errors.link[0]}</p>}
             </div>
             
@@ -245,7 +229,7 @@ function DeleteResourceButton({ resourceId }: { resourceId: string }) {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the resource and its associated file if it was uploaded.
+              This action cannot be undone. This will permanently delete this resource from your website.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
