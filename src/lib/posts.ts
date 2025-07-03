@@ -1,6 +1,6 @@
 
 import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy, serverTimestamp } from 'firebase/firestore';
-import { db } from './firebase';
+import { db, isFirebaseConfigured } from './firebase';
 
 export type Post = {
   id: string;
@@ -12,10 +12,14 @@ export type Post = {
   createdAt?: any;
 };
 
-const postsCollection = collection(db, 'posts');
+const postsCollectionName = 'posts';
 
 export async function getPosts(): Promise<Post[]> {
+  if (!db || !isFirebaseConfigured) {
+    return [];
+  }
   try {
+    const postsCollection = collection(db, postsCollectionName);
     const q = query(postsCollection, orderBy('createdAt', 'desc'));
     const postsSnapshot = await getDocs(q);
     const postsList = postsSnapshot.docs.map(doc => ({
@@ -30,7 +34,11 @@ export async function getPosts(): Promise<Post[]> {
 }
 
 export async function addPost(post: Omit<Post, 'id' | 'createdAt'>): Promise<Post> {
+  if (!db || !isFirebaseConfigured) {
+    throw new Error('Firebase is not configured. Cannot add post.');
+  }
   try {
+    const postsCollection = collection(db, postsCollectionName);
     const docRef = await addDoc(postsCollection, {
       ...post,
       createdAt: serverTimestamp()
@@ -43,8 +51,11 @@ export async function addPost(post: Omit<Post, 'id' | 'createdAt'>): Promise<Pos
 }
 
 export async function updatePost(id: string, updatedData: Partial<Omit<Post, 'id'>>): Promise<Post | null> {
+  if (!db || !isFirebaseConfigured) {
+    throw new Error('Firebase is not configured. Cannot update post.');
+  }
   try {
-    const postDoc = doc(db, 'posts', id);
+    const postDoc = doc(db, postsCollectionName, id);
     await updateDoc(postDoc, updatedData);
     return { id, ...updatedData } as Post;
   } catch (error) {
@@ -54,8 +65,11 @@ export async function updatePost(id: string, updatedData: Partial<Omit<Post, 'id
 }
 
 export async function deletePost(id: string): Promise<boolean> {
+  if (!db || !isFirebaseConfigured) {
+    throw new Error('Firebase is not configured. Cannot delete post.');
+  }
   try {
-    const postDoc = doc(db, 'posts', id);
+    const postDoc = doc(db, postsCollectionName, id);
     await deleteDoc(postDoc);
     return true;
   } catch (error) {

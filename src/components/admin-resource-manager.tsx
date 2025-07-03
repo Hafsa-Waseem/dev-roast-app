@@ -59,7 +59,7 @@ export function AdminResourceManager({ initialResources }: AdminResourceManagerP
   useEffect(() => {
     if (uploadState?.message) {
       toast({
-        title: 'Upload Status',
+        title: 'Action Status',
         description: uploadState.message,
         variant: uploadState.errors ? 'destructive' : 'default',
       });
@@ -73,8 +73,8 @@ export function AdminResourceManager({ initialResources }: AdminResourceManagerP
     <>
       <Card>
         <CardHeader>
-          <CardTitle className="text-3xl">Admin Panel</CardTitle>
-          <CardDescription>Add a new resource by providing an external link.</CardDescription>
+          <CardTitle className="text-3xl">Manage Resources</CardTitle>
+          <CardDescription>Add a new resource by providing an external link. Direct file uploads require a separate storage service configuration (e.g., Firebase Storage).</CardDescription>
         </CardHeader>
         <CardContent>
           <form ref={uploadFormRef} action={uploadAction} className="space-y-6">
@@ -121,7 +121,7 @@ export function AdminResourceManager({ initialResources }: AdminResourceManagerP
             </div>
           ))}
           {initialResources.length === 0 && (
-            <p className="text-muted-foreground text-center py-4">No resources available.</p>
+            <p className="text-muted-foreground text-center py-4">No resources available. Configure Firebase to add new ones.</p>
           )}
         </CardContent>
       </Card>
@@ -211,6 +211,7 @@ function DeleteResourceButton({ resourceId }: { resourceId: string }) {
       toast({
         title: 'Delete Status',
         description: deleteState.message,
+        variant: deleteState.message.includes('deleted') ? 'default' : 'destructive'
       });
     }
   }, [deleteState, toast]);
@@ -229,7 +230,7 @@ function DeleteResourceButton({ resourceId }: { resourceId: string }) {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete this resource from your website.
+              This action cannot be undone. This will permanently delete this resource.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

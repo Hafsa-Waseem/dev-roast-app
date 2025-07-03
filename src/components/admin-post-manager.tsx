@@ -48,9 +48,9 @@ export function AdminPostManager({ initialPosts }: AdminPostManagerProps) {
       toast({
         title: 'Action Status',
         description: addState.message,
-        variant: addState.errors ? 'destructive' : 'default',
+        variant: addState.errors || addState.message.includes('failed') || addState.message.includes('not configured') ? 'destructive' : 'default',
       });
-      if (!addState.errors) {
+      if (!addState.errors && addState.message.includes('successfully')) {
         addFormRef.current?.reset();
         setPostType('blog'); // Reset select
       }
@@ -186,9 +186,9 @@ function EditPostDialog({ post, isOpen, onOpenChange }: { post: Post | null, isO
       toast({
         title: 'Edit Status',
         description: editState.message,
-        variant: editState.errors ? 'destructive' : 'default',
+        variant: editState.errors || editState.message.includes('failed') || editState.message.includes('not configured') ? 'destructive' : 'default',
       });
-      if (!editState.errors) {
+      if (!editState.errors && editState.message.includes('successfully')) {
         onOpenChange(false);
       }
     }
@@ -275,6 +275,7 @@ function DeletePostButton({ postId }: { postId: string }) {
       toast({
         title: 'Delete Status',
         description: deleteState.message,
+        variant: deleteState.message.includes('deleted') ? 'default' : 'destructive'
       });
     }
   }, [deleteState, toast]);

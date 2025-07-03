@@ -5,8 +5,6 @@ import { z } from 'zod';
 import { addResource, deleteResource, updateResource } from '@/lib/resources';
 import { addPost, deletePost, updatePost } from '@/lib/posts';
 import { revalidatePath } from 'next/cache';
-import fs from 'fs/promises';
-import path from 'path';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
@@ -82,10 +80,10 @@ export async function handleUploadResource(prevState: any, formData: FormData) {
       message: `Resource "${title}" added successfully.`,
       errors: null,
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error('Resource creation failed:', error);
     return {
-      message: 'An unexpected error occurred during resource creation.',
+      message: error.message || 'An unexpected error occurred during resource creation.',
       errors: null,
     };
   }
@@ -121,10 +119,10 @@ export async function handleEditResource(prevState: any, formData: FormData) {
         revalidatePath('/resources');
         
         return { message: 'Resource updated successfully.', errors: null };
-    } catch (error) {
+    } catch (error: any) {
         console.error('Resource update failed:', error);
         return {
-            message: 'An unexpected error occurred while updating the resource.',
+            message: error.message || 'An unexpected error occurred while updating the resource.',
             errors: null,
         };
     }
@@ -146,11 +144,7 @@ export async function handleDeleteResource(prevState: any, formData: FormData) {
     }
 
     try {
-        const deleted = await deleteResource(validatedFields.data.id);
-
-        if (!deleted) {
-          return { message: 'Resource not found.' };
-        }
+        await deleteResource(validatedFields.data.id);
 
         revalidatePath('/admin/upload');
         revalidatePath('/resources');
@@ -222,9 +216,9 @@ export async function handleAddPost(prevState: any, formData: FormData) {
     revalidatePath('/memes');
 
     return { message: `${postData.type.charAt(0).toUpperCase() + postData.type.slice(1)} added successfully.`, errors: null };
-  } catch (error) {
+  } catch (error: any) {
     console.error('Add post failed:', error);
-    return { message: 'An unexpected error occurred.', errors: null };
+    return { message: error.message || 'An unexpected error occurred.', errors: null };
   }
 }
 
@@ -261,9 +255,9 @@ export async function handleUpdatePost(prevState: any, formData: FormData) {
         revalidatePath('/memes');
 
         return { message: 'Post updated successfully.', errors: null };
-    } catch (error) {
+    } catch (error: any) {
         console.error('Update post failed:', error);
-        return { message: 'An unexpected error occurred.', errors: null };
+        return { message: error.message || 'An unexpected error occurred.', errors: null };
     }
 }
 
@@ -282,11 +276,7 @@ export async function handleDeletePost(prevState: any, formData: FormData) {
     }
 
     try {
-        const deleted = await deletePost(validatedFields.data.id);
-
-        if (!deleted) {
-          return { message: 'Post not found.' };
-        }
+        await deletePost(validatedFields.data.id);
 
         revalidatePath('/admin/upload');
         revalidatePath('/blogs');
@@ -296,6 +286,6 @@ export async function handleDeletePost(prevState: any, formData: FormData) {
         return { message: 'Post deleted successfully.' };
     } catch (error: any) {
         console.error('Post deletion failed:', error);
-        return { message: 'An unexpected error occurred during post deletion.' };
+        return { message: error.message || 'An unexpected error occurred during post deletion.' };
     }
 }

@@ -1,6 +1,6 @@
 
-import { initializeApp, getApps, getApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
+import { getFirestore, Firestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -11,8 +11,28 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
-const db = getFirestore(app);
+let app: FirebaseApp | null = null;
+let db: Firestore | null = null;
+
+// Check if all necessary Firebase config values are present
+export const isFirebaseConfigured = 
+    !!firebaseConfig.apiKey &&
+    !!firebaseConfig.authDomain &&
+    !!firebaseConfig.projectId &&
+    !!firebaseConfig.storageBucket &&
+    !!firebaseConfig.messagingSenderId &&
+    !!firebaseConfig.appId;
+
+if (isFirebaseConfigured) {
+  try {
+    app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+    db = getFirestore(app);
+  } catch (e) {
+    console.error("Firebase initialization failed:", e);
+    db = null;
+  }
+} else {
+    console.warn("Firebase configuration is missing or incomplete. Admin panel features requiring database access will be disabled.");
+}
 
 export { db };

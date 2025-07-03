@@ -1,6 +1,6 @@
 
 import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, query, orderBy, serverTimestamp } from 'firebase/firestore';
-import { db } from './firebase';
+import { db, isFirebaseConfigured } from './firebase';
 
 export type Resource = {
   id: string;
@@ -10,10 +10,14 @@ export type Resource = {
   createdAt?: any;
 };
 
-const resourcesCollection = collection(db, 'resources');
+const resourcesCollectionName = 'resources';
 
 export async function getResources(): Promise<Resource[]> {
+  if (!db || !isFirebaseConfigured) {
+    return [];
+  }
   try {
+    const resourcesCollection = collection(db, resourcesCollectionName);
     const q = query(resourcesCollection, orderBy('createdAt', 'desc'));
     const resourcesSnapshot = await getDocs(q);
     const resourcesList = resourcesSnapshot.docs.map(doc => ({
@@ -28,7 +32,11 @@ export async function getResources(): Promise<Resource[]> {
 }
 
 export async function addResource(resource: Omit<Resource, 'id' | 'createdAt'>): Promise<Resource> {
+  if (!db || !isFirebaseConfigured) {
+    throw new Error('Firebase is not configured. Cannot add resource.');
+  }
   try {
+    const resourcesCollection = collection(db, resourcesCollectionName);
     const docRef = await addDoc(resourcesCollection, {
       ...resource,
       createdAt: serverTimestamp()
@@ -41,8 +49,11 @@ export async function addResource(resource: Omit<Resource, 'id' | 'createdAt'>):
 }
 
 export async function updateResource(id: string, updatedData: Partial<Omit<Resource, 'id' | 'href'>>): Promise<Resource | null> {
+  if (!db || !isFirebaseConfigured) {
+    throw new Error('Firebase is not configured. Cannot update resource.');
+  }
   try {
-    const resourceDoc = doc(db, 'resources', id);
+    const resourceDoc = doc(db, resourcesCollectionName, id);
     await updateDoc(resourceDoc, updatedData);
     return { id, ...updatedData } as Resource;
   } catch (error) {
@@ -52,8 +63,11 @@ export async function updateResource(id: string, updatedData: Partial<Omit<Resou
 }
 
 export async function deleteResource(id: string): Promise<boolean> {
+  if (!db || !isFirebaseConfigured) {
+    throw new Error('Firebase is not configured. Cannot delete resource.');
+  }
   try {
-    const resourceDoc = doc(db, 'resources', id);
+    const resourceDoc = doc(db, resourcesCollectionName, id);
     await deleteDoc(resourceDoc);
     return true;
   } catch (error) {
