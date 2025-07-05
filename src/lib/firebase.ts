@@ -31,12 +31,14 @@ if (isFirebaseConfigured) {
     db = getFirestore(app);
     storage = getStorage(app);
   } catch (e) {
-    console.error("Firebase initialization failed:", e);
+    console.error("Firebase client-side initialization failed:", e);
     db = null;
     storage = null;
   }
 } else {
-    console.warn("Firebase configuration is missing or incomplete. Admin panel features requiring database access will be disabled.");
+  if (process.env.NODE_ENV === 'development') {
+    console.warn("Firebase client-side configuration is missing or incomplete. Features requiring client-side Firebase will fall back to local data.");
+  }
 }
 
 export { db, storage };

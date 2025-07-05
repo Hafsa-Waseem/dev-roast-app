@@ -1,38 +1,39 @@
-import admin from 'firebase-admin';
+import admin, { type ServiceAccount } from 'firebase-admin';
 
-// This function safely parses the service account key from the environment variable.
-const getServiceAccount = () => {
-  const serviceAccountString = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
-  if (!serviceAccountString) {
-    return null;
-  }
-  try {
-    // The key is stored as a Base64 string to handle newlines and special characters in environment variables.
-    return JSON.parse(Buffer.from(serviceAccountString, 'base64').toString('utf-8'));
-  } catch (e) {
-    console.error('Failed to parse Firebase service account key. Make sure it is a valid, Base64-encoded JSON.', e);
-    return null;
-  }
-};
+// Check if the required environment variables for Firebase Admin are set.
+export const isFirebaseAdminConfigured =
+  !!process.env.FIREBASE_PROJECT_ID &&
+  !!process.env.FIREBASE_CLIENT_EMAIL &&
+  !!process.env.FIREBASE_PRIVATE_KEY &&
+  !!process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
 
-const serviceAccount = getServiceAccount();
-
-// Check if the essential parts of the service account are present.
-export const isFirebaseAdminConfigured = !!(serviceAccount && serviceAccount.project_id);
-
-// Initialize the Firebase Admin SDK only if it's not already initialized.
+// Initialize the Firebase Admin SDK only if it's configured and not already initialized.
 if (isFirebaseAdminConfigured && !admin.apps.length) {
   try {
+    // We construct the service account object from individual environment variables.
+    // This is more reliable than parsing a JSON string.
+    const serviceAccount: ServiceAccount = {
+      projectId: process.env.FIREBASE_PROJECT_ID,
+      clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+      // The private key from the JSON file needs to have its newlines escaped when stored in an .env file.
+      // We replace the escaped newlines with actual newline characters.
+      privateKey: (process.env.FIREBASE_PRIVATE_KEY || '').replace(/\\n/g, '\n'),
+    };
+    
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
       storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
     });
-  } catch (error) {
-    console.error('Firebase Admin SDK initialization failed:', error);
+  } catch (error: any) {
+    console.error('Firebase Admin SDK initialization failed:', error.message);
+  }
+} else if (!admin.apps.length) {
+  if (process.env.NODE_ENV === 'development') {
+    console.warn("Firebase Admin not configured. Required environment variables are missing. Admin features will be disabled.");
   }
 }
 
 // Export the admin database and storage instances.
 // They will be null if the configuration is missing, allowing the app to run without crashing.
-export const adminDb = isFirebaseAdminConfigured ? admin.firestore() : null;
-export const adminStorage = isFirebaseAdminConfigured ? admin.storage() : null;
+export const adminDb = admin.apps.length ? admin.firestore() : null;
+export const adminStorage = admin.apps.length ? admin.storage() : null;
