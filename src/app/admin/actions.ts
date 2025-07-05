@@ -7,6 +7,8 @@ import { addPost, deletePost, updatePost } from '@/lib/posts';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { storage } from '@/lib/firebase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 // --- Admin Login Action ---
 const loginSchema = z.object({
@@ -46,15 +48,32 @@ export async function handleAdminLogin(prevState: any, formData: FormData) {
 const uploadSchema = z.object({
   title: z.string().min(1, 'Title is required.'),
   description: z.string().min(1, 'Description is required.'),
-  link: z.string().url('Please enter a valid URL.'),
+  link: z.string().url('Please enter a valid URL.').optional(),
 });
 
 
 export async function handleUploadResource(prevState: any, formData: FormData) {
+  const file = formData.get('file') as File | null;
+  const link = formData.get('link') as string | null;
+
+  if ((!link || link === '') && (!file || file.size === 0)) {
+    return {
+      message: 'Validation failed.',
+      errors: { link: ['An external link or a file upload is required.'], file: ['A file upload or an external link is required.'] },
+    };
+  }
+
+  if (link && link !== '' && file && file.size > 0) {
+     return {
+      message: 'Validation failed.',
+      errors: { link: ['Please provide either a file or a link, not both.'], file: ['Please provide either a file or a link, not both.'] },
+    };
+  }
+  
   const validatedFields = uploadSchema.safeParse({
     title: formData.get('title'),
     description: formData.get('description'),
-    link: formData.get('link'),
+    link: link || undefined,
   });
 
   if (!validatedFields.success) {
@@ -63,14 +82,30 @@ export async function handleUploadResource(prevState: any, formData: FormData) {
       errors: validatedFields.error.flatten().fieldErrors,
     };
   }
-  
-  const { title, description, link } = validatedFields.data;
+
+  const { title, description } = validatedFields.data;
+  let resourceUrl = '';
   
   try {
+    if (file && file.size > 0) {
+        if (!storage) {
+            throw new Error('Firebase Storage is not configured. Cannot upload file.');
+        }
+        if (file.type !== 'application/pdf') {
+             return { message: 'Invalid file type. Please upload a PDF.', errors: null };
+        }
+        const storageRef = ref(storage, `resources/${Date.now()}-${file.name}`);
+        const fileBuffer = Buffer.from(await file.arrayBuffer());
+        await uploadBytes(storageRef, fileBuffer, { contentType: 'application/pdf' });
+        resourceUrl = await getDownloadURL(storageRef);
+    } else {
+        resourceUrl = link!;
+    }
+    
     await addResource({
       title,
       description,
-      href: link,
+      href: resourceUrl,
     });
   
     revalidatePath('/admin/upload');

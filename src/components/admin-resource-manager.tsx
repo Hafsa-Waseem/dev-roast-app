@@ -13,6 +13,7 @@ import { Loader2, UploadCloud, Trash2, FilePenLine } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Separator } from './ui/separator';
 
 const initialUploadState = { message: '', errors: null };
 const initialEditState = { message: '', errors: null };
@@ -61,9 +62,9 @@ export function AdminResourceManager({ initialResources }: AdminResourceManagerP
       toast({
         title: 'Action Status',
         description: uploadState.message,
-        variant: uploadState.errors ? 'destructive' : 'default',
+        variant: uploadState.errors || uploadState.message.includes('failed') ? 'destructive' : 'default',
       });
-      if (!uploadState.errors) {
+      if (!uploadState.errors && uploadState.message.includes('successfully')) {
         uploadFormRef.current?.reset();
       }
     }
@@ -74,7 +75,7 @@ export function AdminResourceManager({ initialResources }: AdminResourceManagerP
       <Card>
         <CardHeader>
           <CardTitle className="text-3xl">Manage Resources</CardTitle>
-          <CardDescription>Add a new resource by providing an external link. Direct file uploads require a separate storage service configuration (e.g., Firebase Storage).</CardDescription>
+          <CardDescription>Add a new resource by either providing an external link or uploading a PDF file directly.</CardDescription>
         </CardHeader>
         <CardContent>
           <form ref={uploadFormRef} action={uploadAction} className="space-y-6">
@@ -88,13 +89,27 @@ export function AdminResourceManager({ initialResources }: AdminResourceManagerP
               <Textarea id="description" name="description" placeholder="A short description of the resource." required />
               {uploadState.errors?.description && <p className="text-destructive text-sm">{uploadState.errors.description[0]}</p>}
             </div>
-
+            
+            <div className="text-sm text-muted-foreground">Provide an external link OR upload a PDF file. Please do not provide both.</div>
+            
             <div className="space-y-2">
-              <Label htmlFor="link">External PDF Link</Label>
-              <Input id="link" name="link" type="url" placeholder="https://example.com/document.pdf" required />
+              <Label htmlFor="link">External PDF Link (Option 1)</Label>
+              <Input id="link" name="link" type="url" placeholder="https://example.com/document.pdf" />
               {uploadState.errors?.link && <p className="text-destructive text-sm">{uploadState.errors.link[0]}</p>}
             </div>
-            
+
+            <div className="flex items-center gap-4">
+              <Separator className="flex-1"/>
+              <span className="text-muted-foreground text-sm">OR</span>
+              <Separator className="flex-1"/>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="file">Upload PDF File (Option 2)</Label>
+              <Input id="file" name="file" type="file" accept=".pdf" />
+               {uploadState.errors?.file && <p className="text-destructive text-sm">{uploadState.errors.file[0]}</p>}
+            </div>
+
             <UploadSubmitButton />
           </form>
         </CardContent>
@@ -121,7 +136,7 @@ export function AdminResourceManager({ initialResources }: AdminResourceManagerP
             </div>
           ))}
           {initialResources.length === 0 && (
-            <p className="text-muted-foreground text-center py-4">No resources available. Configure Firebase to add new ones.</p>
+            <p className="text-muted-foreground text-center py-4">No resources available. Add a new one to get started.</p>
           )}
         </CardContent>
       </Card>
