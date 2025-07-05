@@ -2,13 +2,11 @@
 'use server';
 
 import { z } from 'zod';
-import { addResource, deleteResource, updateResource } from '@/lib/resources';
-import { addPost, deletePost, updatePost } from '@/lib/posts';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { storage } from '@/lib/firebase';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { adminDb, adminStorage, isFirebaseAdminConfigured } from '@/lib/firebase-admin';
+import { FieldValue } from 'firebase-admin/firestore';
 
 // --- Admin Login Action ---
 const loginSchema = z.object({
@@ -53,6 +51,10 @@ const uploadSchema = z.object({
 
 
 export async function handleUploadResource(prevState: any, formData: FormData) {
+  if (!adminDb || !adminStorage) {
+    return { message: 'Firebase Admin is not configured. Cannot upload resource.' };
+  }
+
   const file = formData.get('file') as File | null;
   const link = formData.get('link') as string | null;
 
@@ -88,24 +90,32 @@ export async function handleUploadResource(prevState: any, formData: FormData) {
   
   try {
     if (file && file.size > 0) {
-        if (!storage) {
-            throw new Error('Firebase Storage is not configured. Cannot upload file.');
-        }
         if (file.type !== 'application/pdf') {
              return { message: 'Invalid file type. Please upload a PDF.', errors: null };
         }
-        const storageRef = ref(storage, `resources/${Date.now()}-${file.name}`);
+        
+        const bucket = adminStorage.bucket();
+        const fileName = `resources/${Date.now()}-${file.name}`;
         const fileBuffer = Buffer.from(await file.arrayBuffer());
-        await uploadBytes(storageRef, fileBuffer, { contentType: 'application/pdf' });
-        resourceUrl = await getDownloadURL(storageRef);
+        
+        const fileUpload = bucket.file(fileName);
+        await fileUpload.save(fileBuffer, {
+            metadata: { contentType: 'application/pdf' }
+        });
+        
+        // Make the file public and get its URL
+        await fileUpload.makePublic();
+        resourceUrl = fileUpload.publicUrl();
+
     } else {
         resourceUrl = link!;
     }
     
-    await addResource({
+    await adminDb.collection('resources').add({
       title,
       description,
       href: resourceUrl,
+      createdAt: FieldValue.serverTimestamp(),
     });
   
     revalidatePath('/admin/upload');
@@ -133,6 +143,9 @@ const editSchema = z.object({
 });
 
 export async function handleEditResource(prevState: any, formData: FormData) {
+    if (!adminDb) {
+      return { message: 'Firebase Admin is not configured.' };
+    }
     const validatedFields = editSchema.safeParse({
         id: formData.get('id'),
         title: formData.get('title'),
@@ -148,7 +161,7 @@ export async function handleEditResource(prevState: any, formData: FormData) {
 
     try {
         const { id, title, description } = validatedFields.data;
-        await updateResource(id, { title, description });
+        await adminDb.collection('resources').doc(id).update({ title, description });
 
         revalidatePath('/admin/upload');
         revalidatePath('/resources');
@@ -170,6 +183,9 @@ const deleteSchema = z.object({
 });
 
 export async function handleDeleteResource(prevState: any, formData: FormData) {
+    if (!adminDb) {
+      return { message: 'Firebase Admin is not configured.' };
+    }
     const validatedFields = deleteSchema.safeParse({
         id: formData.get('id'),
     });
@@ -179,7 +195,7 @@ export async function handleDeleteResource(prevState: any, formData: FormData) {
     }
 
     try {
-        await deleteResource(validatedFields.data.id);
+        await adminDb.collection('resources').doc(validatedFields.data.id).delete();
 
         revalidatePath('/admin/upload');
         revalidatePath('/resources');
@@ -220,6 +236,9 @@ const postSchema = z.discriminatedUnion("type", [
 
 
 export async function handleAddPost(prevState: any, formData: FormData) {
+  if (!adminDb) {
+    return { message: 'Firebase Admin is not configured.' };
+  }
   const type = formData.get('type');
   const dataForValidation: Record<string, FormDataEntryValue | null> = {
     type: type,
@@ -245,12 +264,13 @@ export async function handleAddPost(prevState: any, formData: FormData) {
 
   try {
     const postData = validatedFields.data;
-    await addPost({
-        type: postData.type,
-        title: postData.title || '',
-        content: postData.content,
-        author: postData.author,
-        date: postData.date
+    await adminDb.collection('posts').add({
+      type: postData.type,
+      title: postData.title || '',
+      content: postData.content,
+      author: postData.author || '',
+      date: postData.date || '',
+      createdAt: FieldValue.serverTimestamp()
     });
     
     revalidatePath('/admin/upload');
@@ -266,6 +286,9 @@ export async function handleAddPost(prevState: any, formData: FormData) {
 }
 
 export async function handleUpdatePost(prevState: any, formData: FormData) {
+    if (!adminDb) {
+      return { message: 'Firebase Admin is not configured.' };
+    }
     const type = formData.get('type');
     const dataForValidation: Record<string, FormDataEntryValue | null> = {
         id: formData.get('id'),
@@ -292,12 +315,12 @@ export async function handleUpdatePost(prevState: any, formData: FormData) {
     
     try {
         const { id, ...postData } = validatedFields.data;
-        await updatePost(id, {
+        await adminDb.collection('posts').doc(id).update({
             type: postData.type,
             title: postData.title || '',
             content: postData.content,
-            author: postData.author,
-            date: postData.date
+            author: postData.author || '',
+            date: postData.date || ''
         });
 
         revalidatePath('/admin/upload');
@@ -318,6 +341,9 @@ const deletePostSchema = z.object({
 });
 
 export async function handleDeletePost(prevState: any, formData: FormData) {
+    if (!adminDb) {
+      return { message: 'Firebase Admin is not configured.' };
+    }
     const validatedFields = deletePostSchema.safeParse({
         id: formData.get('id'),
     });
@@ -327,7 +353,7 @@ export async function handleDeletePost(prevState: any, formData: FormData) {
     }
 
     try {
-        await deletePost(validatedFields.data.id);
+        await adminDb.collection('posts').doc(validatedFields.data.id).delete();
 
         revalidatePath('/admin/upload');
         revalidatePath('/blogs');
