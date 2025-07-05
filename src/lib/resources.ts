@@ -14,31 +14,36 @@ export type Resource = {
 const resourcesCollectionName = 'resources';
 
 export async function getResources(): Promise<Resource[]> {
-   // If Firebase is configured, try to fetch from it.
-  if (db && isFirebaseConfigured) {
-    try {
-      const resourcesCollection = collection(db, resourcesCollectionName);
-      const q = query(resourcesCollection, orderBy('createdAt', 'desc'));
-      const resourcesSnapshot = await getDocs(q);
-
-      // If Firestore has data, return it.
-      if (!resourcesSnapshot.empty) {
-        const resourcesList = resourcesSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as Resource[];
-        return resourcesList;
-      }
-    } catch (error) {
-      // Silently catch the error. This prevents the app from showing a scary
-      // "PERMISSION_DENIED" error when Firebase credentials are not yet set.
-      // The function will then fall through to return local data.
-    }
+  // If Firebase is not configured, return the local data for demo purposes.
+  if (!db || !isFirebaseConfigured) {
+    return resourcesData as Resource[];
   }
 
-  // If Firebase is not configured, or if it's empty/errored, return local fallback data.
-  return resourcesData as Resource[];
+  // If Firebase is configured, always fetch from it.
+  try {
+    const resourcesCollection = collection(db, resourcesCollectionName);
+    const q = query(resourcesCollection, orderBy('createdAt', 'desc'));
+    const resourcesSnapshot = await getDocs(q);
+    
+    // If Firestore has data, return it.
+    if (!resourcesSnapshot.empty) {
+      const resourcesList = resourcesSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Resource[];
+      return resourcesList;
+    }
+  } catch (error) {
+    // If there's an error fetching (e.g., wrong keys, permissions), log it and return empty.
+    // This prevents the app from crashing.
+    console.error("Error fetching resources from Firestore:", error);
+    return [];
+  }
+  
+  // If Firebase is configured but the collection is empty, return an empty array.
+  return [];
 }
+
 
 export async function addResource(resource: Omit<Resource, 'id' | 'createdAt'>): Promise<Resource> {
   if (!db || !isFirebaseConfigured) {

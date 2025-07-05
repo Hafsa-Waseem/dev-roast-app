@@ -16,31 +16,36 @@ export type Post = {
 const postsCollectionName = 'posts';
 
 export async function getPosts(): Promise<Post[]> {
-  // If Firebase is configured, try to fetch from it.
-  if (db && isFirebaseConfigured) {
-    try {
-      const postsCollection = collection(db, postsCollectionName);
-      const q = query(postsCollection, orderBy('createdAt', 'desc'));
-      const postsSnapshot = await getDocs(q);
-      
-      // If Firestore has data, return it.
-      if (!postsSnapshot.empty) {
-        const postsList = postsSnapshot.docs.map(doc => ({
-          id: doc.id,
-          ...doc.data(),
-        })) as Post[];
-        return postsList;
-      }
-    } catch (error) {
-      // Silently catch the error. This prevents the app from showing a scary
-      // "PERMISSION_DENIED" error when Firebase credentials are not yet set.
-      // The function will then fall through to return local data.
+  // If Firebase is not configured, return the local data for demo purposes.
+  if (!db || !isFirebaseConfigured) {
+    return postsData as Post[];
+  }
+
+  // If Firebase is configured, always fetch from it.
+  try {
+    const postsCollection = collection(db, postsCollectionName);
+    const q = query(postsCollection, orderBy('createdAt', 'desc'));
+    const postsSnapshot = await getDocs(q);
+    
+    // If Firestore has data, return it.
+    if (!postsSnapshot.empty) {
+      const postsList = postsSnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Post[];
+      return postsList;
     }
+  } catch (error) {
+    // If there's an error fetching (e.g., wrong keys, permissions), log it and return empty.
+    // This prevents the app from crashing.
+    console.error("Error fetching posts from Firestore:", error);
+    return [];
   }
   
-  // If Firebase is not configured, or if it's empty/errored, return local fallback data.
-  return postsData as Post[];
+  // If Firebase is configured but the collection is empty, return an empty array.
+  return [];
 }
+
 
 export async function addPost(post: Omit<Post, 'id' | 'createdAt'>): Promise<Post> {
   if (!db || !isFirebaseConfigured) {
