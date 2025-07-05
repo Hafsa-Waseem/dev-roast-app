@@ -1,4 +1,3 @@
-
 import { getResources } from '@/lib/resources';
 import { getPosts } from '@/lib/posts';
 import { AdminResourceManager } from '@/components/admin-resource-manager';
@@ -20,8 +19,8 @@ export default async function AdminPage() {
           <AlertTriangle className="h-4 w-4 !text-amber-500" />
           <AlertTitle className="!text-amber-600 dark:!text-amber-400">Action Required: Configure Admin Credentials</AlertTitle>
           <AlertDescription className="text-amber-700/80 dark:text-amber-300/80">
-            Your Firebase **Admin** credentials are not configured on the server. The admin panel is in a "read-only" mode. To enable adding, editing, or deleting content, please set up your Firebase project and add the `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, and `FIREBASE_PRIVATE_KEY` to your environment variables.
-          </Description>
+            Your Firebase <b>Admin</b> credentials are not configured on the server. The admin panel is in a "read-only" mode. To enable adding, editing, or deleting content, please set up your Firebase project and add the `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, and `FIREBASE_PRIVATE_KEY` to your environment variables.
+          </AlertDescription>
         </Alert>
       )}
       <Card>
