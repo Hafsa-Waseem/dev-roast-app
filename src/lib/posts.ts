@@ -16,34 +16,29 @@ export type Post = {
 const postsCollectionName = 'posts';
 
 export async function getPosts(): Promise<Post[]> {
-  // If Firebase is not configured, return the local data for demo purposes.
-  if (!db || !isFirebaseConfigured) {
-    return postsData as Post[];
-  }
-
-  // If Firebase is configured, always fetch from it.
-  try {
-    const postsCollection = collection(db, postsCollectionName);
-    const q = query(postsCollection, orderBy('createdAt', 'desc'));
-    const postsSnapshot = await getDocs(q);
-    
-    // If Firestore has data, return it.
-    if (!postsSnapshot.empty) {
-      const postsList = postsSnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as Post[];
-      return postsList;
+  // If Firebase is configured, try fetching from it first.
+  if (db && isFirebaseConfigured) {
+    try {
+      const postsCollection = collection(db, postsCollectionName);
+      const q = query(postsCollection, orderBy('createdAt', 'desc'));
+      const postsSnapshot = await getDocs(q);
+      
+      // If Firestore has data, return it.
+      if (!postsSnapshot.empty) {
+        const postsList = postsSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Post[];
+        return postsList;
+      }
+    } catch (error) {
+      // If there's an error fetching (e.g., wrong keys, permissions), log it and fall through.
+      console.error("Could not fetch posts from Firestore, falling back to local data. Error:", error);
     }
-  } catch (error) {
-    // If there's an error fetching (e.g., wrong keys, permissions), log it and return empty.
-    // This prevents the app from crashing.
-    console.error("Error fetching posts from Firestore:", error);
-    return [];
   }
   
-  // If Firebase is configured but the collection is empty, return an empty array.
-  return [];
+  // Fallback: If Firebase is not configured, is empty, or fails to fetch, return the local data.
+  return postsData as Post[];
 }
 
 

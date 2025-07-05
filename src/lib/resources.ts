@@ -14,34 +14,29 @@ export type Resource = {
 const resourcesCollectionName = 'resources';
 
 export async function getResources(): Promise<Resource[]> {
-  // If Firebase is not configured, return the local data for demo purposes.
-  if (!db || !isFirebaseConfigured) {
-    return resourcesData as Resource[];
+  // If Firebase is configured, try fetching from it first.
+  if (db && isFirebaseConfigured) {
+    try {
+      const resourcesCollection = collection(db, resourcesCollectionName);
+      const q = query(resourcesCollection, orderBy('createdAt', 'desc'));
+      const resourcesSnapshot = await getDocs(q);
+      
+      // If Firestore has data, return it.
+      if (!resourcesSnapshot.empty) {
+        const resourcesList = resourcesSnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as Resource[];
+        return resourcesList;
+      }
+    } catch (error) {
+       // If there's an error fetching (e.g., wrong keys, permissions), log it and fall through.
+      console.error("Could not fetch resources from Firestore, falling back to local data. Error:", error);
+    }
   }
 
-  // If Firebase is configured, always fetch from it.
-  try {
-    const resourcesCollection = collection(db, resourcesCollectionName);
-    const q = query(resourcesCollection, orderBy('createdAt', 'desc'));
-    const resourcesSnapshot = await getDocs(q);
-    
-    // If Firestore has data, return it.
-    if (!resourcesSnapshot.empty) {
-      const resourcesList = resourcesSnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as Resource[];
-      return resourcesList;
-    }
-  } catch (error) {
-    // If there's an error fetching (e.g., wrong keys, permissions), log it and return empty.
-    // This prevents the app from crashing.
-    console.error("Error fetching resources from Firestore:", error);
-    return [];
-  }
-  
-  // If Firebase is configured but the collection is empty, return an empty array.
-  return [];
+  // Fallback: If Firebase is not configured, is empty, or fails to fetch, return the local data.
+  return resourcesData as Resource[];
 }
 
 

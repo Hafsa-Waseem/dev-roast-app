@@ -220,13 +220,21 @@ const postSchema = z.discriminatedUnion("type", [
 
 
 export async function handleAddPost(prevState: any, formData: FormData) {
-  const validatedFields = postSchema.safeParse({
-    type: formData.get('type'),
-    title: formData.get('title'),
+  const type = formData.get('type');
+  const dataForValidation: Record<string, FormDataEntryValue | null> = {
+    type: type,
     content: formData.get('content'),
-    author: formData.get('author'),
-    date: formData.get('date'),
-  });
+  };
+
+  if (type === 'blog' || type === 'article') {
+    dataForValidation.title = formData.get('title');
+  }
+  if (type === 'blog') {
+    dataForValidation.author = formData.get('author');
+    dataForValidation.date = formData.get('date');
+  }
+
+  const validatedFields = postSchema.safeParse(dataForValidation);
 
   if (!validatedFields.success) {
     return {
@@ -258,14 +266,22 @@ export async function handleAddPost(prevState: any, formData: FormData) {
 }
 
 export async function handleUpdatePost(prevState: any, formData: FormData) {
-    const validatedFields = postSchema.extend({id: z.string().min(1, "ID is missing")}).safeParse({
+    const type = formData.get('type');
+    const dataForValidation: Record<string, FormDataEntryValue | null> = {
         id: formData.get('id'),
-        type: formData.get('type'),
-        title: formData.get('title'),
+        type: type,
         content: formData.get('content'),
-        author: formData.get('author'),
-        date: formData.get('date'),
-    });
+    };
+
+    if (type === 'blog' || type === 'article') {
+        dataForValidation.title = formData.get('title');
+    }
+    if (type === 'blog') {
+        dataForValidation.author = formData.get('author');
+        dataForValidation.date = formData.get('date');
+    }
+
+    const validatedFields = postSchema.extend({id: z.string().min(1, "ID is missing")}).safeParse(dataForValidation);
 
     if (!validatedFields.success) {
         return {
