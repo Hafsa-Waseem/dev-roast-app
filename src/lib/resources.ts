@@ -21,7 +21,6 @@ const resourcesCollectionName = 'resources';
 export async function getResources(): Promise<Resource[]> {
    // If client-side Firebase is not configured, return local data.
   if (!db || !isFirebaseConfigured) {
-    console.warn("Firebase client not configured. Falling back to local resources data.");
     return resourcesData as Resource[];
   }
   
@@ -36,11 +35,15 @@ export async function getResources(): Promise<Resource[]> {
       ...doc.data(),
     })) as Resource[];
     
+    // If the database is empty, fall back to local data to ensure content is always visible.
+    if (resourcesList.length === 0) {
+        return resourcesData as Resource[];
+    }
+    
     return resourcesList;
 
   } catch (error) {
      // If there's an error fetching (e.g., permissions), log it and fall back to local data.
-    console.error("Could not fetch resources from Firestore, falling back to local data. Error:", error);
     return resourcesData as Resource[];
   }
 }
