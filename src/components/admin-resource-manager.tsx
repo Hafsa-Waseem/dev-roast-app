@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useActionState, useRef, useEffect, useState } from 'react';
@@ -82,12 +81,12 @@ export function AdminResourceManager({ initialResources }: AdminResourceManagerP
             <div className="space-y-2">
               <Label htmlFor="title">Resource Title</Label>
               <Input id="title" name="title" placeholder="e.g., Mastering Next.js" required />
-              {uploadState.errors?.title && <p className="text-destructive text-sm">{uploadState.errors.title[0]}</p>}
+              {uploadState?.errors?.title && <p className="text-destructive text-sm">{uploadState.errors.title[0]}</p>}
             </div>
             <div className="space-y-2">
               <Label htmlFor="description">Description</Label>
               <Textarea id="description" name="description" placeholder="A short description of the resource." required />
-              {uploadState.errors?.description && <p className="text-destructive text-sm">{uploadState.errors.description[0]}</p>}
+              {uploadState?.errors?.description && <p className="text-destructive text-sm">{uploadState.errors.description[0]}</p>}
             </div>
             
             <div className="text-sm text-muted-foreground">Provide an external link OR upload a PDF file. Please do not provide both.</div>
@@ -95,7 +94,7 @@ export function AdminResourceManager({ initialResources }: AdminResourceManagerP
             <div className="space-y-2">
               <Label htmlFor="link">External PDF Link (Option 1)</Label>
               <Input id="link" name="link" type="url" placeholder="https://example.com/document.pdf" />
-              {uploadState.errors?.link && <p className="text-destructive text-sm">{uploadState.errors.link[0]}</p>}
+              {uploadState?.errors?.link && <p className="text-destructive text-sm">{uploadState.errors.link[0]}</p>}
             </div>
 
             <div className="flex items-center gap-4">
@@ -107,7 +106,7 @@ export function AdminResourceManager({ initialResources }: AdminResourceManagerP
             <div className="space-y-2">
               <Label htmlFor="file">Upload PDF File (Option 2)</Label>
               <Input id="file" name="file" type="file" accept=".pdf" />
-               {uploadState.errors?.file && <p className="text-destructive text-sm">{uploadState.errors.file[0]}</p>}
+               {uploadState?.errors?.file && <p className="text-destructive text-sm">{uploadState.errors.file[0]}</p>}
             </div>
 
             <UploadSubmitButton />
@@ -191,12 +190,12 @@ function EditResourceDialog({ resource, isOpen, onOpenChange }: { resource: Reso
           <div className="space-y-2">
             <Label htmlFor="edit-title">Resource Title</Label>
             <Input id="edit-title" name="title" defaultValue={resource.title} required />
-             {editState.errors?.title && <p className="text-destructive text-sm">{editState.errors.title[0]}</p>}
+             {editState?.errors?.title && <p className="text-destructive text-sm">{editState.errors.title[0]}</p>}
           </div>
           <div className="space-y-2">
             <Label htmlFor="edit-description">Description</Label>
             <Textarea id="edit-description" name="description" defaultValue={resource.description} required />
-            {editState.errors?.description && <p className="text-destructive text-sm">{editState.errors.description[0]}</p>}
+            {editState?.errors?.description && <p className="text-destructive text-sm">{editState.errors.description[0]}</p>}
           </div>
           <CardFooter className="px-0 pt-4">
             <EditSubmitButton />
