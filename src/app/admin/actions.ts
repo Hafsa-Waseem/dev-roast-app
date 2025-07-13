@@ -64,7 +64,7 @@ export async function handleAdminLogin(prevState: any, formData: FormData) {
 const uploadSchema = z.object({
   title: z.string().min(1, 'Title is required.'),
   description: z.string().min(1, 'Description is required.'),
-  link: z.string().url('Please enter a valid URL.').optional(),
+  link: z.string().url('Please enter a valid URL.').optional().or(z.literal('')),
 });
 
 
@@ -77,14 +77,14 @@ export async function handleUploadResource(prevState: any, formData: FormData) {
   const file = formData.get('file') as File | null;
   const link = formData.get('link') as string | null;
 
-  if ((!link || link === '') && (!file || file.size === 0)) {
+  if (!link && (!file || file.size === 0)) {
     return {
       message: 'Validation failed.',
       errors: { link: ['An external link or a file upload is required.'], file: ['A file upload or an external link is required.'] },
     };
   }
 
-  if (link && link !== '' && file && file.size > 0) {
+  if (link && file && file.size > 0) {
      return {
       message: 'Validation failed.',
       errors: { link: ['Please provide either a file or a link, not both.'], file: ['Please provide either a file or a link, not both.'] },
@@ -115,16 +115,16 @@ export async function handleUploadResource(prevState: any, formData: FormData) {
         
         const bucket = adminStorage.bucket();
         const fileName = `resources/${Date.now()}-${file.name}`;
+        const fileUpload = bucket.file(fileName);
         const fileBuffer = Buffer.from(await file.arrayBuffer());
         
-        const fileUpload = bucket.file(fileName);
         await fileUpload.save(fileBuffer, {
-            metadata: { contentType: 'application/pdf' }
+            metadata: { contentType: 'application/pdf' },
+            public: true, // Make file public on upload
         });
-        
-        // Make the file public and get its URL
-        await fileUpload.makePublic();
-        resourceUrl = fileUpload.publicUrl();
+
+        // The public URL is now constructed deterministically
+        resourceUrl = `https://storage.googleapis.com/${bucket.name}/${fileName}`;
 
     } else {
         resourceUrl = link!;
