@@ -5,8 +5,26 @@ import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { adminDb, adminStorage, isFirebaseAdminConfigured } from '@/lib/firebase-admin';
+import { adminDb, adminStorage } from '@/lib/firebase-admin';
 import { FieldValue } from 'firebase-admin/firestore';
+
+// --- Configuration Checkers ---
+const requiredAdminVars: Record<string, boolean> = {
+  'FIREBASE_SERVICE_ACCOUNT_JSON': !!process.env.FIREBASE_SERVICE_ACCOUNT_JSON,
+  'NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET': !!process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  'ADMIN_SECRET_KEY': !!process.env.ADMIN_SECRET_KEY,
+};
+
+export function isFirebaseAdminConfigured() {
+  return Object.values(requiredAdminVars).every(v => v);
+}
+
+export function getMissingAdminVars() {
+  return Object.entries(requiredAdminVars)
+    .filter(([, value]) => !value)
+    .map(([key]) => key);
+}
+
 
 // --- Admin Login Action ---
 const loginSchema = z.object({

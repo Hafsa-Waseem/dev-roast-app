@@ -3,13 +3,13 @@ import { getPosts } from '@/lib/posts';
 import { AdminResourceManager } from '@/components/admin-resource-manager';
 import { AdminPostManager } from '@/components/admin-post-manager';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { isFirebaseAdminConfigured, missingAdminVars } from '@/lib/firebase-admin';
+import { isFirebaseAdminConfigured, getMissingAdminVars } from '@/app/admin/actions';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertTriangle } from 'lucide-react';
 
 export default async function AdminPage() {
-  // We check configuration status again here to ensure the latest state is used for rendering.
-  const isConfigured = isFirebaseAdminConfigured;
+  const isConfigured = isFirebaseAdminConfigured();
+  const missingVars = getMissingAdminVars();
   const resources = isConfigured ? await getResources() : [];
   const posts = isConfigured ? await getPosts() : [];
   
@@ -22,7 +22,7 @@ export default async function AdminPage() {
           <AlertDescription className="text-amber-700/80 dark:text-amber-300/80 space-y-2">
             <p>Your Firebase Admin panel is not working because some server settings are missing. Please add the following environment variables to your `.env` file:</p>
             <ul className="list-disc pl-5 mt-2 font-mono text-sm">
-              {missingAdminVars.map(v => <li key={v}>{v}</li>)}
+              {missingVars.map(v => <li key={v}>{v}</li>)}
             </ul>
             <p className="mt-2">For `FIREBASE_SERVICE_ACCOUNT_JSON`, you need to copy the entire content of your service account JSON file and paste it as a single line.</p>
             <p>For `ADMIN_SECRET_KEY`, create a strong, random password. You will use this key to log into the admin panel.</p>
