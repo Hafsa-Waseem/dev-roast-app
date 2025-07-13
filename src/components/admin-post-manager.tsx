@@ -1,4 +1,3 @@
-
 'use client';
 
 import type { Post } from '@/lib/posts';
@@ -90,14 +89,14 @@ export function AdminPostManager({ initialPosts }: AdminPostManagerProps) {
               <div className="space-y-2">
                 <Label htmlFor="title">Title</Label>
                 <Input id="title" name="title" placeholder="Post title" />
-                {addState.errors?.title && <p className="text-destructive text-sm">{addState.errors.title[0]}</p>}
+                {addState?.errors?.title && <p className="text-destructive text-sm">{addState.errors.title[0]}</p>}
               </div>
             )}
 
             <div className="space-y-2">
               <Label htmlFor="content">Content</Label>
               <Textarea id="content" name="content" placeholder={postType === 'meme' ? 'Meme caption...' : 'Post content or excerpt...'} required />
-              {addState.errors?.content && <p className="text-destructive text-sm">{addState.errors.content[0]}</p>}
+              {addState?.errors?.content && <p className="text-destructive text-sm">{addState.errors.content[0]}</p>}
             </div>
 
             {postType === 'blog' && (
@@ -105,12 +104,12 @@ export function AdminPostManager({ initialPosts }: AdminPostManagerProps) {
                 <div className="space-y-2">
                   <Label htmlFor="author">Author</Label>
                   <Input id="author" name="author" placeholder="Author's name" />
-                  {addState.errors?.author && <p className="text-destructive text-sm">{addState.errors.author[0]}</p>}
+                  {addState?.errors?.author && <p className="text-destructive text-sm">{addState.errors.author[0]}</p>}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="date">Date</Label>
                   <Input id="date" name="date" placeholder="e.g., June 20, 2025" />
-                  {addState.errors?.date && <p className="text-destructive text-sm">{addState.errors.date[0]}</p>}
+                  {addState?.errors?.date && <p className="text-destructive text-sm">{addState.errors.date[0]}</p>}
                 </div>
               </div>
             )}
@@ -219,14 +218,14 @@ function EditPostDialog({ post, isOpen, onOpenChange }: { post: Post | null, isO
             <div className="space-y-2">
               <Label htmlFor="edit-title">Title</Label>
               <Input id="edit-title" name="title" defaultValue={post.title} required />
-               {editState.errors?.title && <p className="text-destructive text-sm">{editState.errors.title[0]}</p>}
+               {editState?.errors?.title && <p className="text-destructive text-sm">{editState.errors.title[0]}</p>}
             </div>
           )}
           
           <div className="space-y-2">
             <Label htmlFor="edit-content">Content</Label>
             <Textarea id="edit-content" name="content" defaultValue={post.content} required />
-            {editState.errors?.content && <p className="text-destructive text-sm">{editState.errors.content[0]}</p>}
+            {editState?.errors?.content && <p className="text-destructive text-sm">{editState.errors.content[0]}</p>}
           </div>
 
           {post.type === 'blog' && (
@@ -234,12 +233,12 @@ function EditPostDialog({ post, isOpen, onOpenChange }: { post: Post | null, isO
                 <div className="space-y-2">
                   <Label htmlFor="edit-author">Author</Label>
                   <Input id="edit-author" name="author" defaultValue={post.author} />
-                  {editState.errors?.author && <p className="text-destructive text-sm">{editState.errors.author[0]}</p>}
+                  {editState?.errors?.author && <p className="text-destructive text-sm">{editState.errors.author[0]}</p>}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="edit-date">Date</Label>
                   <Input id="edit-date" name="date" defaultValue={post.date} />
-                  {editState.errors?.date && <p className="text-destructive text-sm">{editState.errors.date[0]}</p>}
+                  {editState?.errors?.date && <p className="text-destructive text-sm">{editState.errors.date[0]}</p>}
                 </div>
               </div>
           )}
