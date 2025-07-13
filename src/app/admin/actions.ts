@@ -15,11 +15,11 @@ const requiredAdminVars: Record<string, boolean> = {
   'ADMIN_SECRET_KEY': !!process.env.ADMIN_SECRET_KEY,
 };
 
-export function isFirebaseAdminConfigured() {
+export async function isFirebaseAdminConfigured() {
   return Object.values(requiredAdminVars).every(v => v);
 }
 
-export function getMissingAdminVars() {
+export async function getMissingAdminVars() {
   return Object.entries(requiredAdminVars)
     .filter(([, value]) => !value)
     .map(([key]) => key);
@@ -69,7 +69,8 @@ const uploadSchema = z.object({
 
 
 export async function handleUploadResource(prevState: any, formData: FormData) {
-  if (!adminDb || !adminStorage) {
+  const isConfigured = await isFirebaseAdminConfigured();
+  if (!isConfigured || !adminDb || !adminStorage) {
     return { message: 'Firebase Admin is not configured. Cannot upload resource.' };
   }
 
@@ -161,7 +162,8 @@ const editSchema = z.object({
 });
 
 export async function handleEditResource(prevState: any, formData: FormData) {
-    if (!adminDb) {
+    const isConfigured = await isFirebaseAdminConfigured();
+    if (!isConfigured || !adminDb) {
       return { message: 'Firebase Admin is not configured.' };
     }
     const validatedFields = editSchema.safeParse({
@@ -201,7 +203,8 @@ const deleteSchema = z.object({
 });
 
 export async function handleDeleteResource(prevState: any, formData: FormData) {
-    if (!adminDb) {
+    const isConfigured = await isFirebaseAdminConfigured();
+    if (!isConfigured || !adminDb) {
       return { message: 'Firebase Admin is not configured.' };
     }
     const validatedFields = deleteSchema.safeParse({
@@ -254,7 +257,8 @@ const postSchema = z.discriminatedUnion("type", [
 
 
 export async function handleAddPost(prevState: any, formData: FormData) {
-  if (!adminDb) {
+  const isConfigured = await isFirebaseAdminConfigured();
+  if (!isConfigured || !adminDb) {
     return { message: 'Firebase Admin is not configured.' };
   }
   const type = formData.get('type');
@@ -304,7 +308,8 @@ export async function handleAddPost(prevState: any, formData: FormData) {
 }
 
 export async function handleUpdatePost(prevState: any, formData: FormData) {
-    if (!adminDb) {
+    const isConfigured = await isFirebaseAdminConfigured();
+    if (!isConfigured || !adminDb) {
       return { message: 'Firebase Admin is not configured.' };
     }
     const type = formData.get('type');
@@ -359,7 +364,8 @@ const deletePostSchema = z.object({
 });
 
 export async function handleDeletePost(prevState: any, formData: FormData) {
-    if (!adminDb) {
+    const isConfigured = await isFirebaseAdminConfigured();
+    if (!isConfigured || !adminDb) {
       return { message: 'Firebase Admin is not configured.' };
     }
     const validatedFields = deletePostSchema.safeParse({
