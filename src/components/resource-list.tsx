@@ -23,11 +23,12 @@ export function ResourceList({ initialResources }: ResourceListProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const { toast } = useToast();
 
-  const handleShare = (link: string, title: string) => {
-    navigator.clipboard.writeText(link).then(() => {
+  const handleShare = (resourceId: string, title: string) => {
+    const shareUrl = `${window.location.origin}/resources#${resourceId}`;
+    navigator.clipboard.writeText(shareUrl).then(() => {
       toast({
         title: 'Link Copied!',
-        description: `Link to "${title}" copied to clipboard.`,
+        description: `A shareable link for "${title}" has been copied to your clipboard.`,
       });
     }).catch(err => {
       console.error('Failed to copy: ', err);
@@ -67,7 +68,7 @@ export function ResourceList({ initialResources }: ResourceListProps) {
           {filteredResources.map((resource) => {
             const isExternal = resource.href.startsWith('http');
             return (
-              <Card key={resource.id} className="flex flex-col overflow-hidden transition-transform duration-300 hover:-translate-y-1">
+              <Card key={resource.id} id={resource.id} className="flex flex-col overflow-hidden transition-transform duration-300 hover:-translate-y-1 scroll-mt-20">
                 <CardContent className="p-6 flex flex-col flex-grow items-center text-center">
                   <div className="p-4 bg-primary/10 rounded-full mb-4">
                     <FileText className="h-10 w-10 text-primary" />
@@ -97,7 +98,7 @@ export function ResourceList({ initialResources }: ResourceListProps) {
                   <Button
                     variant="outline"
                     className="flex-1"
-                    onClick={() => handleShare(resource.href, resource.title)}
+                    onClick={() => handleShare(resource.id, resource.title)}
                   >
                     <Share2 className="mr-2 h-4 w-4" />
                     Share
