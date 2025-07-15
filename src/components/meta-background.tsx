@@ -240,21 +240,19 @@ export function MetaBackground() {
         <div className="absolute h-[70vmin] w-[70vmin] animate-[spin_50s_linear_infinite_reverse] rounded-full border border-accent/20" />
       </div>
 
-      {isMounted && (
-        <>
-          <div className="relative h-full w-full">
-            {elements.map((el) => (
-              <div key={el.id} style={el.style}>
+      <div className="relative h-full w-full">
+        {isMounted && elements.map((el) => (
+            <div key={el.id} style={el.style}>
                 {getElementComponent(el)}
-              </div>
-            ))}
-          </div>
+            </div>
+        ))}
+      </div>
 
-          <div className="absolute bottom-4 left-4 font-mono text-sm text-[var(--meta-glow-color)]">
-            <span>&gt; {currentCommand}</span>
-            <span className="inline-block h-4 w-2 animate-[blink-caret_1s_step-end_infinite] border-r-2 border-[var(--meta-glow-color)]"></span>
-          </div>
-        </>
+      {isMounted && (
+        <div className="absolute bottom-4 left-4 font-mono text-sm text-[var(--meta-glow-color)]">
+          <span>&gt; {currentCommand}</span>
+          <span className="inline-block h-4 w-2 animate-[blink-caret_1s_step-end_infinite] border-r-2 border-[var(--meta-glow-color)]"></span>
+        </div>
       )}
     </div>
   );
