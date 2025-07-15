@@ -331,6 +331,96 @@
     "content": "Stop writing clunky `for` loops. These three functional methods will make your array manipulations cleaner, more readable, and more powerful."
   },
   {
+    "id": "article-16",
+    "type": "article",
+    "title": "Mastering Asynchronous JavaScript: Promises, Async/Await, and Real Use Cases",
+    "content": "Asynchronous JavaScript powers the modern web. From fetching data to real-time updates, it’s everywhere. Yet many developers struggle with understanding it.\n\nThis article explains the foundations:\n\n- What is the call stack?\n- How does the event loop actually work?\n- What are Promises, and how do they chain?\n\nWe walk through real-world examples using fetch(), simulate API calls with setTimeout, and show how async/await makes code more readable.\n\nBy the end, you won’t just understand async — you’ll wield it."
+  },
+  {
+    "id": "article-17",
+    "type": "article",
+    "title": "State Management in React: From useState to Redux Toolkit",
+    "content": "React offers multiple ways to manage state. But which one should you use?\n\nIn this article, we compare:\n\n- useState for local UI logic\n- useReducer for complex logic\n- Context API for global light-weight state\n- Redux Toolkit for scalable enterprise-grade state\n\nYou’ll also get a practical example showing when Redux is overkill — and when it’s necessary."
+  },
+  {
+    "id": "article-18",
+    "type": "article",
+    "title": "Clean Code Principles Every Developer Should Follow",
+    "content": "Writing clean code is not about perfection. It’s about empathy — for the person reading your code next.\n\nWe cover:\n\n- Meaningful naming\n- Function purity\n- Separation of concerns\n- Single-responsibility principle\n- Commenting smartly (not excessively)\n\nWe also share code before/after examples to make these principles crystal clear."
+  },
+  {
+    "id": "article-19",
+    "type": "article",
+    "title": "Understanding Git Beyond push, pull, and clone",
+    "content": "Most developers use Git — but few actually understand it.\n\nIn this article:\n\n- What’s a commit object?\n- How does branching really work?\n- What’s a detached HEAD?\n\nYou’ll also learn lifesaving commands:\n\n- git reflog\n- git cherry-pick\n- git bisect\n\nNo more blind copy-pasting from Stack Overflow."
+  },
+  {
+    "id": "article-20",
+    "type": "article",
+    "title": "Building a Full Auth Flow with Firebase Auth in React",
+    "content": "Authentication doesn’t have to be painful.\n\nWe walk through step-by-step:\n\n- Setting up Firebase Auth\n- Email/password sign-up\n- Login/logout with context\n- Protecting routes\n- Handling JWTs\n\nThis article includes copy-paste-ready code and structure that you can plug into any React project."
+  },
+  {
+    "id": "article-21",
+    "type": "article",
+    "title": "How to Optimize React Apps for Speed and Performance",
+    "content": "Slow React apps are often not a backend issue — they’re frontend mistakes.\n\nWe cover:\n\n- React.memo and useCallback\n- Virtualization with react-window\n- Lazy loading components\n- Avoiding re-renders with key props\n- Bundle analysis tools\n\nPerformance is not about hacks — it’s about smart architecture."
+  },
+  {
+    "id": "article-22",
+    "type": "article",
+    "title": "REST vs GraphQL: Which One Should You Use and When?",
+    "content": "This article breaks it down:\n\nREST pros:\n\n- Simpler caching\n- Familiar structure\n\nGraphQL pros:\n\n- Fewer network calls\n- Strong typing\n- More control over queries\n\nWe end with use cases — and when mixing both might be best."
+  },
+  {
+    "id": "article-23",
+    "type": "article",
+    "title": "Firebase vs Supabase: A Practical Comparison",
+    "content": "We go feature-by-feature:\n\n- Authentication\n- Real-time data\n- Database structure (Firestore vs Postgres)\n- Pricing\n- Ecosystem\n\nIncludes a mini project example implemented in both platforms."
+  },
+  {
+    "id": "article-24",
+    "type": "article",
+    "title": "Building a Chat App with Firestore and React in Under 100 Lines",
+    "content": "We create a real-time group chat app with:\n\n- Firestore listeners\n- useEffect for syncing\n- useRef for scroll-to-bottom\n\nNo Redux. No overengineering.\nJust real-time fun."
+  },
+  {
+    "id": "article-25",
+    "type": "article",
+    "title": "How to Build a Dark Mode Toggle in React (with LocalStorage)",
+    "content": "A beginner-friendly article that teaches:\n\n- How to manage theme state\n- How to persist user choice with localStorage\n- How to use useEffect to sync state\n- How to apply dark styles using Tailwind or CSS modules"
+  },
+  {
+    "id": "article-26",
+    "type": "article",
+    "title": "Setting Up Your First CI/CD Pipeline with GitHub Actions",
+    "content": "We show you how to:\n\n- Automatically test code on push\n- Lint and format before merge\n- Deploy to Vercel or Firebase Hosting\n\nCode is provided for each step, including secrets setup."
+  },
+  {
+    "id": "article-27",
+    "type": "article",
+    "title": "Design Patterns in JavaScript You Probably Already Use",
+    "content": "We explore:\n\n- The Module Pattern\n- Singleton\n- Factory\n- Observer (in event handling)\n\nEach comes with examples and how it shows up in real apps."
+  },
+  {
+    "id": "article-28",
+    "type": "article",
+    "title": "Server Actions in Next.js 14 Explained Like You’re 5",
+    "content": "This new feature changes everything.\n\nLearn:\n\n- What server actions are\n- How they differ from API routes\n- How to use them with forms\n- How to handle loading states properly\n\nCode examples included. Simpler than you think."
+  },
+  {
+    "id": "article-29",
+    "type": "article",
+    "title": "Why Most Portfolio Sites Fail (and How to Fix Yours)",
+    "content": "Most developer portfolios don’t get clients. Here’s why:\n\n- Too technical, not benefit-driven\n- No clear call-to-action\n- Weak copywriting\n\nWe teach how to write “What I Do” sections that sell — not just impress."
+  },
+  {
+    "id": "article-30",
+    "type": "article",
+    "title": "How to Write Developer Blogs That People Actually Read",
+    "content": "We end with meta: how to blog about code without sounding robotic.\n\nTips:\n\n- Tell stories\n- Add struggle before the solution\n- Use humor and analogies\n- Break long paragraphs\n- Show your personality\n\nBecause even code deserves a voice."
+  },
+  {
     "id": "meme-1",
     "type": "meme",
     "content": "'It works on my machine.'"
@@ -559,4 +649,3 @@
     
 
     
-
