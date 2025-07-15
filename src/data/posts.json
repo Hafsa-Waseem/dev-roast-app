@@ -284,7 +284,83 @@
     "id": "meme-15",
     "type": "meme",
     "content": "Documentation? The code is self-documenting."
+  },
+  {
+    "id": "meme-16",
+    "type": "meme",
+    "content": "I have a bug. Let's ignore it until it becomes a feature."
+  },
+  {
+    "id": "meme-17",
+    "type": "meme",
+    "content": "Why does it work? — A developer, after blindly fixing something."
+  },
+  {
+    "id": "meme-18",
+    "type": "meme",
+    "content": "git commit -m 'final FINAL noMoreChanges PLEASE' Next commit: final_final_2_revised_ultimate"
+  },
+  {
+    "id": "meme-19",
+    "type": "meme",
+    "content": "Me trying to understand my code after 3 days: “Who wrote this garbage?” Also me: “Oh. I did.”"
+  },
+  {
+    "id": "meme-20",
+    "type": "meme",
+    "content": "Junior Dev: \"I use debugger.\" Senior Dev: \"I use console.log.\" Architect: \"I just guess.\""
+  },
+  {
+    "id": "meme-21",
+    "type": "meme",
+    "content": "Me: “Let’s fix one bug.” 2 hours later: “I rewrote the whole app.”"
+  },
+  {
+    "id": "meme-22",
+    "type": "meme",
+    "content": "React is easy. — Said no backend dev ever."
+  },
+  {
+    "id": "meme-23",
+    "type": "meme",
+    "content": "Your code is like a sandwich. Looks fine until someone else tries to eat it."
+  },
+  {
+    "id": "meme-24",
+    "type": "meme",
+    "content": "Code never lies, but comments sometimes do. — Someone wise… or just lazy"
+  },
+  {
+    "id": "meme-25",
+    "type": "meme",
+    "content": "When someone says \"It works on my machine\": Congratulations. Would you like a cookie or a debugger?"
+  },
+  {
+    "id": "meme-26",
+    "type": "meme",
+    "content": "Why do I keep checking LinkedIn while coding? Because facing bugs is easier when you feel \"professionally distracted.\""
+  },
+  {
+    "id": "meme-27",
+    "type": "meme",
+    "content": "“Let’s deploy on Friday, what could go wrong?” — Famous last words of many developers."
+  },
+  {
+    "id": "meme-28",
+    "type": "meme",
+    "content": "When you copy code from Stack Overflow… And it actually works! Me: “I am a God now.”"
+  },
+  {
+    "id": "meme-29",
+    "type": "meme",
+    "content": "DevDare completed. Sanity: 0. Bugs: 7. Pride: Infinite."
+  },
+  {
+    "id": "meme-30",
+    "type": "meme",
+    "content": "“AI wrote it. I pasted it. It worked. I don’t know what I’m doing.” — Modern Developer Manifesto"
   }
 ]
+    
 
     
