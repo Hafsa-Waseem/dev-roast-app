@@ -2,15 +2,34 @@
 
 import { useState, useEffect, useRef } from 'react';
 
-const FLOATING_ELEMENTS = ['⚛️', '🐛', '☕', '🔥', '💬', '👑'];
-const FLOATING_QUOTES = [
-  'console.log("here")',
-  'git blame life',
-  'works on my machine',
-  'cache invalidation?',
-  'is it a feature?',
-  'restarting...',
+const FLOATING_ELEMENTS = [
+  { type: 'emoji', content: '⚛️' },
+  { type: 'emoji', content: '🐛' },
+  { type: 'emoji', content: '☕' },
+  { type: 'emoji', content: '🔥' },
+  { type: 'emoji', content: '💬' },
+  { type: 'emoji', content: '👑' },
+  { type: 'quote', content: 'console.log("here")' },
+  { type: 'quote', content: 'git blame life' },
+  { type: 'quote', content: 'works on my machine' },
+  { type: 'quote', content: 'cache invalidation?' },
+  { type: 'quote', content: 'is it a feature?' },
+  { type: 'quote', content: 'restarting...' },
+  { type: 'code', content: 'const x = 42;' },
+  { type: 'code', content: '<div>Hello</div>' },
+  { type: 'key', content: 'Ctrl' },
+  { type: 'key', content: 'C' },
+  { type: 'key', content: 'V' },
+  { type: 'badge', content: 'Bug Killer' },
+  { type: 'mindmap', content: 'Logic' },
+  { type: 'mindmap', content: 'UI/UX' },
+  { type: 'mindmap', content: 'Refactor' },
+  { type: 'icon', content: 'react' },
+  { type: 'icon', content: 'js' },
+  { type: 'icon', content: 'firebase' },
+  { type: 'icon', content: 'brain' },
 ];
+
 const TERMINAL_COMMANDS = [
   'npm install hope',
   'git push --force-with-lease',
@@ -22,16 +41,37 @@ const TERMINAL_COMMANDS = [
   'Running tests... 0 passed.',
 ];
 
-// Helper to get random position and animation duration
-const getRandomStyle = () => {
-  const top = `${Math.random() * 90}vh`;
-  const left = `${Math.random() * 90}vw`;
-  const animationDuration = `${Math.random() * 15 + 10}s`; // 10s to 25s
-  const animationDelay = `${Math.random() * 5}s`;
-  return { top, left, animationDuration, animationDelay };
-};
+const LanguageIcons: { [key: string]: React.FC<any> } = {
+    react: (props) => (
+      <svg {...props} viewBox="-11.5 -10.23174 23 20.46348">
+        <circle cx="0" cy="0" r="2.05" fill="currentColor" />
+        <g stroke="currentColor" strokeWidth="1" fill="none">
+          <ellipse rx="11" ry="4.2" />
+          <ellipse rx="11" ry="4.2" transform="rotate(60)" />
+          <ellipse rx="11" ry="4.2" transform="rotate(120)" />
+        </g>
+      </svg>
+    ),
+    js: (props) => (
+        <svg {...props} viewBox="0 0 24 24"><path d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.82-2.22-2.123-3.345-.81-.675-1.636-1.26-2.437-1.785.12-.135.255-.27.39-.42.63-.705.945-1.425.945-2.16 0-.75-.33-1.44-.99-2.07-.645-.63-1.44-.945-2.385-.945-1.02 0-1.86.345-2.52 1.035-.66.69-.99 1.515-.99 2.475 0 1.035.33 1.89.99 2.565.66.675 1.515 1.012 2.565 1.012.705 0 1.32-.165 1.845-.495.24-.15.465-.345.675-.585.525.465 1.11.99 1.755 1.575.81.675 1.635 1.26 2.475 1.755.255.15.51.285.765.405.09.045.18.06.27.06.24 0 .465-.09.66-.27.195-.18.285-.405.285-.675 0-.195-.06-.39-.18-.585zm-9.015-3.525c-.27-.285-.405-.63-.405-1.035 0-.42.135-.78.405-1.08.27-.3.615-.45 1.035-.45.42 0 .78.15 1.08.45.3.3.45.66.45 1.08 0 .405-.15.75-.45 1.035-.3.285-.66.435-1.08.435-.42 0-.765-.15-1.035-.435zM4.78 18.284c-.18-1.095-.824-2.22-2.128-3.344-.81-.676-1.637-1.26-2.437-1.786.12-.134.255-.27.39-.42.63-.705.945-1.425.945-2.16 0-.75-.33-1.44-.99-2.07-.645-.63-1.44-.945-2.385-.945-1.02 0-1.86.345-2.52 1.035-.66.69-.99 1.515-.99 2.475 0 1.035.33 1.89.99 2.565.66.675 1.514 1.013 2.564 1.013.706 0 1.32-.165 1.846-.495.24-.15.465-.345.675-.585.525.465 1.11.99 1.755 1.575.81.675 1.635 1.26 2.475 1.755.255.15.51.285.765.405.09.045.18.06.27.06.24 0 .465-.09.66-.27.195-.18.285-.405.285-.675 0-.195-.06-.39-.18-.585zM1.96 14.76c-.27-.284-.405-.63-.405-1.036 0-.42.135-.78.405-1.08.27-.3.615-.45 1.035-.45.42 0 .78.15 1.08.45.3.3.45.66.45 1.08 0 .405-.15.75-.45 1.035-.3.285-.66.436-1.08.436-.42 0-.765-.15-1.035-.435z" fill="currentColor"/></svg>
+    ),
+    firebase: (props) => (
+      <svg {...props} viewBox="0 0 24 24"><path d="M3.01 9.62a.55.55 0 0 1-.2-1.02L6.1 6.22a.55.55 0 0 1 .19-.04l12.42 3.2a.55.55 0 0 1 .18.87l-3.3 2.37a.55.55 0 0 1-.4-.01l-4.1-2.58a.55.55 0 0 0-.58.07l-3.79 3.23a.55.55 0 0 1-.61.1zM18.8 9.94l-12.4-3.2a.55.55 0 0 0-.19.04L3.2 9.4a.55.55 0 0 0 .2 1.02l.6-.1a.55.55 0 0 1 .62-.1l3.78-3.22a.55.55 0 0 1 .58-.08l4.1 2.58a.55.55 0 0 0 .4.01l3.3-2.37a.55.55 0 0 0-.18-.87zM3.82 20.35a.55.55 0 0 1-.36-1l7.82-10.43a.55.55 0 0 1 .9.05l5.47 13.2a.55.55 0 0 1-.95.4l-2.93-7.07a.55.55 0 0 0-.96-.03L8.7 20.18a.55.55 0 0 1-.58.23l-4.3-.06z" fill="currentColor"/></svg>
+    ),
+    brain: (props) => (
+      <svg {...props} viewBox="0 0 24 24"><path d="M12 2a9.5 9.5 0 0 0-9.5 9.5c0 2.22 1.54 4.54 2.5 5.56V21a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2h3v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-3.94c.96-1.02 2.5-3.34 2.5-5.56A9.5 9.5 0 0 0 12 2zm-3.5 12.5a1 1 0 1 1 1-1a1 1 0 0 1-1 1zm2-4a1 1 0 1 1 1-1a1 1 0 0 1-1 1zm3 0a1 1 0 1 1 1-1a1 1 0 0 1-1 1zm2.5 4a1 1 0 1 1 1-1a1 1 0 0 1-1 1z" fill="currentColor"/></svg>
+    )
+  };
 
-// Shooting Star class for canvas
+// Helper to get random position and animation properties
+const getRandomStyle = () => ({
+  top: `${Math.random() * 90}vh`,
+  left: `${Math.random() * 90}vw`,
+  animationDuration: `${Math.random() * 15 + 10}s`,
+  animationDelay: `${Math.random() * 5}s`,
+  transform: `scale(${Math.random() * 0.5 + 0.7}) rotate(${Math.random() * 60 - 30}deg)`
+});
+
 class Star {
   x: number;
   y: number;
@@ -75,16 +115,13 @@ export function MetaBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    // Generate floating elements
-    const generatedElements = [...FLOATING_ELEMENTS, ...FLOATING_QUOTES].map((content, i) => ({
+    const generatedElements = FLOATING_ELEMENTS.map((el, i) => ({
       id: i,
-      content,
+      ...el,
       style: getRandomStyle(),
-      isEmoji: i < FLOATING_ELEMENTS.length,
     }));
     setElements(generatedElements);
 
-    // Terminal typing effect
     let charIndex = 0;
     const interval = setInterval(() => {
       const command = TERMINAL_COMMANDS[commandIndex];
@@ -102,28 +139,11 @@ export function MetaBackground() {
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
     
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    
-    let stars: Star[] = [];
-    for (let i = 0; i < 3; i++) {
-        stars.push(new Star(ctx));
-    }
-    
     let animationFrameId: number;
-    const render = () => {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        stars.forEach(star => {
-            star.draw();
-            star.update();
-        });
-        animationFrameId = requestAnimationFrame(render);
-    };
-    render();
+    let stars: Star[] = [];
 
     const handleResize = () => {
         canvas.width = window.innerWidth;
@@ -133,17 +153,52 @@ export function MetaBackground() {
             stars.push(new Star(ctx));
         }
     }
-    window.addEventListener('resize', handleResize);
+    handleResize();
 
+    const render = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        stars.forEach(star => {
+            star.draw();
+            star.update();
+        });
+        animationFrameId = requestAnimationFrame(render);
+    };
+    render();
+    
+    window.addEventListener('resize', handleResize);
     return () => {
         cancelAnimationFrame(animationFrameId);
         window.removeEventListener('resize', handleResize);
     }
   }, []);
 
+  const getElementComponent = (el: any) => {
+    const classBase = 'absolute animate-[float_linear_infinite]';
+    const glowClass = 'drop-shadow-[0_0_5px_var(--meta-glow-color)]';
+    
+    switch (el.type) {
+      case 'emoji':
+        return <span className={`${classBase} text-4xl`}>{el.content}</span>;
+      case 'quote':
+        return <span className={`${classBase} rounded bg-black/30 px-2 py-1 text-sm font-mono text-white/50 backdrop-blur-sm`}>{el.content}</span>;
+      case 'code':
+        return <span className={`${classBase} rounded bg-black/50 border border-primary/20 px-2 py-1 text-sm font-mono text-primary/70 backdrop-blur-sm`}>{el.content}</span>;
+      case 'key':
+        return <kbd className={`${classBase} rounded border border-white/20 bg-white/10 px-2 py-1 text-sm font-sans text-white/60`}>{el.content}</kbd>;
+      case 'badge':
+        return <span className={`${classBase} ${glowClass} rounded-full bg-primary/70 px-3 py-1 text-xs font-bold text-primary-foreground animate-[spin_20s_linear_infinite]`}>{el.content}</span>;
+      case 'mindmap':
+        return <span className={`${classBase} rounded-lg border border-dashed border-white/30 bg-black/20 px-3 py-1 text-sm text-white/70`}>{el.content}</span>;
+      case 'icon':
+        const Icon = LanguageIcons[el.content];
+        return <Icon className={`${classBase} ${glowClass} h-10 w-10 text-primary/80`} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="fixed inset-0 -z-10 h-full w-full overflow-hidden">
-      {/* Animated Grid */}
       <div
         className="absolute inset-0 h-full w-full opacity-50"
         style={{
@@ -152,26 +207,21 @@ export function MetaBackground() {
           animation: 'grid-pan 60s linear infinite',
         }}
       />
-
-      {/* Canvas for Shooting Stars */}
+      
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
-      {/* Floating Elements */}
-      {elements.map(({ id, content, style, isEmoji }) => (
-        <span
-          key={id}
-          className={`absolute animate-[float_linear_infinite] ${
-            isEmoji
-              ? 'text-4xl'
-              : 'rounded bg-black/30 px-2 py-1 text-sm font-mono text-white/50 backdrop-blur-sm'
-          }`}
-          style={style}
-        >
-          {content}
-        </span>
+      {/* Orbiting Ring */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="h-[50vmin] w-[50vmin] animate-[spin_40s_linear_infinite] rounded-full border-2 border-dashed border-primary/20" />
+        <div className="absolute h-[70vmin] w-[70vmin] animate-[spin_50s_linear_infinite_reverse] rounded-full border border-accent/20" />
+      </div>
+
+      {elements.map((el) => (
+        <div key={el.id} style={el.style}>
+          {getElementComponent(el)}
+        </div>
       ))}
 
-      {/* Typing Terminal Line */}
       <div className="absolute bottom-4 left-4 font-mono text-sm text-[var(--meta-glow-color)]">
         <span>&gt; {currentCommand}</span>
         <span className="inline-block h-4 w-2 animate-[blink-caret_1s_step-end_infinite] border-r-2 border-[var(--meta-glow-color)]"></span>
