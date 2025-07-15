@@ -3,9 +3,10 @@
 import { useState, useMemo } from 'react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Download, FileText, Search } from 'lucide-react';
+import { Download, FileText, Search, Share2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { useToast } from '@/hooks/use-toast';
 
 type Resource = {
   id: string;
@@ -20,6 +21,23 @@ type ResourceListProps = {
 
 export function ResourceList({ initialResources }: ResourceListProps) {
   const [searchTerm, setSearchTerm] = useState('');
+  const { toast } = useToast();
+
+  const handleShare = (link: string, title: string) => {
+    navigator.clipboard.writeText(link).then(() => {
+      toast({
+        title: 'Link Copied!',
+        description: `Link to "${title}" copied to clipboard.`,
+      });
+    }).catch(err => {
+      console.error('Failed to copy: ', err);
+      toast({
+        title: 'Error',
+        description: 'Failed to copy link.',
+        variant: 'destructive',
+      });
+    });
+  };
 
   const filteredResources = useMemo(() => {
     if (!searchTerm) {
@@ -64,8 +82,8 @@ export function ResourceList({ initialResources }: ResourceListProps) {
                     {resource.description}
                   </p>
                 </CardContent>
-                <CardFooter className="p-4 mt-auto border-t border-card-foreground/10">
-                  <Button asChild className="w-full">
+                <CardFooter className="p-4 mt-auto border-t border-card-foreground/10 flex items-center justify-center gap-2">
+                  <Button asChild className="flex-1">
                     <a
                       href={resource.href}
                       download={!isExternal}
@@ -75,6 +93,14 @@ export function ResourceList({ initialResources }: ResourceListProps) {
                       <Download className="mr-2 h-4 w-4" />
                       Download
                     </a>
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="flex-1"
+                    onClick={() => handleShare(resource.href, resource.title)}
+                  >
+                    <Share2 className="mr-2 h-4 w-4" />
+                    Share
                   </Button>
                 </CardFooter>
               </Card>
