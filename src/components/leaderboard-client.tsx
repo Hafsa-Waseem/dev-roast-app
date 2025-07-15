@@ -3,6 +3,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Medal } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 type LeaderboardEntry = {
   rank: number;
@@ -34,6 +35,13 @@ export function LeaderboardClient({ initialData }: LeaderboardClientProps) {
     )
   }
 
+  const getRowClass = (rank: number) => {
+    if (rank === 1) return 'bg-yellow-400/20 hover:bg-yellow-400/30';
+    if (rank === 2) return 'bg-gray-400/20 hover:bg-gray-400/30';
+    if (rank === 3) return 'bg-orange-400/20 hover:bg-orange-400/30';
+    return '';
+  }
+
   return (
     <Card>
       <Table>
@@ -46,7 +54,7 @@ export function LeaderboardClient({ initialData }: LeaderboardClientProps) {
         </TableHeader>
         <TableBody>
           {initialData.map((entry) => (
-            <TableRow key={entry.name} className="font-medium">
+            <TableRow key={entry.name} className={cn("font-medium", getRowClass(entry.rank))}>
               <TableCell className="text-center text-xl">{getMedal(entry.rank)}</TableCell>
               <TableCell>{entry.name}</TableCell>
               <TableCell className="text-right text-lg">{entry.count}</TableCell>
