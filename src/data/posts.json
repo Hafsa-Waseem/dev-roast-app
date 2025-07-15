@@ -359,6 +359,81 @@
     "id": "meme-30",
     "type": "meme",
     "content": "“AI wrote it. I pasted it. It worked. I don’t know what I’m doing.” — Modern Developer Manifesto"
+  },
+  {
+    "id": "meme-31",
+    "type": "meme",
+    "content": "My code doesn’t have bugs. It just develops unexpected features on its own."
+  },
+  {
+    "id": "meme-32",
+    "type": "meme",
+    "content": "How to write clean code:\nStep 1: Cry.\nStep 2: Rename everything.\nStep 3: Still looks ugly."
+  },
+  {
+    "id": "meme-33",
+    "type": "meme",
+    "content": "Code works. I don’t know why. I’m scared to touch anything now."
+  },
+  {
+    "id": "meme-34",
+    "type": "meme",
+    "content": "Interviewer: “Tell me about a challenge you faced.”\nMe: “JavaScript.”"
+  },
+  {
+    "id": "meme-35",
+    "type": "meme",
+    "content": "“I was today years old when I realized... my CSS file was never linked.”"
+  },
+  {
+    "id": "meme-36",
+    "type": "meme",
+    "content": "\"Works on localhost\"\n— a developer’s version of “It’s not my fault.”"
+  },
+  {
+    "id": "meme-37",
+    "type": "meme",
+    "content": "You either die a junior dev…\nOr live long enough to see yourself rewriting the same logic for the third time."
+  },
+  {
+    "id": "meme-38",
+    "type": "meme",
+    "content": "Monday Motivation: Fixing bugs you created last Friday."
+  },
+  {
+    "id": "meme-39",
+    "type": "meme",
+    "content": "Me: I’ll just refactor this one function.\nReality: Entire project rewired. Three tabs of Stack Overflow open. Existential crisis."
+  },
+  {
+    "id": "meme-40",
+    "type": "meme",
+    "content": "Naming variables: Hard.\nExplaining code to future you: Impossible."
+  },
+  {
+    "id": "meme-41",
+    "type": "meme",
+    "content": "When you realize your backup has a bug too:\n“So this is how it ends…”"
+  },
+  {
+    "id": "meme-42",
+    "type": "meme",
+    "content": "“Tried using AI to fix my bug.”\nNow I have 3 new bugs and a chatbot that’s confused."
+  },
+  {
+    "id": "meme-43",
+    "type": "meme",
+    "content": "That moment when you understand the bug…\nAnd realize it was your fault all along."
+  },
+  {
+    "id": "meme-44",
+    "type": "meme",
+    "content": "Dev Tip: If it works, don’t touch it. Even if it looks wrong. Especially if it looks wrong."
+  },
+  {
+    "id": "meme-45",
+    "type": "meme",
+    "content": "Boss: \"Why is this taking so long?\"\nMe: \"Because I’m fighting my own past decisions.\""
   }
 ]
     

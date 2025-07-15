@@ -5,7 +5,7 @@ import postsData from '@/data/posts.json';
 export type Post = {
   id: string;
   type: 'blog' | 'article' | 'meme';
-  title: string;
+  title?: string; // Title is optional, as memes don't have it
   content: string;
   author?: string;
   date?: string;
@@ -15,18 +15,25 @@ export type Post = {
 const postsCollectionName = 'posts';
 
 /**
- * Fetches posts exclusively from the server-side using Firebase Admin.
- * If the database is not configured or the fetch fails, it returns an empty array.
+ * Fetches posts. It first tries to fetch from Firebase Admin.
+ * If the database is not configured or the fetch fails, it falls back
+ * to returning the local posts.json data.
  */
 export async function getPosts(): Promise<Post[]> {
-  // If adminDb is not initialized (meaning admin SDK is not configured), return empty.
+  // If adminDb is not initialized, fall back to local data immediately.
   if (!adminDb) {
-    return [];
+    // Make sure to cast to Post[] to match the return type
+    return postsData as Post[];
   }
 
   try {
     const postsCollection = adminDb.collection(postsCollectionName);
     const postsSnapshot = await postsCollection.orderBy('createdAt', 'desc').get();
+    
+    // If there are no posts in Firestore, also fall back to local data.
+    if (postsSnapshot.empty) {
+        return postsData as Post[];
+    }
     
     const postsList = postsSnapshot.docs.map(doc => ({
       id: doc.id,
@@ -36,8 +43,8 @@ export async function getPosts(): Promise<Post[]> {
     return postsList;
 
   } catch (error) {
-    console.error("Could not fetch posts from Firestore via Admin SDK. Error:", error);
-    // Return empty array on error to prevent crashes. The admin page will show it's empty.
-    return [];
+    console.error("Could not fetch posts from Firestore. Falling back to local data. Error:", error);
+    // On any other error, also fall back to local data.
+    return postsData as Post[];
   }
 }
