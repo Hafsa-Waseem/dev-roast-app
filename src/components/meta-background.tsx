@@ -114,7 +114,6 @@ export function MetaBackground() {
   useEffect(() => {
     if (!isMounted) return;
 
-    // Grid-based positioning to prevent overlaps
     const GRID_COLS = 5;
     const GRID_ROWS = 5;
     const shuffledElements = [...FLOATING_ELEMENTS].sort(() => 0.5 - Math.random());
@@ -264,7 +263,7 @@ export function MetaBackground() {
               HAAS
             </div>
           )}
-
+        
         {isMounted && elements.map((el) => (
             <div key={el.id} style={el.style}>
                 {getElementComponent(el)}
