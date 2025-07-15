@@ -231,11 +231,13 @@ export function MetaBackground() {
         <div className="absolute h-[70vmin] w-[70vmin] animate-[spin_50s_linear_infinite_reverse] rounded-full border border-accent/20" />
       </div>
 
-      {elements.map((el) => (
-        <div key={el.id} style={el.style}>
-          {getElementComponent(el)}
-        </div>
-      ))}
+      <div className="relative h-full w-full">
+        {elements.map((el) => (
+          <div key={el.id} style={el.style}>
+            {getElementComponent(el)}
+          </div>
+        ))}
+      </div>
 
       <div className="absolute bottom-4 left-4 font-mono text-sm text-[var(--meta-glow-color)]">
         <span>&gt; {currentCommand}</span>
