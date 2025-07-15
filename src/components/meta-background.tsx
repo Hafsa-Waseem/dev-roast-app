@@ -101,12 +101,19 @@ class Star {
 }
 
 export function MetaBackground() {
+  const [isMounted, setIsMounted] = useState(false);
   const [elements, setElements] = useState<any[]>([]);
   const [currentCommand, setCurrentCommand] = useState('');
   const [commandIndex, setCommandIndex] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+
     // Grid-based positioning to prevent overlaps
     const GRID_COLS = 5;
     const GRID_ROWS = 5;
@@ -149,9 +156,11 @@ export function MetaBackground() {
     }, 150);
 
     return () => clearInterval(interval);
-  }, [commandIndex]);
+  }, [isMounted, commandIndex]);
   
   useEffect(() => {
+    if (!isMounted) return;
+    
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -185,7 +194,7 @@ export function MetaBackground() {
         cancelAnimationFrame(animationFrameId);
         window.removeEventListener('resize', handleResize);
     }
-  }, []);
+  }, [isMounted]);
 
   const getElementComponent = (el: any) => {
     const classBase = 'absolute animate-[float_linear_infinite]';
@@ -231,18 +240,22 @@ export function MetaBackground() {
         <div className="absolute h-[70vmin] w-[70vmin] animate-[spin_50s_linear_infinite_reverse] rounded-full border border-accent/20" />
       </div>
 
-      <div className="relative h-full w-full">
-        {elements.map((el) => (
-          <div key={el.id} style={el.style}>
-            {getElementComponent(el)}
+      {isMounted && (
+        <>
+          <div className="relative h-full w-full">
+            {elements.map((el) => (
+              <div key={el.id} style={el.style}>
+                {getElementComponent(el)}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
 
-      <div className="absolute bottom-4 left-4 font-mono text-sm text-[var(--meta-glow-color)]">
-        <span>&gt; {currentCommand}</span>
-        <span className="inline-block h-4 w-2 animate-[blink-caret_1s_step-end_infinite] border-r-2 border-[var(--meta-glow-color)]"></span>
-      </div>
+          <div className="absolute bottom-4 left-4 font-mono text-sm text-[var(--meta-glow-color)]">
+            <span>&gt; {currentCommand}</span>
+            <span className="inline-block h-4 w-2 animate-[blink-caret_1s_step-end_infinite] border-r-2 border-[var(--meta-glow-color)]"></span>
+          </div>
+        </>
+      )}
     </div>
   );
 }
