@@ -121,6 +121,126 @@
     "date": "June 15, 2025"
   },
   {
+    "id": "blog-16",
+    "type": "blog",
+    "title": "Why My Code Only Works at 2AM",
+    "content": "There’s something magical about 2AM. Not the stars. Not the silence. It’s the moment when every bug suddenly disappears. The same code that refused to compile at 5PM… just works. No stack overflow. No docs. No logic. It works because I’m too tired to fight it anymore. Or maybe — the bugs give up when they know I won’t. Either way, 2AM coding is chaotic, unexplainable, and kinda spiritual. And no, I can’t recreate it at 10AM.",
+    "author": "A Night Owl Coder",
+    "date": "July 1, 2025"
+  },
+  {
+    "id": "blog-17",
+    "type": "blog",
+    "title": "The Day I Deleted Production... and Survived",
+    "content": "It started with a simple terminal command. I was fixing a small issue. Or so I thought. Next thing I know — the app’s gone. Not slow. Not buggy. Gone. Heartbeat doubled. Eyes widened. I stared at the terminal for a full minute. Then came the messages: 'Hey... the site’s down?' 'Anyone else seeing 404?' I wanted to fake my death and disappear. But guess what? I restored it from a backup. Got roasted. Learned my lesson. Still alive. Still coding. Just... never typing 'rm -rf' without reading twice.",
+    "author": "The Survivor",
+    "date": "July 2, 2025"
+  },
+  {
+    "id": "blog-18",
+    "type": "blog",
+    "title": "The Psychology Behind Why We Hate Debugging",
+    "content": "Debugging is frustrating, not because it’s hard — but because it hits us where it hurts: our confidence. When your code fails, it feels like you failed. It triggers self-doubt, impatience, and sometimes imposter syndrome. But the truth is: bugs are natural. They're part of the process, not a sign of weakness. The key is to shift your mindset: Debugging is not the enemy — it’s your personal trainer. Every bug is feedback, not failure. When you see debugging as discovery, not disaster — your entire dev experience transforms.",
+    "author": "The Mindful Dev",
+    "date": "July 3, 2025"
+  },
+  {
+    "id": "blog-19",
+    "type": "blog",
+    "title": "10 Real-World Problems AI Still Can’t Solve in Code",
+    "content": "AI is powerful, but it's not magic. Here are 10 coding challenges AI still struggles with: 1. Understanding project-specific context 2. Maintaining consistent code style across teams 3. Explaining why something works, not just what works 4. Naming variables meaningfully 5. Handling legacy code with undocumented logic 6. Refactoring across large codebases 7. Real-time collaborative debugging 8. Security-aware implementation 9. Balancing performance trade-offs 10. Designing user experience with human empathy. AI can help. But it still needs you to think, guide, and decide.",
+    "author": "A Human Coder",
+    "date": "July 4, 2025"
+  },
+  {
+    "id": "blog-20",
+    "type": "blog",
+    "title": "Burnout in Developers: Signs, Causes, and Recovery",
+    "content": "Burnout isn't just tiredness — it's emotional exhaustion, cynicism, and reduced performance. Signs: Lack of motivation, Constant frustration, Avoiding work you once loved. Causes: Unrealistic deadlines, Poor team culture, Repetitive tasks with no challenge. Recovery: Take meaningful breaks, Talk to peers or mentors, Reconnect with why you code. Mental health is part of dev health. Protect both.",
+    "author": "The Resilient Dev",
+    "date": "July 5, 2025"
+  },
+  {
+    "id": "blog-21",
+    "type": "blog",
+    "title": "From Junior to Senior: What Actually Changes in How You Think",
+    "content": "A junior asks, “What should I write?” A senior asks, “What problem am I solving?” Growth isn’t about learning fancy syntax — it’s about: Thinking in systems, Prioritizing maintainability, Communicating with empathy. The code may look similar. The thought behind it? Entirely different.",
+    "author": "A Senior Mind",
+    "date": "July 6, 2025"
+  },
+  {
+    "id": "blog-22",
+    "type": "blog",
+    "title": "Should You Learn Frameworks or Fundamentals First?",
+    "content": "Frameworks are tools. Fundamentals are mindset. Without a strong base in JavaScript, HTML, and logic — React, Vue, or Svelte won’t save you. Learn the “why” before the “how.” Frameworks will come and go. Fundamentals stay forever.",
+    "author": "The Foundationalist",
+    "date": "July 7, 2025"
+  },
+  {
+    "id": "blog-23",
+    "type": "blog",
+    "title": "How to Write Code That Future You Will Thank You For",
+    "content": "Ask yourself: Will I understand this file 6 months from now? Can someone new join and continue easily? Tips: Write meaningful comments, Keep functions short and focused, Use readable variable names. Write code like it’s your job to teach it. Because one day, it will be.",
+    "author": "Future-Proof Coder",
+    "date": "July 8, 2025"
+  },
+  {
+    "id": "blog-24",
+    "type": "blog",
+    "title": "What I Wish I Knew Before Freelancing as a Developer",
+    "content": "1. Clients don’t care about tech. They care about results. 2. Communication > Code — regular updates matter more than clever functions. 3. Contracts protect you. Always use them. 4. Underpromise. Overdeliver. 5. Set boundaries — or lose your mind. Freelancing is freedom — if you treat it like a business.",
+    "author": "The Freelance Pro",
+    "date": "July 9, 2025"
+  },
+  {
+    "id": "blog-25",
+    "type": "blog",
+    "title": "The Real Cost of Poor Documentation in Teams",
+    "content": "Lack of docs means: More onboarding time, More bugs, More dependency on specific people. Good documentation: Saves time, Builds independence, Enables scale. Docs may feel boring — but they are silent superheroes of any dev team.",
+    "author": "The Documentarian",
+    "date": "July 10, 2025"
+  },
+  {
+    "id": "blog-26",
+    "type": "blog",
+    "title": "Why Some Developers Never Grow (Even After 5 Years)",
+    "content": "Years of experience ≠ growth. The stagnant dev often: Solves the same problems over and over, Avoids learning new tools, Stops asking “Why?” Growth comes from discomfort, reflection, and curiosity. Be the dev who outgrows their past, not repeats it.",
+    "author": "The Growth Mindset Dev",
+    "date": "July 11, 2025"
+  },
+  {
+    "id": "blog-27",
+    "type": "blog",
+    "title": "Mental Health in Tech: The Unspoken Developer Struggle",
+    "content": "Behind the laptops are real people facing: Anxiety, Burnout, Loneliness. Our field often glorifies hustle and ignores rest. Break the silence. Speak. Rest. Seek help. You are not your code.",
+    "author": "A Kind Voice",
+    "date": "July 12, 2025"
+  },
+  {
+    "id": "blog-28",
+    "type": "blog",
+    "title": "10 Habits of High-Performing Solo Developers",
+    "content": "1. Time-block deep work hours 2. Automate repetitive tasks 3. Learn keyboard shortcuts 4. Take real breaks 5. Practice daily reflection 6. Use a note system (like Zettelkasten or Obsidian) 7. Version control everything 8. Prioritize output, not just busywork 9. Network online 10. Ship regularly, even small things. Discipline is freedom.",
+    "author": "The Soloist",
+    "date": "July 13, 2025"
+  },
+  {
+    "id": "blog-29",
+    "type": "blog",
+    "title": "Why Deadlines Make Us Worse Coders – Backed by Research",
+    "content": "When you’re rushed: You take shortcuts, You avoid testing, You fear rework. Pressure narrows creativity. It creates bugs. Research in cognitive science shows: relaxed brains solve better problems. Deadlines are necessary — but unhealthy pressure is optional.",
+    "author": "The Research-Backed Dev",
+    "date": "July 14, 2025"
+  },
+  {
+    "id": "blog-30",
+    "type": "blog",
+    "title": "The Shift from Code Monkey to Problem Solver",
+    "content": "A code monkey takes tasks. A problem solver asks why the task exists. Shift your focus from lines written to impact made. Real developers: Challenge requirements, Think of the user, Suggest better solutions. You’re not just building apps. You’re solving lives, one function at a time.",
+    "author": "The Problem Solver",
+    "date": "July 15, 2025"
+  },
+  {
     "id": "article-1",
     "type": "article",
     "title": "JavaScript's `this` Keyword Explained with Pizza",
@@ -439,3 +559,4 @@
     
 
     
+
