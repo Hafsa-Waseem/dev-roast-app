@@ -159,8 +159,8 @@ export function MetaBackground() {
     let stars: Star[] = [];
 
     const handleResize = () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
         stars = [];
         for (let i = 0; i < 3; i++) {
             stars.push(new Star(ctx));
@@ -169,6 +169,7 @@ export function MetaBackground() {
     handleResize();
 
     const render = () => {
+        if (!ctx) return;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         stars.forEach(star => {
             star.draw();
@@ -211,7 +212,7 @@ export function MetaBackground() {
   };
 
   return (
-    <div className="fixed inset-0 -z-10 h-full w-full overflow-hidden">
+    <div className="absolute inset-0 -z-10 h-full w-full overflow-hidden">
       <div
         className="absolute inset-0 h-full w-full opacity-50"
         style={{
@@ -223,7 +224,6 @@ export function MetaBackground() {
       
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
-      {/* Orbiting Ring and Text */}
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="h-[50vmin] w-[50vmin] animate-[spin_40s_linear_infinite] rounded-full border-2 border-dashed border-primary/20" />
         <div className="absolute h-[70vmin] w-[70vmin] animate-[spin_50s_linear_infinite_reverse] rounded-full border border-accent/20" />
