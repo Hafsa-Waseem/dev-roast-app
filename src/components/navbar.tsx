@@ -14,8 +14,6 @@ import { useState } from 'react';
 const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/roast', label: 'Roast Me' },
-  { href: '/devdare', label: 'DevDare' },
-  { href: '/leaderboard', label: 'Leaderboard' },
   { href: '/resources', label: 'Resources' },
   { href: '/interactive', label: 'Quiz' },
   { href: '/memes', label: 'Memes' },
