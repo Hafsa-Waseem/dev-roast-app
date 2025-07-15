@@ -14,11 +14,14 @@ import { useState } from 'react';
 const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/roast', label: 'Roast Me' },
+  { href: '/devdare', label: 'DevDare' },
+  { href: '/leaderboard', label: 'Leaderboard' },
   { href: '/resources', label: 'Resources' },
   { href: '/interactive', label: 'Quiz' },
   { href: '/memes', label: 'Memes' },
   { href: '/blogs', label: 'Blogs' },
   { href: '/articles', label: 'Articles' },
+  { href: '/admin/add-dare', label: 'Add Dare' }, // temporary admin link
 ];
 
 export function Navbar() {
