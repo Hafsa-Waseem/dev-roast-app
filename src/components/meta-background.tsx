@@ -108,23 +108,27 @@ export function MetaBackground() {
 
   useEffect(() => {
     // Grid-based positioning to prevent overlaps
-    const GRID_SIZE = 5; // 5x5 grid
+    const GRID_COLS = 5;
+    const GRID_ROWS = 5;
     const shuffledElements = [...FLOATING_ELEMENTS].sort(() => 0.5 - Math.random());
     
-    const generatedElements = shuffledElements.map((el, i) => {
-      const row = Math.floor(i / GRID_SIZE);
-      const col = i % GRID_SIZE;
+    const generatedElements = shuffledElements.slice(0, GRID_COLS * GRID_ROWS).map((el, i) => {
+      const row = Math.floor(i / GRID_COLS);
+      const col = i % GRID_COLS;
 
       // Calculate position within the grid cell, with some randomness
-      const top = row * (100 / GRID_SIZE) + Math.random() * 5;
-      const left = col * (100 / GRID_SIZE) + Math.random() * 5;
+      const cellWidth = 100 / GRID_COLS;
+      const cellHeight = 100 / GRID_ROWS;
+      
+      const left = col * cellWidth + Math.random() * (cellWidth / 2);
+      const top = row * cellHeight + Math.random() * (cellHeight / 2);
 
       return {
         id: i,
         ...el,
         style: {
-          top: `${top}vh`,
-          left: `${left}vw`,
+          top: `${top}%`,
+          left: `${left}%`,
           animationDuration: `${Math.random() * 15 + 10}s`,
           animationDelay: `${Math.random() * 5}s`,
           transform: `scale(${Math.random() * 0.5 + 0.7}) rotate(${Math.random() * 60 - 30}deg)`
