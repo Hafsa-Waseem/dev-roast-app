@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import Script from 'next/script';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
+import { MetaBackground } from '@/components/meta-background';
 
 export const metadata: Metadata = {
   title: 'haas.fry | AI Roasting App for Techies',
@@ -48,12 +49,8 @@ export default function RootLayout({
           `,
         }} />
       </head>
-      <body className="font-body antialiased flex flex-col min-h-dvh" suppressHydrationWarning>
-        <div className="fixed inset-0 -z-10 h-full w-full bg-background" style={{
-          background: 'linear-gradient(-45deg, hsl(var(--background)), hsl(var(--secondary)), hsl(var(--accent)), hsl(var(--background)))',
-          backgroundSize: '400% 400%',
-          animation: 'gradient-move 15s ease infinite'
-        }} />
+      <body className="font-body antialiased flex flex-col min-h-dvh bg-background text-foreground" suppressHydrationWarning>
+        <MetaBackground />
         <Navbar />
         <main className="flex-grow">
           {children}
