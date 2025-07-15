@@ -10,642 +10,511 @@ import { Label } from '@/components/ui/label';
 import { Terminal, Lightbulb, CheckCircle2, XCircle, ThumbsUp, ThumbsDown, ArrowLeft, Code, Pilcrow, FileCode, Type, Braces, BrainCircuit, Bot, Database, Wind, Gem, Package, Bird, CodeSquare } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
-const quizData = {
+const allQuizData = {
   'Angular': {
     icon: (props: any) => <CodeSquare {...props} />,
     description: "The platform for building enterprise-grade web applications.",
     questions: [
-      {
-        question: "What is the core building block of an Angular application?",
-        code: "@...",
-        options: ["Module", "Service", "Component", "Directive"],
-        answer: "Component",
-        explanation: "Components are the main building block for Angular applications. Each component consists of an HTML template, a TypeScript class for logic, and CSS styles."
-      },
-      {
-        question: "What is Dependency Injection (DI)?",
-        code: "constructor(private myService: MyService) {}",
-        options: ["A way to inject CSS files", "A design pattern where a class receives its dependencies from an external source", "A method for lazy loading modules", "A template syntax"],
-        answer: "A design pattern where a class receives its dependencies from an external source",
-        explanation: "DI is a core concept in Angular. Instead of creating its own dependencies (like services), a component declares what it needs in its constructor, and the Angular framework provides them."
-      },
-      {
-        question: "What is the purpose of `ngFor`?",
-        code: "<li *ngFor='let item of items'>{{item}}</li>",
-        options: ["To create a form", "To conditionally render an element", "To repeat a portion of the DOM for each item in a list", "To handle click events"],
-        answer: "To repeat a portion of the DOM for each item in a list",
-        explanation: "`*ngFor` is a structural directive that iterates over a collection (like an array) and renders a template for each item in that collection."
-      }
+      { question: "What is the core building block of an Angular application?", code: "@...", options: ["Module", "Service", "Component", "Directive"], answer: "Component", explanation: "Components are the main building block for Angular applications." },
+      { question: "What is Dependency Injection (DI)?", code: "constructor(private myService: MyService) {}", options: ["A way to inject CSS files", "A design pattern where a class receives its dependencies from an external source", "A method for lazy loading modules", "A template syntax"], answer: "A design pattern where a class receives its dependencies from an external source", explanation: "DI is a core concept in Angular where dependencies are 'injected' into components." },
+      { question: "What is the purpose of `ngFor`?", code: "<li *ngFor='let item of items'>{{item}}</li>", options: ["To create a form", "To conditionally render an element", "To repeat a portion of the DOM for each item in a list", "To handle click events"], answer: "To repeat a portion of the DOM for each item in a list", explanation: "`*ngFor` is a structural directive that iterates over a collection." },
+      { question: "Which file is the entry point for an Angular application?", code: "// ...", options: ["index.html", "app.component.ts", "main.ts", "angular.json"], answer: "main.ts", explanation: "The `main.ts` file is responsible for bootstrapping the application by loading the root module." },
+      { question: "What is the purpose of a Service in Angular?", code: "@Injectable({ providedIn: 'root' })", options: ["To style components", "To share data and logic across components", "To define routes", "To manage component state"], answer: "To share data and logic across components", explanation: "Services are singletons used for tasks like fetching data or logging, which can be shared." },
+      { question: "What decorator is used to define a new component?", code: "@...", options: ["@NgModule", "@Injectable", "@Component", "@Directive"], answer: "@Component", explanation: "`@Component` is used to decorate a class as a component, providing metadata like its template and styles." },
+      { question: "How do you bind a property from the component to the template?", code: "<img [src]='imageUrl'>", options: ["Event binding ()", "Property binding []", "Two-way binding [()]", "String interpolation {{}}"], answer: "Property binding []", explanation: "Property binding `[]` is used to pass data from the component to an element's property in the template." },
+      { question: "What CLI command generates a new service?", code: "ng generate ...", options: ["component", "module", "service", "directive"], answer: "service", explanation: "The `ng generate service <service-name>` or `ng g s <service-name>` command creates a new service file." },
+      { question: "What is the role of `RouterModule.forRoot()`?", code: "// ...", options: ["To create a new route", "To define the application's root routes", "To lazy load a module", "To guard a route"], answer: "To define the application's root routes", explanation: "`forRoot()` is a convention for providing a configured router service for the root application." },
+      { question: "Which lifecycle hook is called after Angular initializes the component's views?", code: "// ...", options: ["ngOnInit", "ngOnChanges", "ngAfterViewInit", "ngOnDestroy"], answer: "ngAfterViewInit", explanation: "`ngAfterViewInit` is called once after the first `ngAfterContentChecked`." },
+      { question: "What does the `async` pipe do?", code: "<div>{{ myObservable$ | async }}</div>", options: ["Makes an HTTP request", "Subscribes to an Observable or Promise and returns the latest value", "Delays rendering", "Runs code asynchronously"], answer: "Subscribes to an Observable or Promise and returns the latest value", explanation: "The async pipe automatically subscribes and unsubscribes, preventing memory leaks." },
+      { question: "How can you pass data from a parent component to a child component?", code: "// ...", options: ["Using a Service", "Using the `@Output()` decorator", "Using the `@Input()` decorator", "Using a global variable"], answer: "Using the `@Input()` decorator", explanation: "The `@Input()` decorator allows a child component to receive data from its parent." },
+      { question: "What is the purpose of the `angular.json` file?", code: "// ...", options: ["To store application secrets", "To define project metadata and build configurations", "To list npm dependencies", "To configure TypeScript"], answer: "To define project metadata and build configurations", explanation: "The `angular.json` file contains workspace-wide and project-specific configuration defaults for build and development tools." },
+      { question: "Which directive is used for two-way data binding?", code: "<input [(ngModel)]='name'>", options: ["`[value]`", "`*ngIf`", "`[()]` (banana in a box)", "`{{}}`"], answer: "`[()]` (banana in a box)", explanation: "Two-way data binding, often used with `ngModel`, combines property binding `[]` and event binding `()`." },
+      { question: "What is a `NgModule`?", code: "@NgModule({ ... })", options: ["A function", "A container for a block of code with a specific functionality", "A component", "A service"], answer: "A container for a block of code with a specific functionality", explanation: "NgModules configure the injector and the compiler and help organize related things together." }
     ]
   },
   'C#': {
     icon: (props: any) => <Type {...props} />,
     description: ".NET, LINQ, and Microsoft's powerhouse language.",
     questions: [
-      {
-        question: "What is LINQ?",
-        code: "var names = from c in customers select c.Name;",
-        options: ["A database", "A language for UI", "A query language integrated into C#", "A web framework"],
-        answer: "A query language integrated into C#",
-        explanation: "LINQ (Language-Integrated Query) provides a powerful, SQL-like way to query data from collections, databases, XML, and more, directly within C# code."
-      },
-      {
-        question: "What is the difference between `string` and `String`?",
-        code: "string a = \"...\";\nString b = \"...\";",
-        options: ["`string` is a primitive, `String` is an object", "They are aliases for the same type", "`String` is from a different library", "There is no difference"],
-        answer: "They are aliases for the same type",
-        explanation: "`string` is an alias in C# for `System.String`. They are compiled to the same type, so there is no technical difference, but `string` is the idiomatic convention in C#."
-      },
-      {
-        question: "What does the `async` keyword do in a method signature?",
-        code: "public async Task MyMethod() { ... }",
-        options: ["It makes the method run on a separate thread", "It makes the method return a Task", "It enables the use of `await` inside the method", "It makes the method run faster"],
-        answer: "It enables the use of `await` inside the method",
-        explanation: "The `async` modifier enables the method to use the `await` keyword for asynchronous operations. It doesn't run the method on a new thread but allows it to yield control back to the caller."
-      }
+      { question: "What is LINQ?", code: "var names = from c in customers select c.Name;", options: ["A database", "A language for UI", "A query language integrated into C#", "A web framework"], answer: "A query language integrated into C#", explanation: "LINQ (Language-Integrated Query) provides a powerful, SQL-like way to query data." },
+      { question: "What is the difference between `string` and `String`?", code: "string a = \"...\";\nString b = \"...\";", options: ["`string` is a primitive, `String` is an object", "They are aliases for the same type", "`String` is from a different library", "There is no difference"], answer: "They are aliases for the same type", explanation: "`string` is a C# alias for `System.String`. They are compiled to the same type." },
+      { question: "What does the `async` keyword do in a method signature?", code: "public async Task MyMethod() { ... }", options: ["It makes the method run on a separate thread", "It makes the method return a Task", "It enables the use of `await` inside the method", "It makes the method run faster"], answer: "It enables the use of `await` inside the method", explanation: "The `async` modifier enables `await` for asynchronous operations. It doesn't run on a new thread." },
+      { question: "What is the base class for all exceptions in .NET?", code: "// ...", options: ["System.Error", "System.Exception", "System.ApplicationException", "System.SystemException"], answer: "System.Exception", explanation: "All exceptions, whether system-defined or application-defined, inherit from the `System.Exception` class." },
+      { question: "What is the purpose of a `using` statement in C#?", code: "using (var reader = new StreamReader(file)) { ... }", options: ["To import a namespace", "To free up memory", "To ensure an object's `Dispose` method is called", "To declare a variable"], answer: "To ensure an object's `Dispose` method is called", explanation: "The `using` statement provides a convenient syntax that ensures the correct use of `IDisposable` objects." },
+      { question: "What is the difference between an `interface` and an `abstract class`?", code: "// ...", options: ["A class can implement multiple abstract classes", "An interface can have implementation", "A class can implement multiple interfaces, but only inherit from one abstract class", "They are the same"], answer: "A class can implement multiple interfaces, but only inherit from one abstract class", explanation: "Interfaces are contracts, while abstract classes can provide base functionality." },
+      { question: "What is boxing in C#?", code: "int i = 123;\nobject o = i;", options: ["Converting a value type to a reference type", "Converting a reference type to a value type", "Wrapping a value in a try-catch block", "A type of error"], answer: "Converting a value type to a reference type", explanation: "Boxing is the process of converting a value type to the type `object` or to any interface type implemented by this value type." },
+      { question: "Which keyword is used to prevent a method from being overridden?", code: "public ... void MyMethod() { ... }", options: ["virtual", "sealed", "override", "abstract"], answer: "sealed", explanation: "`sealed` prevents derived classes from overriding a virtual method." },
+      { question: "What is a 'delegate' in C#?", code: "public delegate void MyDelegate(string message);", options: ["A type that represents references to methods with a particular parameter list and return type", "A base class", "A way to handle events", "A variable"], answer: "A type that represents references to methods with a particular parameter list and return type", explanation: "Delegates are similar to function pointers in C++ and are used for events and callbacks." },
+      { question: "What does the `??` operator do?", code: "string name = someNullableString ?? \"Default Name\";", options: ["It's a logical AND operator", "It's a null-coalescing operator", "It's a ternary operator", "It's a bitwise operator"], answer: "It's a null-coalescing operator", explanation: "The `??` operator returns the left-hand operand if it's not null; otherwise, it returns the right-hand operand." },
+      { question: "What is the Global Assembly Cache (GAC)?", code: "// ...", options: ["A local cache for NuGet packages", "A machine-wide code cache that stores assemblies", "A tool for debugging", "A part of the C# compiler"], answer: "A machine-wide code cache that stores assemblies", explanation: "The GAC is where shared assemblies are stored, allowing multiple applications to use them." },
+      { question: "Can a `struct` in C# have a parameterless constructor?", code: "public struct Point { public Point() { ... } }", options: ["Yes", "No", "Only if it's static", "Only in .NET Core"], answer: "No", explanation: "Structs cannot contain explicit parameterless constructors. The compiler provides one automatically." },
+      { question: "What is the purpose of the `volatile` keyword?", code: "private volatile bool _shouldStop;", options: ["To make a variable read-only", "To indicate that a field might be modified by multiple threads", "To make a variable nullable", "To encrypt a variable"], answer: "To indicate that a field might be modified by multiple threads", explanation: "`volatile` ensures that the most up-to-date value is present in that field at all times." },
+      { question: "What is an extension method?", code: "public static bool IsEmail(this string s) { ... }", options: ["A method added to an existing class", "A method that extends the program's runtime", "A method from a base class", "A virtual method"], answer: "A method added to an existing class", explanation: "Extension methods enable you to 'add' methods to existing types without creating a new derived type." },
+      { question: "What is the difference between `IEnumerable` and `IQueryable`?", code: "// ...", options: ["`IEnumerable` executes queries on the client, `IQueryable` on the server", "`IQueryable` is for in-memory collections", "They are the same", "`IEnumerable` is faster"], answer: "`IEnumerable` executes queries on the client, `IQueryable` on the server", explanation: "`IQueryable` constructs a query expression tree that can be executed on a remote data source like a database." }
     ]
   },
   'C++': {
     icon: (props: any) => <Braces {...props} />,
     description: "Pointers, memory management, and high performance.",
     questions: [
-      {
-        question: "What is the primary purpose of a pointer?",
-        code: "int* ptr;",
-        options: ["To store a large number", "To store a memory address", "To create a constant variable", "To store a character"],
-        answer: "To store a memory address",
-        explanation: "A pointer is a variable that stores the memory address of another variable. This allows for direct memory manipulation, dynamic memory allocation, and efficient data structures."
-      },
-      {
-        question: "What is the difference between `new` and `malloc`?",
-        code: "int* p1 = new int;\nint* p2 = (int*)malloc(sizeof(int));",
-        options: ["`new` is a keyword, `malloc` is a function", "`new` calls constructors, `malloc` does not", "They are the same", "Both A and B are correct"],
-        answer: "Both A and B are correct",
-        explanation: "`new` is a C++ operator that not only allocates memory but also calls the object's constructor. `malloc` is a C library function that only allocates raw, uninitialized memory."
-      },
-      {
-        question: "What does RAII stand for?",
-        code: "// Resource Acquisition Is Initialization",
-        options: ["Resource Allocation and Instance Invocation", "Resource Acquisition Is Initialization", "Runtime-Allocated Instance Information", "Realtime Asynchronous I/O"],
-        answer: "Resource Acquisition Is Initialization",
-        explanation: "RAII is a core C++ concept where a resource's lifetime is tied to an object's lifetime. The resource is acquired in the constructor and released in the destructor, preventing memory leaks."
-      }
+      { question: "What is the primary purpose of a pointer?", code: "int* ptr;", options: ["To store a large number", "To store a memory address", "To create a constant variable", "To store a character"], answer: "To store a memory address", explanation: "A pointer is a variable that stores the memory address of another variable." },
+      { question: "What is the difference between `new` and `malloc`?", code: "int* p1 = new int;\nint* p2 = (int*)malloc(sizeof(int));", options: ["`new` is a keyword, `malloc` is a function", "`new` calls constructors, `malloc` does not", "They are the same", "Both A and B are correct"], answer: "Both A and B are correct", explanation: "`new` is a C++ operator that allocates memory and calls constructors. `malloc` is a C function that only allocates raw memory." },
+      { question: "What does RAII stand for?", code: "// Resource Acquisition Is Initialization", options: ["Resource Allocation and Instance Invocation", "Resource Acquisition Is Initialization", "Runtime-Allocated Instance Information", "Realtime Asynchronous I/O"], answer: "Resource Acquisition Is Initialization", explanation: "RAII is a core C++ concept where a resource's lifetime is tied to an object's lifetime." },
+      { question: "What is the 'rule of three' in C++?", code: "// ...", options: ["A class should have at most three methods", "If you define a destructor, copy constructor, or copy assignment operator, you should define all three", "A function should not have more than three parameters", "A class can only inherit from three other classes"], answer: "If you define a destructor, copy constructor, or copy assignment operator, you should define all three", explanation: "This rule of thumb helps prevent resource management issues in classes that manage raw resources." },
+      { question: "What is the difference between `++i` and `i++`?", code: "int i = 0;", options: ["They are functionally identical", "`++i` increments then returns, `i++` returns then increments", "`i++` is faster", "`++i` is only for pointers"], answer: "`++i` increments then returns, `i++` returns then increments", explanation: "The pre-increment operator (`++i`) is generally more efficient as it doesn't need to create a temporary copy of the old value." },
+      { question: "What is a `virtual` function?", code: "class Base { virtual void myFunc(); };", options: ["A function that does not exist", "A function that can be overridden in derived classes", "A function that is private", "A function that returns a pointer"], answer: "A function that can be overridden in derived classes", explanation: "Virtual functions enable polymorphism, allowing the correct function to be called for an object regardless of the reference type." },
+      { question: "What is the purpose of the `const` keyword after a member function declaration?", code: "void myFunc() const;", options: ["It makes the function return a constant", "It prevents the function from modifying the object's state", "It means the function is static", "It's a syntax error"], answer: "It prevents the function from modifying the object's state", explanation: "A `const` member function guarantees it will not change any member variables of the object." },
+      { question: "What is a smart pointer?", code: "std::unique_ptr<MyClass> ptr(new MyClass());", options: ["A pointer that is faster than a raw pointer", "A pointer that automatically manages memory", "A pointer that can point to multiple addresses", "A pointer used in AI"], answer: "A pointer that automatically manages memory", explanation: "Smart pointers like `std::unique_ptr` and `std::shared_ptr` automatically deallocate memory when they go out of scope, preventing leaks." },
+      { question: "What is function overloading?", code: "void print(int i);\nvoid print(double d);", options: ["Overriding a function in a derived class", "Defining multiple functions with the same name but different parameters", "Creating a function that takes a variable number of arguments", "A function that calls itself"], answer: "Defining multiple functions with the same name but different parameters", explanation: "Function overloading allows for more intuitive function names by using the same name for functions that perform similar tasks on different types." },
+      { question: "What is the 'STL'?", code: "#include <vector>", options: ["Standard Template Library", "Static Type Library", "System Tooling Language", "Secure Transaction Layer"], answer: "Standard Template Library", explanation: "The STL is a set of C++ template classes to provide common programming data structures and functions such as vectors, lists, and maps." },
+      { question: "What is the difference between a `struct` and a `class` in C++?", code: "// ...", options: ["Structs cannot have methods", "Class members are private by default, struct members are public by default", "Structs are value types, classes are reference types", "There is no difference"], answer: "Class members are private by default, struct members are public by default", explanation: "Functionally, they are very similar, but their default access specifier is the key difference." },
+      { question: "What does `nullptr` represent?", code: "int* p = nullptr;", options: ["The number zero", "A null pointer constant", "An uninitialized pointer", "An invalid memory address"], answer: "A null pointer constant", explanation: "`nullptr` was introduced in C++11 to provide a type-safe null pointer, disambiguating from the integer `0`." },
+      { question: "What is a 'lambda expression' in modern C++?", code: "auto sum = [](int a, int b) { return a + b; };", options: ["A type of macro", "A way to define an anonymous function", "A template function", "A recursive function"], answer: "A way to define an anonymous function", explanation: "Lambdas provide a convenient way to define inline, anonymous function objects, which are useful for algorithms and callbacks." },
+      { question: "What is the purpose of a `namespace`?", code: "namespace MyNamespace { ... }", options: ["To organize code and prevent naming conflicts", "To define a new data type", "To allocate memory", "To create a multi-threaded application"], answer: "To organize code and prevent naming conflicts", explanation: "Namespaces provide a scope to the identifiers (names of types, functions, variables, etc) inside it." },
+      { question: "What is template metaprogramming?", code: "template<int N> struct Factorial { ... };", options: ["A way to write templates", "Techniques to execute code at compile time", "Programming with multiple templates", "A debugging technique"], answer: "Techniques to execute code at compile time", explanation: "It's a set of techniques that use templates to perform computations during compilation, which can lead to highly optimized code." }
     ]
   },
   'CSS': {
     icon: (props: any) => <Wind {...props} />,
     description: "Flexbox, Grid, and the cascade. Test your styling prowess.",
     questions: [
-        {
-            question: "What is the specificity of this selector: `#nav .item[href]`?",
-            code: "#nav .item[href] {}",
-            options: ["111", "121", "022", "112"],
-            answer: "111",
-            explanation: "Specificity is calculated as (ID, Class/Attribute, Type). #nav contributes 100 (ID), .item contributes 10 (Class), and [href] contributes 1 (Attribute). So, 100 + 10 + 1 = 111."
-        },
-        {
-            question: "Which property is used to create space *between* grid or flex items?",
-            code: "display: grid; ...",
-            options: ["margin", "padding", "gap", "space-between"],
-            answer: "gap",
-            explanation: "`gap` (or `grid-gap`/`row-gap`/`column-gap`) is the modern property for setting the space between items, replacing older methods like using margins on items themselves."
-        },
-        {
-            question: "How do you select an `<a>` tag that has an `href` attribute containing 'example.com'?",
-            code: "a[href...]",
-            options: ["a[href='example.com']", "a[href*='example.com']", "a[href~='example.com']", "a[href^='example']"],
-            answer: "a[href*='example.com']",
-            explanation: "The `*=` attribute selector selects elements whose attribute value *contains* a specified substring. It's a powerful way to style links to specific domains."
-        }
+        { question: "What is the specificity of this selector: `#nav .item[href]`?", code: "#nav .item[href] {}", options: ["111", "121", "022", "112"], answer: "111", explanation: "Specificity is (ID, Class/Attribute, Type). #nav=100, .item=10, [href]=1. Total: 111." },
+        { question: "Which property is used to create space *between* grid or flex items?", code: "display: grid; ...", options: ["margin", "padding", "gap", "space-between"], answer: "gap", explanation: "`gap` is the modern property for setting space between grid/flex items." },
+        { question: "How do you select an `<a>` tag that has an `href` attribute containing 'example.com'?", code: "a[href...]", options: ["a[href='example.com']", "a[href*='example.com']", "a[href~='example.com']", "a[href^='example']"], answer: "a[href*='example.com']", explanation: "The `*=` attribute selector selects elements whose attribute value *contains* a specified substring." },
+        { question: "What is the difference between `display: none;` and `visibility: hidden;`?", code: "// ...", options: ["There is no difference", "`visibility: hidden` removes the element from the layout", "`display: none` removes the element from the layout, `visibility: hidden` does not", "`display: none` is for images only"], answer: "`display: none` removes the element from thelayout, `visibility: hidden` does not", explanation: "`display: none` removes the element completely, while `visibility: hidden` hides it, but it still occupies space." },
+        { question: "Which CSS value is used to make a flex item grow and shrink as needed?", code: "flex: ...", options: ["1 0 auto", "0 1 auto", "auto", "1 1 0%"], answer: "1 1 0%", explanation: "`flex: 1 1 0%` is a common shorthand that allows an item to grow and shrink from a base size of 0, distributing space evenly." },
+        { question: "What does `position: sticky;` do?", code: "// ...", options: ["It's the same as `fixed`", "It's a mix of `relative` and `fixed`", "It makes an element stick to the mouse cursor", "It's not a valid CSS property"], answer: "It's a mix of `relative` and `fixed`", explanation: "A sticky element is treated as `relative` until it crosses a specified threshold, at which point it becomes `fixed`." },
+        { question: "How do you select the first letter of a paragraph to style it?", code: "p...", options: ["::first-letter", ":first-child", "::before", ".first-letter"], answer: "::first-letter", explanation: "The `::first-letter` pseudo-element is used to apply styles to the first letter of the first line of a block-level element." },
+        { question: "What is the 'box model' in CSS?", code: "// ...", options: ["A type of layout", "A model for calculating element size including content, padding, border, and margin", "A JavaScript library", "A CSS framework"], answer: "A model for calculating element size including content, padding, border, and margin", explanation: "The box model is a fundamental concept describing how elements are rendered and take up space." },
+        { question: "What does the `rem` unit represent?", code: "font-size: 1.5rem;", options: ["The font size of the parent element", "The font size of the root (html) element", "A fixed pixel value", "A percentage of the viewport width"], answer: "The font size of the root (html) element", explanation: "`rem` (root em) is relative to the font size of the root element, making it great for scalable layouts." },
+        { question: "Which property controls the stacking order of positioned elements?", code: "// ...", options: ["stack-order", "layer", "z-index", "depth"], answer: "z-index", explanation: "`z-index` specifies the stack level of an element. An element with a greater stack order is always in front of an element with a lower stack order." },
+        { question: "How do you create a custom property (CSS variable)?", code: ":root { ... }", options: ["var-my-color: blue;", "let my-color = blue;", "--my-color: blue;", "$my-color: blue;"], answer: "--my-color: blue;", explanation: "CSS custom properties are defined using two hyphens (`--`) and are accessed using the `var()` function." },
+        { question: "What is the purpose of `calc()`?", code: "width: calc(100% - 20px);", options: ["To perform calculations in JavaScript", "To perform calculations on CSS property values", "To calculate specificity", "To create a calculator UI"], answer: "To perform calculations on CSS property values", explanation: "`calc()` lets you perform mathematical calculations using a mix of different units." },
+        { question: "What is the difference between `em` and `rem` units?", code: "// ...", options: ["They are the same", "`em` is relative to the parent, `rem` is relative to the root", "`rem` is relative to the parent, `em` is relative to the root", "`em` is for mobile, `rem` is for desktop"], answer: "`em` is relative to the parent, `rem` is relative to the root", explanation: "`em` can cascade and become complex, while `rem` provides a more predictable sizing based on the `html` element." },
+        { question: "How would you select every `p` element that is an immediate child of a `div`?", code: "// ...", options: ["div p", "div > p", "div + p", "div ~ p"], answer: "div > p", explanation: "The `>` child combinator selects only the direct children of the parent element." },
+        { question: "Which selector has the highest specificity?", code: "// ...", options: ["An inline style", "An #id selector", "A .class selector", "A `!important` rule"], answer: "An `!important` rule", explanation: "While inline styles are very specific (1000), a declaration with `!important` overrides any other declaration." }
     ]
   },
   'Docker': {
     icon: (props: any) => <Package {...props} />,
     description: "Containers, images, and 'it works on my machine' solutions.",
     questions: [
-      {
-        question: "What is the difference between a Docker image and a container?",
-        code: "docker build -t my-app .\ndocker run my-app",
-        options: ["They are the same", "An image is a running instance of a container", "A container is a running instance of an image", "An image is a type of container"],
-        answer: "A container is a running instance of an image",
-        explanation: "An image is a lightweight, standalone, executable package that includes everything needed to run a piece of software. A container is a runtime instance of that image."
-      },
-      {
-        question: "What is the purpose of a `Dockerfile`?",
-        code: "FROM node:18\nCOPY . .\nRUN npm install",
-        options: ["To run a container", "To define the steps to build a Docker image", "To manage multiple containers", "To store container data"],
-        answer: "To define the steps to build a Docker image",
-        explanation: "A `Dockerfile` is a text document that contains all the commands a user could call on the command line to assemble an image. `docker build` uses this file to create an image."
-      },
-      {
-        question: "What does the `-p` flag do in `docker run -p 8080:80`?",
-        code: "docker run -p 8080:80 my-app",
-        options: ["Sets a password", "Specifies the project name", "Publishes a container's port to the host", "Pauses the container"],
-        answer: "Publishes a container's port to the host",
-        explanation: "The `-p` or `--publish` flag maps a port on the host machine (e.g., 8080) to a port inside the container (e.g., 80), allowing you to access the containerized application."
-      }
+      { question: "What is the difference between a Docker image and a container?", code: "docker build -t my-app .\ndocker run my-app", options: ["They are the same", "An image is a running instance of a container", "A container is a running instance of an image", "An image is a type of container"], answer: "A container is a running instance of an image", explanation: "An image is a blueprint. A container is a runnable instance of that blueprint." },
+      { question: "What is the purpose of a `Dockerfile`?", code: "FROM node:18\nCOPY . .\nRUN npm install", options: ["To run a container", "To define the steps to build a Docker image", "To manage multiple containers", "To store container data"], answer: "To define the steps to build a Docker image", explanation: "A `Dockerfile` is a text document that contains commands to assemble an image." },
+      { question: "What does the `-p` flag do in `docker run -p 8080:80`?", code: "docker run -p 8080:80 my-app", options: ["Sets a password", "Specifies the project name", "Publishes a container's port to the host", "Pauses the container"], answer: "Publishes a container's port to the host", explanation: "The `-p` flag maps a host port (8080) to a container port (80)." },
+      { question: "What is the command to list all running containers?", code: "docker ...", options: ["docker list", "docker ps", "docker images", "docker run"], answer: "docker ps", explanation: "`docker ps` (process status) lists all currently running containers." },
+      { question: "What is a Docker volume?", code: "docker run -v my-data:/app/data", options: ["A way to store data in the container's writable layer", "A mechanism for persisting data generated by and used by Docker containers", "A network driver", "A type of Docker image"], answer: "A mechanism for persisting data generated by and used by Docker containers", explanation: "Volumes are the preferred way to persist data outside the container's lifecycle." },
+      { question: "What is the difference between the `COPY` and `ADD` instructions in a Dockerfile?", code: "// ...", options: ["They are identical", "`ADD` can fetch remote URLs and extract tarballs, `COPY` cannot", "`COPY` is deprecated", "`ADD` is faster"], answer: "`ADD` can fetch remote URLs and extract tarballs, `COPY` cannot", explanation: "Because of its extra functionality, the best practice is to prefer `COPY` unless you need `ADD`'s specific features." },
+      { question: "How do you remove a stopped container?", code: "docker rm <container_id>", options: ["docker delete <id>", "docker stop <id>", "docker rm <id>", "docker rmi <id>"], answer: "docker rm <id>", explanation: "`docker rm` is used to remove one or more containers." },
+      { question: "What is Docker Hub?", code: "// ...", options: ["A Git repository", "A cloud-based registry service for Docker images", "A local Docker server", "A documentation website"], answer: "A cloud-based registry service for Docker images", explanation: "Docker Hub is the default public registry for finding and sharing container images." },
+      { question: "What does 'multi-stage build' mean in a Dockerfile?", code: "FROM node as builder\n...\nFROM nginx\nCOPY --from=builder /app/build /usr/share/nginx/html", options: ["Building multiple images at once", "Using multiple `FROM` instructions to create a small final image", "A build that requires multiple steps", "A type of Docker plugin"], answer: "Using multiple `FROM` instructions to create a small final image", explanation: "Multi-stage builds allow you to use one stage for compiling/building and a later stage to copy only the necessary artifacts, resulting in a much smaller production image." },
+      { question: "What is Docker Compose used for?", code: "docker-compose up", options: ["To build Docker images", "To define and run multi-container Docker applications", "To manage a single container", "To compose Dockerfiles"], answer: "To define and run multi-container Docker applications", explanation: "Compose is a tool for defining and running applications with multiple services (e.g., a web server, database, and cache)." },
+      { question: "Which command stops a running container?", code: "docker ... <container_id>", options: ["docker pause <id>", "docker kill <id>", "docker stop <id>", "docker finish <id>"], answer: "docker stop <id>", explanation: "`docker stop` sends a SIGTERM signal, allowing a graceful shutdown, while `docker kill` sends a SIGKILL." },
+      { question: "What is an orphaned volume?", code: "// ...", options: ["A volume not connected to the internet", "A volume that is not associated with any container", "A read-only volume", "A volume with no data"], answer: "A volume that is not associated with any container", explanation: "Orphaned volumes can occur when containers are removed without also removing their associated volumes." },
+      { question: "How do you view the logs of a running container?", code: "docker logs <container_id>", options: ["docker show logs <id>", "docker logs <id>", "docker history <id>", "docker inspect <id>"], answer: "docker logs <id>", explanation: "The `docker logs` command fetches the logs of a container." },
+      { question: "What is the purpose of the `.dockerignore` file?", code: "// ...", options: ["To specify which Docker commands to ignore", "To prevent files and directories from being copied into the image", "To ignore errors during a build", "To list containers to ignore"], answer: "To prevent files and directories from being copied into the image", explanation: "Similar to `.gitignore`, it helps keep the build context small and avoids leaking sensitive files into the image." },
+      { question: "What is the difference between a private and public repository on Docker Hub?", code: "// ...", options: ["Private repos are faster", "Public repos are free, private repos are paid", "Public repos can be accessed by anyone, private repos require permissions", "There is no difference"], answer: "Public repos can be accessed by anyone, private repos require permissions", explanation: "Private repositories are used for proprietary or sensitive images that you don't want to share publicly." }
     ]
   },
   'Flutter': {
     icon: (props: any) => <Bird {...props} />,
     description: "Build beautiful, natively compiled applications from a single codebase.",
     questions: [
-      {
-        question: "What programming language is used to write Flutter apps?",
-        code: "// ...",
-        options: ["Kotlin", "Swift", "Dart", "JavaScript"],
-        answer: "Dart",
-        explanation: "Flutter apps are written in the Dart programming language, which was also developed by Google. Dart is optimized for building user interfaces."
-      },
-      {
-        question: "In Flutter, everything is a(n) ____?",
-        code: "Scaffold(body: Center(child: Text('Hello')))",
-        options: ["Component", "View", "Element", "Widget"],
-        answer: "Widget",
-        explanation: "The core concept in Flutter is that 'everything is a widget'. Widgets are the building blocks of a Flutter app's UI, describing what their view should look like given their current configuration and state."
-      },
-      {
-        question: "What is the difference between a StatelessWidget and a StatefulWidget?",
-        code: "// ...",
-        options: ["StatefulWidgets can be animated, StatelessWidget cannot", "StatelessWidgets have no internal state that can change over time", "StatefulWidgets are for UI, StatelessWidget are for logic", "There is no difference"],
-        answer: "StatelessWidgets have no internal state that can change over time",
-        explanation: "A StatelessWidget is immutable, meaning its properties can't change. A StatefulWidget maintains state that might change during the lifetime of the widget, and it uses a State object to manage that state."
-      }
+      { question: "What programming language is used to write Flutter apps?", code: "// ...", options: ["Kotlin", "Swift", "Dart", "JavaScript"], answer: "Dart", explanation: "Flutter apps are written in the Dart programming language, developed by Google." },
+      { question: "In Flutter, everything is a(n) ____?", code: "Scaffold(body: Center(child: Text('Hello')))", options: ["Component", "View", "Element", "Widget"], answer: "Widget", explanation: "The core concept in Flutter is that 'everything is a widget', describing what their view should look like." },
+      { question: "What is the difference between a StatelessWidget and a StatefulWidget?", code: "// ...", options: ["StatefulWidgets can be animated, StatelessWidget cannot", "StatelessWidgets have no internal state that can change over time", "StatefulWidgets are for UI, StatelessWidget are for logic", "There is no difference"], answer: "StatelessWidgets have no internal state that can change over time", explanation: "A StatelessWidget is immutable. A StatefulWidget maintains state that might change." },
+      { question: "What is the purpose of `pubspec.yaml`?", code: "// ...", options: ["To define the app's UI", "To manage project dependencies and metadata", "To configure build settings", "To write Dart code"], answer: "To manage project dependencies and metadata", explanation: "The `pubspec.yaml` file is similar to `package.json` in Node.js or `Gemfile` in Ruby." },
+      { question: "How do you perform an HTTP request in Flutter?", code: "// ...", options: ["Using the built-in `http` library", "Using the popular `http` package", "Using `fetch()`", "Using `axios`"], answer: "Using the popular `http` package", explanation: "While Dart has `dart:io` for HTTP, the `http` package from pub.dev is the standard and recommended way." },
+      { question: "What is a 'hot reload' in Flutter?", code: "// ...", options: ["Restarting the entire application", "Injecting updated source code files into the running Dart VM", "Reloading the device's operating system", "A type of animation"], answer: "Injecting updated source code files into the running Dart VM", explanation: "Hot reload allows you to see the effects of your changes almost instantly without losing app state." },
+      { question: "Which widget is used to position children in a vertical column?", code: "...", options: ["Row", "List", "Stack", "Column"], answer: "Column", explanation: "The `Column` widget arranges its children in a vertical array." },
+      { question: "What is the `main()` function in a Flutter app?", code: "void main() => runApp(MyApp());", options: ["It's an optional function", "It's the entry point of the application", "It's where you define widgets", "It's a lifecycle method"], answer: "It's the entry point of the application", explanation: "Every Flutter application starts execution in the `main()` function." },
+      { question: "What is the difference between `mainAxisAlignment` and `crossAxisAlignment` in a Flex widget (Row/Column)?", code: "// ...", options: ["There is no difference", "`mainAxisAlignment` aligns children along the main axis, `crossAxisAlignment` along the cross axis", "They control padding and margin", "`mainAxisAlignment` is for horizontal, `crossAxisAlignment` for vertical"], answer: "`mainAxisAlignment` aligns children along the main axis, `crossAxisAlignment` along the cross axis", explanation: "For a `Row`, the main axis is horizontal. For a `Column`, the main axis is vertical." },
+      { question: "What is the Flutter widget tree?", code: "// ...", options: ["A data structure for storing state", "A representation of the user interface's structure", "A file in your project", "A debugging tool"], answer: "A representation of the user interface's structure", explanation: "Flutter builds its UI by composing widgets into a hierarchy, known as the widget tree." },
+      { question: "How do you manage state in a large Flutter application?", code: "// ...", options: ["Using only `setState()`", "Using a state management library like Provider, BLoC, or Riverpod", "Storing everything in global variables", "Passing callbacks down the widget tree"], answer: "Using a state management library like Provider, BLoC, or Riverpod", explanation: "For complex apps, dedicated state management solutions are recommended over `setState` to avoid prop-drilling." },
+      { question: "What does the `BuildContext` do?", code: "// ...", options: ["It holds the app's configuration", "It's a handle to the location of a widget in the widget tree", "It manages the app's state", "It's a reference to the database"], answer: "It's a handle to the location of a widget in the widget tree", explanation: "The `BuildContext` is used to locate parent widgets and obtain theme data, etc." },
+      { question: "What is the purpose of the `FutureBuilder` widget?", code: "FutureBuilder(...)", options: ["To build a widget that will exist in the future", "To build a widget based on the latest snapshot of an interaction with a Future", "To create a button", "To define a future date"], answer: "To build a widget based on the latest snapshot of an interaction with a Future", explanation: "It's perfect for handling asynchronous data, showing a loading indicator, and then showing the data or an error." },
+      { question: "Is Flutter a language, a framework, or an SDK?", code: "// ...", options: ["A language", "A framework", "An SDK", "All of the above"], answer: "An SDK", explanation: "Flutter is a Software Development Kit (SDK) that includes a framework, widgets, and tools to build applications in the Dart language." },
+      { question: "What is the `key` property in a widget constructor used for?", code: "MyWidget(key: ...)", options: ["For security", "To uniquely identify a widget among its siblings", "To store data", "For styling"], answer: "To uniquely identify a widget among its siblings", explanation: "Keys are crucial when modifying a collection of widgets of the same type, helping Flutter's engine to update the UI efficiently." }
     ]
   },
   'Go': {
     icon: (props: any) => <BrainCircuit {...props} />,
     description: "Concurrency, simplicity, and Google's backend language.",
     questions: [
-      {
-        question: "How does Go handle concurrency?",
-        code: "go myFunc()",
-        options: ["With threads", "With async/await", "With goroutines and channels", "With callbacks"],
-        answer: "With goroutines and channels",
-        explanation: "Go uses goroutines, which are lightweight threads managed by the Go runtime, and channels for communication between them. This is a core feature of the language."
-      },
-      {
-        question: "What is the `defer` keyword used for?",
-        code: "defer file.Close()",
-        options: ["To delay execution of a function", "To schedule a function call until the surrounding function returns", "To define a default value", "To handle errors"],
-        answer: "To schedule a function call until the surrounding function returns",
-        explanation: "A `defer` statement defers the execution of a function until the surrounding function completes. It's commonly used for cleanup tasks like closing files or releasing resources."
-      },
-      {
-        question: "Does Go have classes?",
-        code: "type Circle struct { ... }",
-        options: ["Yes, using the `class` keyword", "No, it uses structs and methods", "Yes, but they are called objects", "No, it is a functional language"],
-        answer: "No, it uses structs and methods",
-        explanation: "Go does not have classes in the traditional OOP sense. Instead, it uses structs to hold data and allows you to define methods on those structs to achieve similar behavior."
-      }
+      { question: "How does Go handle concurrency?", code: "go myFunc()", options: ["With threads", "With async/await", "With goroutines and channels", "With callbacks"], answer: "With goroutines and channels", explanation: "Go uses goroutines (lightweight threads) and channels for communication between them." },
+      { question: "What is the `defer` keyword used for?", code: "defer file.Close()", options: ["To delay execution of a function", "To schedule a function call until the surrounding function returns", "To define a default value", "To handle errors"], answer: "To schedule a function call until the surrounding function returns", explanation: "A `defer` statement defers a function's execution until the surrounding function completes." },
+      { question: "Does Go have classes?", code: "type Circle struct { ... }", options: ["Yes, using the `class` keyword", "No, it uses structs and methods", "Yes, but they are called objects", "No, it is a functional language"], answer: "No, it uses structs and methods", explanation: "Go doesn't have classes. It uses structs to hold data and you can define methods on them." },
+      { question: "In Go, how do you indicate that a variable is exported (public)?", code: "var MyVar int", options: ["Using a `public` keyword", "By capitalizing the first letter", "By putting it in a `public` block", "All variables are public"], answer: "By capitalizing the first letter", explanation: "In Go, if a name (variable, type, or function) starts with a capital letter, it is exported and visible outside the package." },
+      { question: "What is a channel in Go?", code: "ch := make(chan int)", options: ["A way to handle files", "A typed conduit through which you can send and receive values", "A type of variable", "A network socket"], answer: "A typed conduit through which you can send and receive values", explanation: "Channels are a core feature for communication between goroutines, preventing race conditions." },
+      { question: "What is the zero value for a pointer in Go?", code: "var p *int", options: ["0", "undefined", "null", "nil"], answer: "nil", explanation: "The zero value for pointers, interfaces, maps, slices, channels, and function types is `nil`." },
+      { question: "What is the purpose of the `go.mod` file?", code: "// ...", options: ["To run the Go program", "To define a module, its dependencies, and their versions", "To store Go documentation", "To compile Go code"], answer: "To define a module, its dependencies, and their versions", explanation: "The `go.mod` file is the centerpiece of Go's module system for dependency management." },
+      { question: "How does Go handle errors?", code: "val, err := myFunc()", options: ["With try/catch blocks", "By returning an `error` value as the last return value", "By throwing exceptions", "By crashing the program"], answer: "By returning an `error` value as the last return value", explanation: "Go has a strong convention of functions returning an `error` type as their last return value, which the caller must check." },
+      { question: "What is a slice in Go?", code: "s := make([]string, 3)", options: ["The same as an array", "A dynamically-sized, flexible view into the elements of an array", "A type of string", "A part of a file"], answer: "A dynamically-sized, flexible view into the elements of an array", explanation: "Slices are more common and powerful than arrays in Go, as they can be resized." },
+      { question: "Is Go a statically or dynamically typed language?", code: "var i int", options: ["Statically typed", "Dynamically typed", "Both", "Neither"], answer: "Statically typed", explanation: "Go is a statically typed language, meaning variable types are known at compile time, which helps catch errors early." },
+      { question: "What does the `...` operator do in a function parameter?", code: "func sum(nums ...int) {}", options: ["It's a pointer", "It indicates a variadic function (accepts zero or more arguments)", "It's for comments", "It spreads a slice"], answer: "It indicates a variadic function (accepts zero or more arguments)", explanation: "The `...` before the type of the final parameter indicates it's a variadic function." },
+      { question: "What is an empty interface (`interface{}`)?", code: "var i interface{}", options: ["An interface with no methods", "It can hold values of any type", "A syntax error", "Both A and B"], answer: "Both A and B", explanation: "An empty interface may hold values of any type because every type implements at least zero methods." },
+      { question: "What is the difference between `make()` and `new()`?", code: "// ...", options: ["They are the same", "`new` allocates memory, `make` initializes slices, maps, and channels", "`make` allocates memory, `new` initializes", "`new` is for structs only"], answer: "`new` allocates memory, `make` initializes slices, maps, and channels", explanation: "`new(T)` allocates zeroed storage for a new item of type T and returns its address. `make(T, ...)` is only for slices, maps, and channels and returns an initialized (not zeroed) value of type T." },
+      { question: "Can a Go program have unused variables?", code: "var x = 1", options: ["Yes", "No, it's a compile-time error", "Only if they are global", "Only in development mode"], answer: "No, it's a compile-time error", explanation: "Go enforces clean code by making unused variables and imports compilation errors." },
+      { question: "What is the idiomatic way to handle a `for` loop in Go?", code: "for i, v := range mySlice { ... }", options: ["Using a C-style `for` loop", "Using a `while` loop", "Using the `range` keyword", "Using a `forEach` method"], answer: "Using the `range` keyword", explanation: "The `range` form of the `for` loop iterates over a slice or map, providing the index and value." }
     ]
   },
   'HTML': {
     icon: (props: any) => <FileCode {...props} />,
     description: "Challenge your understanding of HTML tags, attributes, and semantics.",
     questions: [
-      {
-        question: "Which of these tags is a 'void' element (cannot have content)?",
-        code: "1. <div>\n2. <p>\n3. <br>\n4. <span>",
-        options: ["<div>", "<span>", "<br>", "<p>"],
-        answer: "<br>",
-        explanation: "Void elements in HTML are elements that cannot have any child nodes (i.e., nested elements or text). `<br>`, `<img>`, `<hr>`, and `<input>` are common examples."
-      },
-      {
-        question: "What is the purpose of the `<datalist>` tag?",
-        code: "<label for='browser'>Choose:</label>\n<input list='browsers' name='browser' id='browser'>\n<datalist id='browsers'>...</datalist>",
-        options: ["To create a dropdown list", "To style a list of data", "To provide autocomplete options for an <input>", "To define a list of commands"],
-        answer: "To provide autocomplete options for an <input>",
-        explanation: "The `<datalist>` element contains a set of `<option>` elements that represent predefined options for an `<input>` element. It creates an autocomplete feature."
-      },
-      {
-        question: "Which attribute is used to make an input field required?",
-        code: "<input type='text' ...>",
-        options: ["validate", "mandatory", "required", "important"],
-        answer: "required",
-        explanation: "The `required` boolean attribute specifies that the user must fill in a value before submitting a form."
-      }
+      { question: "Which of these tags is a 'void' element (cannot have content)?", code: "1. <div>\n2. <p>\n3. <br>\n4. <span>", options: ["<div>", "<span>", "<br>", "<p>"], answer: "<br>", explanation: "Void elements like `<br>`, `<img>`, and `<input>` cannot have any child nodes." },
+      { question: "What is the purpose of the `<datalist>` tag?", code: "<input list='browsers'>\n<datalist id='browsers'>...</datalist>", options: ["To create a dropdown list", "To style a list of data", "To provide autocomplete options for an <input>", "To define a list of commands"], answer: "To provide autocomplete options for an <input>", explanation: "The `<datalist>` element contains `<option>` elements for an `<input>`'s autocomplete feature." },
+      { question: "Which attribute is used to make an input field required?", code: "<input type='text' ...>", options: ["validate", "mandatory", "required", "important"], answer: "required", explanation: "The `required` boolean attribute specifies that the user must fill in a value before submitting." },
+      { question: "What is the purpose of the `alt` attribute on an `<img>` tag?", code: "<img src='...' alt='...'>", options: ["To provide a title for the image", "For SEO and to provide text for screen readers", "To style the image", "To link the image to another page"], answer: "For SEO and to provide text for screen readers", explanation: "The `alt` attribute provides alternative text for an image if the user for some reason cannot view it (because of slow connection, an error in the src attribute, or if the user uses a screen reader)." },
+      { question: "Which tag is used to define a section of a document that is self-contained?", code: "// ...", options: ["<section>", "<div>", "<article>", "<aside>"], answer: "<article>", explanation: "An `<article>` should make sense on its own and it should be possible to distribute it independently from the rest of the site (e.g., a blog post)." },
+      { question: "What is the difference between `<b>` and `<strong>`?", code: "// ...", options: ["There is no difference", "`<strong>` has semantic importance, `<b>` does not", "`<b>` is for longer text", "`<strong>` is deprecated"], answer: "`<strong>` has semantic importance, `<b>` does not", explanation: "`<strong>` indicates that its contents have strong importance, seriousness, or urgency, while `<b>` is just for drawing attention without added importance." },
+      { question: "Which HTML5 tag is used to embed a video?", code: "// ...", options: ["<media>", "<video>", "<movie>", "<embed>"], answer: "<video>", explanation: "The `<video>` tag is the standard way to embed video content in an HTML document." },
+      { question: "What does the `defer` attribute do on a `<script>` tag?", code: "<script defer src='...'>", options: ["It prevents the script from executing", "It executes the script after the document has been parsed", "It executes the script asynchronously", "It loads the script from a different domain"], answer: "It executes the script after the document has been parsed", explanation: "`defer` ensures the script is downloaded in parallel but executed only after the HTML parsing is complete, maintaining the correct order." },
+      { question: "Which tag is semantically correct for the main navigation of a site?", code: "// ...", options: ["<div>", "<ul>", "<nav>", "<menu>"], answer: "<nav>", explanation: "The `<nav>` tag is intended for major blocks of navigation links." },
+      { question: "What is the purpose of the `target='_blank'` attribute on an `<a>` tag?", code: "<a href='...' target='_blank'>", options: ["To open the link in the same tab", "To open the link in a new tab or window", "To link to a blank page", "To prevent the link from working"], answer: "To open the link in a new tab or window", explanation: "`_blank` is a special keyword that tells the browser to open the linked document in a new browsing context." },
+      { question: "Which tag is used to define a term in a description list?", code: "<dl> ... </dl>", options: ["<dd>", "<dt>", "<di>", "<li>"], answer: "<dt>", explanation: "A description list (`<dl>`) uses `<dt>` (description term) and `<dd>` (description details)." },
+      { question: "How do you add a comment in HTML?", code: "// ...", options: ["// This is a comment", "/* This is a comment */", "<!-- This is a comment -->", "# This is a comment"], answer: "<!-- This is a comment -->", explanation: "HTML comments start with `<!--` and end with `-->`." },
+      { question: "What is the purpose of the `<aside>` tag?", code: "// ...", options: ["For the main content", "For content that is tangentially related to the content around it", "For the site header", "For a list of articles"], answer: "For content that is tangentially related to the content around it", explanation: "It's often used for sidebars, call-out boxes, or advertisements." },
+      { question: "Which input `type` is best for entering a date and time?", code: "<input type='...'>", options: ["date", "datetime", "datetime-local", "time"], answer: "datetime-local", explanation: "`datetime-local` provides a control for entering a date and time, including the year, month, day, and time in hours and minutes." },
+      { question: "What is the difference between an `ol` and a `ul`?", code: "// ...", options: ["`ol` is an ordered list, `ul` is an unordered list", "`ul` is for navigation, `ol` is for content", "They are visually the same", "`ol` can have nested lists, `ul` cannot"], answer: "`ol` is an ordered list, `ul` is an unordered list", explanation: "`<ol>` (ordered list) items are typically rendered with a number, while `<ul>` (unordered list) items are rendered with a bullet." }
     ]
   },
   'Java': {
     icon: (props: any) => <BrainCircuit {...props} />,
     description: "JVM, objects, and verbosity. How well do you know this enterprise giant?",
     questions: [
-      {
-        question: "What is the difference between `==` and `.equals()` for objects?",
-        code: "String a = new String(\"hi\");\nString b = new String(\"hi\");",
-        options: ["They are the same", "`==` compares values, `.equals()` compares references", "`==` compares references, `.equals()` compares values", "`.equals()` is faster"],
-        answer: "`==` compares references, `.equals()` compares values",
-        explanation: "In Java, `==` checks if two object references point to the exact same memory location. The `.equals()` method is meant to be overridden to compare the actual content/values of the objects."
-      },
-      {
-        question: "Is Java pass-by-value or pass-by-reference?",
-        code: "void myFunc(MyObject obj) { ... }",
-        options: ["Pass-by-reference", "Pass-by-value", "Both", "It depends on the object"],
-        answer: "Pass-by-value",
-        explanation: "Java is strictly pass-by-value. When you pass an object, you are passing a copy of the reference value (the memory address), not the actual object or a reference to the reference itself."
-      },
-      {
-        question: "Which of these is a checked exception?",
-        code: "// ...",
-        options: ["NullPointerException", "ArrayIndexOutOfBoundsException", "IOException", "IllegalArgumentException"],
-        answer: "IOException",
-        explanation: "Checked exceptions are exceptions that are checked at compile-time (e.g., `IOException`). Unchecked exceptions (like `NullPointerException`) are runtime exceptions."
-      }
+      { question: "What is the difference between `==` and `.equals()` for objects?", code: "String a = new String(\"hi\");\nString b = new String(\"hi\");", options: ["They are the same", "`==` compares values, `.equals()` compares references", "`==` compares references, `.equals()` compares values", "`.equals()` is faster"], answer: "`==` compares references, `.equals()` compares values", explanation: "`==` checks if two references point to the same memory location. `.equals()` compares object content." },
+      { question: "Is Java pass-by-value or pass-by-reference?", code: "void myFunc(MyObject obj) { ... }", options: ["Pass-by-reference", "Pass-by-value", "Both", "It depends on the object"], answer: "Pass-by-value", explanation: "Java is strictly pass-by-value. When you pass an object, you are passing a copy of the reference value." },
+      { question: "Which of these is a checked exception?", code: "// ...", options: ["NullPointerException", "ArrayIndexOutOfBoundsException", "IOException", "IllegalArgumentException"], answer: "IOException", explanation: "Checked exceptions (e.g., `IOException`) must be declared or handled at compile-time. Others are unchecked (runtime) exceptions." },
+      { question: "What is the main purpose of the `static` keyword in Java?", code: "public static int myVar;", options: ["To make a variable constant", "To associate a variable or method with the class, rather than an instance", "To make a method private", "To make a variable thread-safe"], answer: "To associate a variable or method with the class, rather than an instance", explanation: "Static members belong to the class itself, not to any specific object." },
+      { question: "Can you override a `private` method in Java?", code: "// ...", options: ["Yes", "No", "Only if the subclass is in the same package", "Only if you use the `override` keyword"], answer: "No", explanation: "Private methods are not visible to subclasses and therefore cannot be overridden." },
+      { question: "What is the Java Virtual Machine (JVM)?", code: "// ...", options: ["A code editor", "A compiler for Java", "An abstract computing machine that enables a computer to run a Java program", "A Java library"], answer: "An abstract computing machine that enables a computer to run a Java program", explanation: "The JVM is the runtime engine of the Java Platform, which allows any Java program to run on any device or operating system." },
+      { question: "What is the difference between an `ArrayList` and a `LinkedList`?", code: "// ...", options: ["`ArrayList` is faster for all operations", "`LinkedList` is better for random access", "`ArrayList` uses a dynamic array, `LinkedList` uses a doubly-linked list", "They are the same"], answer: "`ArrayList` uses a dynamic array, `LinkedList` uses a doubly-linked list", explanation: "`ArrayList` is fast for random access (get), while `LinkedList` is fast for adding/removing elements from the middle." },
+      { question: "What does the `final` keyword mean when applied to a class?", code: "public final class MyClass { ... }", options: ["The class cannot be instantiated", "The class cannot be inherited from", "All methods in the class are final", "The class is abstract"], answer: "The class cannot be inherited from", explanation: "A `final` class cannot be subclassed." },
+      { question: "What is a 'constructor' in Java?", code: "public class MyClass { public MyClass() { ... } }", options: ["A method to destroy an object", "A special method for creating and initializing an object", "A regular method that returns an object", "A static method"], answer: "A special method for creating and initializing an object", explanation: "A constructor is called when an object of a class is created." },
+      { question: "What is method overloading vs. method overriding?", code: "// ...", options: ["They are the same", "Overloading is at compile-time, Overriding is at runtime", "Overloading is in the same class, Overriding is in a subclass", "Both B and C are correct"], answer: "Both B and C are correct", explanation: "Overloading involves methods with the same name but different parameters. Overriding involves a subclass providing a specific implementation of a method from its superclass." },
+      { question: "Which collection class is synchronized and thread-safe?", code: "// ...", options: ["ArrayList", "HashMap", "Vector", "HashSet"], answer: "Vector", explanation: "`Vector` is synchronized, whereas `ArrayList` is not. `Vector`'s operations are slower due to the overhead of synchronization." },
+      { question: "What is the purpose of the `super` keyword?", code: "super.myMethod();", options: ["To call a method in the current class", "To refer to the immediate parent class object", "To create a new instance", "To access static members"], answer: "To refer to the immediate parent class object", explanation: "`super` can be used to call parent class constructors or methods." },
+      { question: "What is the `Object` class?", code: "// ...", options: ["A user-defined class", "The root of the class hierarchy in Java", "An abstract class", "An interface"], answer: "The root of the class hierarchy in Java", explanation: "Every class in Java is a direct or indirect descendant of the `Object` class." },
+      { question: "Can a `.java` file have more than one `public` class?", code: "// ...", options: ["Yes, any number", "No, it can have at most one `public` class", "Only if they are nested", "Yes, but they must have different names"], answer: "No, it can have at most one `public` class", explanation: "A Java source file can have only one public class, and the filename must match the public class name." },
+      { question: "What is garbage collection in Java?", code: "// ...", options: ["A way to clean up the project directory", "The process of automatically freeing memory of objects that are no longer in use", "A tool for deleting old files", "A method for handling exceptions"], answer: "The process of automatically freeing memory of objects that are no longer in use", explanation: "Garbage collection is a form of automatic memory management, which is a key feature of Java." }
     ]
   },
   'JavaScript': {
     icon: (props: any) => <svg {...props} role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>JavaScript</title><path d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.82-2.22-2.123-3.345-.81-.675-1.636-1.26-2.437-1.785.12-.135.255-.27.39-.42.63-.705.945-1.425.945-2.16 0-.75-.33-1.44-.99-2.07-.645-.63-1.44-.945-2.385-.945-1.02 0-1.86.345-2.52 1.035-.66.69-.99 1.515-.99 2.475 0 1.035.33 1.89.99 2.565.66.675 1.515 1.012 2.565 1.012.705 0 1.32-.165 1.845-.495.24-.15.465-.345.675-.585.525.465 1.11.99 1.755 1.575.81.675 1.635 1.26 2.475 1.755.255.15.51.285.765.405.09.045.18.06.27.06.24 0 .465-.09.66-.27.195-.18.285-.405.285-.675 0-.195-.06-.39-.18-.585zm-9.015-3.525c-.27-.285-.405-.63-.405-1.035 0-.42.135-.78.405-1.08.27-.3.615-.45 1.035-.45.42 0 .78.15 1.08.45.3.3.45.66.45 1.08 0 .405-.15.75-.45 1.035-.3.285-.66.435-1.08.435-.42 0-.765-.15-1.035-.435zM4.78 18.284c-.18-1.095-.824-2.22-2.128-3.344-.81-.676-1.637-1.26-2.437-1.786.12-.134.255-.27.39-.42.63-.705.945-1.425.945-2.16 0-.75-.33-1.44-.99-2.07-.645-.63-1.44-.945-2.385-.945-1.02 0-1.86.345-2.52 1.035-.66.69-.99 1.515-.99 2.475 0 1.035.33 1.89.99 2.565.66.675 1.514 1.013 2.564 1.013.706 0 1.32-.165 1.846-.495.24-.15.465-.345.675-.585.525.465 1.11.99 1.755 1.575.81.675 1.635 1.26 2.475 1.755.255.15.51.285.765.405.09.045.18.06.27.06.24 0 .465-.09.66-.27.195-.18.285-.405.285-.675 0-.195-.06-.39-.18-.585zM1.96 14.76c-.27-.284-.405-.63-.405-1.036 0-.42.135-.78.405-1.08.27-.3.615-.45 1.035-.45.42 0 .78.15 1.08.45.3.3.45.66.45 1.08 0 .405-.15.75-.45 1.035-.3.285-.66.436-1.08.436-.42 0-.765-.15-1.035-.435z" fill="currentColor"/></svg>,
     description: "Test your knowledge of JavaScript's tricky parts and weird behaviors.",
     questions: [
-        {
-            question: "What will `console.log(typeof null)` output?",
-            code: "console.log(typeof null);",
-            options: ["'null'", "'object'", "'undefined'", "'function'"],
-            answer: "'object'",
-            explanation: "This is a long-standing bug in JavaScript. The `typeof null` returns 'object', which is incorrect but maintained for historical reasons."
-        },
-        {
-            question: "What is the output of this code?",
-            code: "console.log(0.1 + 0.2 === 0.3);",
-            options: ["true", "false", "undefined", "TypeError"],
-            answer: "false",
-            explanation: "JavaScript uses floating-point numbers, which can't represent all decimals with perfect precision. `0.1 + 0.2` results in a value slightly different from `0.3`."
-        },
-        {
-            question: "What will this code output?",
-            code: "console.log('5' + 3);",
-            options: ["8", "'53'", "NaN", "TypeError"],
-            answer: "'53'",
-            explanation: "The `+` operator, when used with a string and a number, performs string concatenation. It converts the number `3` to a string and joins it with '5'."
-        },
-        {
-            question: "What will `[] + {}` evaluate to?",
-            code: "console.log([] + {});",
-            options: ["'[]{}'", "'[object Object]'", "0", "TypeError"],
-            answer: "'[object Object]'",
-            explanation: "When using the `+` operator, JavaScript's type coercion rules are applied. The empty array `[]` is converted to an empty string `''`. The empty object `{}` is converted to the string `'[object Object]'`. The result is the concatenation of these two strings."
-        }
+        { question: "What will `console.log(typeof null)` output?", code: "console.log(typeof null);", options: ["'null'", "'object'", "'undefined'", "'function'"], answer: "'object'", explanation: "This is a long-standing bug in JavaScript. `typeof null` returns 'object', which is incorrect." },
+        { question: "What is the output of this code?", code: "console.log(0.1 + 0.2 === 0.3);", options: ["true", "false", "undefined", "TypeError"], answer: "false", explanation: "JavaScript uses floating-point numbers, which can't represent all decimals with perfect precision." },
+        { question: "What will this code output?", code: "console.log('5' + 3);", options: ["8", "'53'", "NaN", "TypeError"], answer: "'53'", explanation: "The `+` operator, when used with a string, performs string concatenation." },
+        { question: "What will `[] + {}` evaluate to?", code: "console.log([] + {});", options: ["'[]{}'", "'[object Object]'", "0", "TypeError"], answer: "'[object Object]'", explanation: "The empty array `[]` becomes `''` and the empty object `{}` becomes `'[object Object]'`." },
+        { question: "What is a closure?", code: "// ...", options: ["A way to close a program", "A function having access to the parent scope, even after the parent function has closed", "A security vulnerability", "A type of loop"], answer: "A function having access to the parent scope, even after the parent function has closed", explanation: "Closures are a fundamental concept, allowing for data privacy and function factories." },
+        { question: "What is the difference between `==` and `===`?", code: "'5' == 5", options: ["They are identical", "`===` is faster", "`==` performs type coercion, `===` does not", "`==` is for numbers only"], answer: "`==` performs type coercion, `===` does not", explanation: "`==` converts operands to the same type before comparing, while `===` requires both value and type to be the same." },
+        { question: "What does `this` keyword refer to in a function that is not part of an object?", code: "function hello() { console.log(this); }", options: ["The function itself", "The global object (window/global)", "null", "undefined"], answer: "The global object (window/global)", explanation: "In non-strict mode, `this` refers to the global object. In strict mode, it is `undefined`." },
+        { question: "What is hoisting in JavaScript?", code: "console.log(myVar); var myVar = 5;", options: ["Lifting a variable to the top of its scope", "A way to define variables", "A type of error", "A way to optimize code"], answer: "Lifting a variable to the top of its scope", explanation: "Variable and function declarations are moved to the top of their containing scope during the compilation phase." },
+        { question: "What is the event loop?", code: "// ...", options: ["A `for` loop for events", "A mechanism that allows JavaScript to perform non-blocking asynchronous operations", "A browser API", "A part of the V8 engine"], answer: "A mechanism that allows JavaScript to perform non-blocking asynchronous operations", explanation: "It's how JavaScript's single thread can handle concurrency by offloading tasks and processing a callback queue." },
+        { question: "What does `Array.prototype.map()` do?", code: "const newArr = arr.map(fn)", options: ["Modifies the original array", "Creates a new array with the results of calling a provided function on every element", "Filters an array", "Reduces an array to a single value"], answer: "Creates a new array with the results of calling a provided function on every element", explanation: "`map` is an immutable operation that creates a new array." },
+        { question: "What is the output of `console.log(+'10' - 5)`?", code: "// ...", options: ["'105'", "5", "NaN", "TypeError"], answer: "5", explanation: "The unary plus operator `+` converts the string '10' to a number before the subtraction occurs." },
+        { question: "What is a Promise?", code: "new Promise((resolve, reject) => { ... })", options: ["A guarantee that a function will execute", "An object representing the eventual completion or failure of an asynchronous operation", "A callback function", "A way to handle synchronous code"], answer: "An object representing the eventual completion or failure of an asynchronous operation", explanation: "Promises are used to handle async operations without falling into 'callback hell'." },
+        { question: "What's the difference between `let`, `const`, and `var`?", code: "// ...", options: ["They are all the same", "`var` is function-scoped; `let` and `const` are block-scoped", "`const` variables can be reassigned", "`let` is outdated"], answer: "`var` is function-scoped; `let` and `const` are block-scoped", explanation: "`let` and `const` were introduced in ES6 to provide more predictable variable scoping." },
+        { question: "What will `console.log(typeof NaN)` output?", code: "// ...", options: ["'nan'", "'object'", "'number'", "'undefined'"], answer: "'number'", explanation: "Even though NaN stands for 'Not-a-Number', its type is, paradoxically, `number`." },
+        { question: "What is the purpose of the `bind` method?", code: "myFunc.bind(this)", options: ["To immediately execute a function", "To create a new function that has its `this` keyword set to a specific value", "To connect two functions", "To debug code"], answer: "To create a new function that has its `this` keyword set to a specific value", explanation: "`bind` is used to create a function with a pre-set `this` context, which is useful for event handlers and callbacks." }
     ]
   },
   'Kotlin': {
     icon: (props: any) => <CodeSquare {...props} />,
     description: "Android development, null safety, and JVM interoperability.",
     questions: [
-      {
-        question: "What is the primary advantage of Kotlin's null safety?",
-        code: "var a: String? = null",
-        options: ["It makes code faster", "It eliminates NullPointerExceptions at compile time", "It allows all variables to be null", "It's just for documentation"],
-        answer: "It eliminates NullPointerExceptions at compile time",
-        explanation: "Kotlin's type system distinguishes between nullable and non-nullable references. The compiler forces you to handle potential `null` values, drastically reducing the infamous `NullPointerException`."
-      },
-      {
-        question: "What are data classes used for?",
-        code: "data class User(val name: String, val age: Int)",
-        options: ["For storing raw data from files", "To automatically generate standard methods like `equals()`, `hashCode()`, `toString()`", "For database entities only", "To create a class with no methods"],
-        answer: "To automatically generate standard methods like `equals()`, `hashCode()`, `toString()`",
-        explanation: "Data classes are a concise way to create classes that exist mainly to hold data. The compiler automatically derives useful methods from the properties declared in the primary constructor."
-      },
-      {
-        question: "What is the equivalent of a static method in Kotlin?",
-        code: "// ...",
-        options: ["A function inside a `companion object`", "A function with the `static` keyword", "A top-level function", "An extension function"],
-        answer: "A function inside a `companion object`",
-        explanation: "Kotlin does not have a `static` keyword. To create methods that can be called on a class without an instance, you place them inside a `companion object` block."
-      }
+      { question: "What is the primary advantage of Kotlin's null safety?", code: "var a: String? = null", options: ["It makes code faster", "It eliminates NullPointerExceptions at compile time", "It allows all variables to be null", "It's just for documentation"], answer: "It eliminates NullPointerExceptions at compile time", explanation: "Kotlin's type system distinguishes between nullable and non-nullable references, forcing compile-time checks." },
+      { question: "What are data classes used for?", code: "data class User(val name: String, val age: Int)", options: ["For storing raw data from files", "To automatically generate standard methods like `equals()`, `hashCode()`, `toString()`", "For database entities only", "To create a class with no methods"], answer: "To automatically generate standard methods like `equals()`, `hashCode()`, `toString()`", explanation: "Data classes are a concise way to create classes that exist mainly to hold data." },
+      { question: "What is the equivalent of a static method in Kotlin?", code: "// ...", options: ["A function inside a `companion object`", "A function with the `static` keyword", "A top-level function", "An extension function"], answer: "A function inside a `companion object`", explanation: "Kotlin does not have a `static` keyword. `companion object` is used for methods callable on the class." },
+      { question: "What is the difference between `val` and `var`?", code: "// ...", options: ["`val` is for variables, `var` is for values", "`val` is immutable (read-only), `var` is mutable", "`var` is for strings only", "There is no difference"], answer: "`val` is immutable (read-only), `var` is mutable", explanation: "`val` is like `final` in Java. Once a value is assigned, it cannot be changed." },
+      { question: "What are extension functions?", code: "fun String.addExclamation(): String { return this + \"!\" }", options: ["Functions that extend the runtime", "A way to add new functions to existing classes without inheriting from them", "Functions that are part of an interface", "Private functions"], answer: "A way to add new functions to existing classes without inheriting from them", explanation: "Extension functions are a powerful feature for adding utility methods to classes you don't own." },
+      { question: "What is the Elvis operator (`?:`) used for?", code: "val length = myString?.length ?: -1", options: ["To throw an exception", "To provide a default value if an expression is null", "To check for equality", "A ternary operator"], answer: "To provide a default value if an expression is null", explanation: "It's a concise way to handle nulls, returning the expression on the left if it's not null, or the one on the right otherwise." },
+      { question: "What are coroutines in Kotlin?", code: "GlobalScope.launch { ... }", options: ["A type of class", "A framework for building UI", "A design pattern for managing concurrency by writing asynchronous, non-blocking code", "A data structure"], answer: "A design pattern for managing concurrency by writing asynchronous, non-blocking code", explanation: "Coroutines are lightweight threads that simplify async programming." },
+      { question: "What is the purpose of the `when` expression?", code: "when (x) { 1 -> print(\"one\") 2 -> print(\"two\") }", options: ["It's a loop", "It's a more powerful and flexible replacement for the `switch` statement", "To define a variable", "To handle events"], answer: "It's a more powerful and flexible replacement for the `switch` statement", explanation: "`when` can be used as an expression or a statement and doesn't require constants." },
+      { question: "What is the `lateinit` keyword used for?", code: "lateinit var myAdapter: MyAdapter", options: ["To declare a variable that will be initialized in the future", "To make a variable lazy", "To declare a constant", "To make a variable nullable"], answer: "To declare a variable that will be initialized in the future", explanation: "`lateinit` allows you to avoid null checks for non-nullable properties that are initialized after object construction (e.g., via dependency injection)." },
+      { question: "What is a sealed class?", code: "sealed class Result", options: ["A class that cannot be inherited", "A class that represents a restricted class hierarchy", "A private class", "An abstract class"], answer: "A class that represents a restricted class hierarchy", explanation: "Sealed classes are used for representing restricted hierarchies, where a value can have one of the types from a limited set." },
+      { question: "Which function is used to apply a block of code to an object and return the object itself?", code: "myObject. ...", options: ["let", "run", "with", "apply"], answer: "apply", explanation: "`apply` is an extension function that's useful for object configuration. It returns the context object." },
+      { question: "Is Kotlin 100% interoperable with Java?", code: "// ...", options: ["No, it's a completely separate language", "Yes, it can call Java code and be called from Java code", "Only for Android development", "Only if you use a special compiler"], answer: "Yes, it can call Java code and be called from Java code", explanation: "Kotlin is designed to be fully interoperable with Java, allowing for gradual migration and mixed-language projects." },
+      { question: "What is the scope function `let` typically used for?", code: "name?.let { println(it) }", options: ["For looping", "For executing a block of code on a non-null object", "To declare a variable", "For configuration"], answer: "For executing a block of code on a non-null object", explanation: "`let` is often used for executing code only if a nullable variable is not null." },
+      { question: "What is a primary constructor in Kotlin?", code: "class Person(val name: String)", options: ["The main function of a class", "A constructor defined inside the class body", "A concise way to initialize a class, part of the class header", "The first constructor defined"], answer: "A concise way to initialize a class, part of the class header", explanation: "The primary constructor is part of the class header, right after the class name." },
+      { question: "How do you create a singleton object in Kotlin?", code: "// ...", options: ["Using the `singleton` keyword", "Using a companion object", "Using the `object` keyword", "Using a static class"], answer: "Using the `object` keyword", explanation: "The `object` keyword declares a class and creates an instance of it at the same time, effectively creating a singleton." }
     ]
   },
   'Laravel': {
     icon: (props: any) => <FileCode {...props} />,
     description: "The PHP framework for web artisans. Test your knowledge of Eloquent, Blade, and Artisan.",
     questions: [
-      {
-        question: "What is Laravel's templating engine called?",
-        code: "{{ $variable }}",
-        options: ["Twig", "Blade", "Volt", "Smarty"],
-        answer: "Blade",
-        explanation: "Blade is the simple, yet powerful templating engine provided with Laravel. Unlike other popular PHP templating engines, Blade does not restrict you from using plain PHP code in your views."
-      },
-      {
-        question: "Which command-line tool is included with Laravel?",
-        code: "php ... make:controller MyController",
-        options: ["Composer", "NPM", "Artisan", "Terminal"],
-        answer: "Artisan",
-        explanation: "Artisan is the command-line interface included with Laravel. It provides a number of helpful commands that can assist you while you build your application, such as creating controllers, models, and migrations."
-      },
-      {
-        question: "What is the name of the ORM used by Laravel?",
-        code: "User::all();",
-        options: ["Doctrine", "Eloquent", "Propel", "RedBean"],
-        answer: "Eloquent",
-        explanation: "The Eloquent ORM included with Laravel provides a beautiful, simple ActiveRecord implementation for working with your database. Each database table has a corresponding 'Model' which is used to interact with that table."
-      }
+      { question: "What is Laravel's templating engine called?", code: "{{ $variable }}", options: ["Twig", "Blade", "Volt", "Smarty"], answer: "Blade", explanation: "Blade is the simple, yet powerful templating engine provided with Laravel." },
+      { question: "Which command-line tool is included with Laravel?", code: "php ... make:controller MyController", options: ["Composer", "NPM", "Artisan", "Terminal"], answer: "Artisan", explanation: "Artisan is the command-line interface included with Laravel, providing helpful commands." },
+      { question: "What is the name of the ORM used by Laravel?", code: "User::all();", options: ["Doctrine", "Eloquent", "Propel", "RedBean"], answer: "Eloquent", explanation: "The Eloquent ORM provides a simple ActiveRecord implementation for working with your database." },
+      { question: "Which file is used to define application routes?", code: "// ...", options: ["routes/api.php", "routes/web.php", "app/Http/routes.php", "Both A and B"], answer: "Both A and B", explanation: "`routes/web.php` is for web UI routes, while `routes/api.php` is for stateless API routes." },
+      { question: "What is 'Middleware' in Laravel?", code: "// ...", options: ["A type of controller", "A mechanism for filtering HTTP requests entering your application", "A database layer", "A templating feature"], answer: "A mechanism for filtering HTTP requests entering your application", explanation: "Middleware provides a convenient mechanism for inspecting and filtering HTTP requests, such as for authentication or logging." },
+      { question: "How do you define a relationship between two Eloquent models (e.g., a User has many Posts)?", code: "public function posts() { return $this->hasMany(Post::class); }", options: ["Using a foreign key", "By defining a method that calls a relationship type like `hasMany` or `belongsTo`", "In the database migration file", "In the controller"], answer: "By defining a method that calls a relationship type like `hasMany` or `belongsTo`", explanation: "Eloquent relationships are defined as methods on your model classes." },
+      { question: "What is the purpose of a 'migration' file?", code: "Schema::create('users', function (Blueprint $table) { ... })", options: ["To migrate data from another server", "To act like version control for your database schema", "To move files", "To define API routes"], answer: "To act like version control for your database schema", explanation: "Migrations allow your team to easily modify and share the application's database schema." },
+      { question: "What is the 'Service Container' in Laravel?", code: "app()->make('MyService');", options: ["A Docker container", "A tool for managing class dependencies and performing dependency injection", "A place to store files", "A UI component"], answer: "A tool for managing class dependencies and performing dependency injection", explanation: "The service container is a powerful tool for managing class dependencies and performing dependency injection." },
+      { question: "Which Blade directive is used to check if a user is authenticated?", code: "@...", options: ["@if(auth()->check())", "@auth", "@guest", "Both A and B are correct"], answer: "Both A and B are correct", explanation: "`@auth` is a convenient shortcut for `@if(Auth::check())`." },
+      { question: "What is a 'Facade' in Laravel?", code: "Cache::get('key');", options: ["A design pattern", "A static-like interface to services in the service container", "A type of view", "A security feature"], answer: "A static-like interface to services in the service container", explanation: "Facades provide a 'static' interface to classes that are available in the application's service container." },
+      { question: "How can you create a new controller using Artisan?", code: "php artisan make:...", options: ["controller MyController", "new:controller MyController", "make:controller MyController", "generate:controller MyController"], answer: "make:controller MyController", explanation: "The `make:controller` command is the standard way to generate a new controller class." },
+      { question: "What is the purpose of the `.env` file?", code: "// ...", options: ["To store environment-specific configuration variables", "To define frontend assets", "To store Blade templates", "To list project dependencies"], answer: "To store environment-specific configuration variables", explanation: "The `.env` file allows you to have different configuration values based on the environment your application is running in." },
+      { question: "What is a 'Form Request' used for?", code: "public function rules() { return ['title' => 'required']; }", options: ["To create an HTML form", "To handle form submissions in a controller", "A separate class for handling complex validation and authorization logic", "To send an HTTP request"], answer: "A separate class for handling complex validation and authorization logic", explanation: "Form requests are custom request classes that encapsulate their own validation and authorization logic." },
+      { question: "Which directory contains your Blade view files?", code: "// ...", options: ["app/views", "public/views", "resources/views", "storage/views"], answer: "resources/views", explanation: "By default, all Blade templates are stored in the `resources/views` directory." },
+      { question: "What is Laravel Mix used for?", code: "mix.js('resources/js/app.js', 'public/js');", options: ["To mix colors in CSS", "A tool for compiling and optimizing frontend assets like CSS and JavaScript", "A database tool", "To manage session data"], answer: "A tool for compiling and optimizing frontend assets like CSS and JavaScript", explanation: "Mix provides a fluent API for defining Webpack build steps for your application." }
     ]
   },
   'Node.js': {
     icon: (props: any) => <Bot {...props} />,
     description: "Event loops, streams, and modules. Test your backend JS knowledge.",
     questions: [
-      {
-        question: "What is the event loop in Node.js?",
-        code: "// ...",
-        options: ["A loop that iterates over events", "A mechanism for handling asynchronous operations", "A way to manage multiple threads", "A data structure for storing events"],
-        answer: "A mechanism for handling asynchronous operations",
-        explanation: "The event loop allows Node.js to perform non-blocking I/O operations, despite JavaScript being single-threaded, by offloading operations and running callbacks when they complete."
-      },
-      {
-        question: "What is the difference between `require` and `import`?",
-        code: "const fs = require('fs');\nimport path from 'path';",
-        options: ["`require` is synchronous, `import` is asynchronous", "`require` is for CommonJS, `import` is for ES Modules", "They are interchangeable", "`import` can only be used at the top level"],
-        answer: "`require` is for CommonJS, `import` is for ES Modules",
-        explanation: "`require` is the traditional way to import modules in Node.js (CommonJS). `import` is the standard for ES Modules, offering features like static analysis and tree shaking."
-      },
-      {
-        question: "Which of these is NOT a core module in Node.js?",
-        code: "// ...",
-        options: ["fs", "http", "path", "express"],
-        answer: "express",
-        explanation: "`fs`, `http`, and `path` are all built-in core modules. `express` is a very popular third-party framework that must be installed from npm."
-      }
+      { question: "What is the event loop in Node.js?", code: "// ...", options: ["A loop that iterates over events", "A mechanism for handling asynchronous operations", "A way to manage multiple threads", "A data structure for storing events"], answer: "A mechanism for handling asynchronous operations", explanation: "The event loop allows Node.js to perform non-blocking I/O operations with a single thread." },
+      { question: "What is the difference between `require` and `import`?", code: "const fs = require('fs');\nimport path from 'path';", options: ["`require` is synchronous, `import` is asynchronous", "`require` is for CommonJS, `import` is for ES Modules", "They are interchangeable", "`import` can only be used at the top level"], answer: "`require` is for CommonJS, `import` is for ES Modules", explanation: "`require` is for CommonJS modules, while `import` is the standard for ES Modules (ESM)." },
+      { question: "Which of these is NOT a core module in Node.js?", code: "// ...", options: ["fs", "http", "path", "express"], answer: "express", explanation: "`fs`, `http`, and `path` are built-in core modules. `express` is a third-party framework installed from npm." },
+      { question: "What is the `npm` command used for?", code: "npm install ...", options: ["To run Node.js code", "Node Project Manager", "Node Package Manager", "To create new projects"], answer: "Node Package Manager", explanation: "npm is the default package manager for Node.js, used for installing and managing dependencies." },
+      { question: "What is the purpose of the `package.json` file?", code: "// ...", options: ["To store the main application code", "To list project metadata and dependencies", "To configure the Node.js runtime", "To store log files"], answer: "To list project metadata and dependencies", explanation: "It holds information about the project, its scripts, and its dependencies." },
+      { question: "What is a 'Stream' in Node.js?", code: "fs.createReadStream('file.txt')", options: ["A flow of data", "A collection of objects that you can iterate over to process data piece by piece", "A type of variable", "A network connection"], answer: "A collection of objects that you can iterate over to process data piece by piece", explanation: "Streams are a powerful way to handle large amounts of data, like reading or writing files, without keeping it all in memory." },
+      { question: "What does the `Buffer` class handle?", code: "const buf = Buffer.from('hello');", options: ["Text strings", "Raw binary data", "Event handling", "Asynchronous operations"], answer: "Raw binary data", explanation: "Buffer is used to handle binary data directly, which is useful for file I/O and networking." },
+      { question: "What is `__dirname`?", code: "console.log(__dirname);", options: ["The name of the current file", "The absolute path of the directory containing the currently executing file", "A global variable for the project root", "A method to get directory contents"], answer: "The absolute path of the directory containing the currently executing file", explanation: "It's a useful variable for creating file paths relative to the current file's location." },
+      { question: "How does Node.js handle child processes?", code: "const { spawn } = require('child_process');", options: ["It cannot create them", "Using the `child_process` module", "Using web workers", "Using the `thread` module"], answer: "Using the `child_process` module", explanation: "The `child_process` module provides the ability to spawn subprocesses in a similar manner to `system()`." },
+      { question: "What is the difference between `process.nextTick()` and `setImmediate()`?", code: "// ...", options: ["They are the same", "`nextTick` callbacks fire before I/O events, `setImmediate` after", "`setImmediate` is faster", "`nextTick` is for browsers only"], answer: "`nextTick` callbacks fire before I/O events, `setImmediate` after", explanation: "`process.nextTick()` fires immediately on the same phase of the event loop, while `setImmediate()` fires on the following phase." },
+      { question: "Which of these is a popular Node.js web framework?", code: "// ...", options: ["Django", "Rails", "Express", "Laravel"], answer: "Express", explanation: "Express is a minimal and flexible Node.js web application framework that provides a robust set of features." },
+      { question: "Is Node.js single-threaded or multi-threaded?", code: "// ...", options: ["Single-threaded", "Multi-threaded", "It can be both", "It depends on the OS"], answer: "Single-threaded", explanation: "Node.js uses a single-threaded event loop, but it uses multiple threads in the background for I/O operations through the `libuv` library." },
+      { question: "How do you handle unhandled promise rejections in Node.js?", code: "process.on('...', (reason, promise) => { ... })", options: ["Using a try/catch block everywhere", "Listening for the `unhandledRejection` process event", "You can't handle them", "By using `.catch()` on every promise"], answer: "Listening for the `unhandledRejection` process event", explanation: "This process event is a safety net for catching any promise rejections that were not handled." },
+      { question: "What is `Nodemon`?", code: "nodemon app.js", options: ["A Node.js version manager", "A utility that monitors for changes and automatically restarts the server", "A debugging tool", "A performance monitoring tool"], answer: "A utility that monitors for changes and automatically restarts the server", explanation: "Nodemon is a popular tool for development that improves productivity by automating the server restart process." },
+      { question: "Which environment variable is commonly used to set the runtime environment?", code: "if (process.env. ... === 'production')", options: ["NODE_ENV", "ENV", "ENVIRONMENT", "NODE_RUNTIME"], answer: "NODE_ENV", explanation: "The `NODE_ENV` environment variable is a convention used by many libraries and frameworks to determine if the application is in production." }
     ]
   },
   'PHP': {
     icon: (props: any) => <FileCode {...props} />,
     description: "Web development, WordPress, and the language that powers much of the web.",
     questions: [
-      {
-        question: "How do you denote a variable in PHP?",
-        code: "// ...",
-        options: ["With `var`", "With `let`", "With `$`", "With `@`"],
-        answer: "With `$`",
-        explanation: "All variables in PHP are denoted with a leading dollar sign (`$`), for example: `$name = 'Hafsa';`."
-      },
-      {
-        question: "What is the difference between `==` and `===`?",
-        code: "if ('5' ... 5)",
-        options: ["They are the same", "`==` is for numbers, `===` is for strings", "`==` compares values after type juggling, `===` compares value and type", "`===` is faster"],
-        answer: "`==` compares values after type juggling, `===` compares value and type",
-        explanation: "The `==` (equal) operator will convert types to match before comparison (e.g., '5' == 5 is true). The `===` (identical) operator checks that both the value and the type are the same ('5' === 5 is false)."
-      },
-      {
-        question: "What is Composer?",
-        code: "composer require guzzlehttp/guzzle",
-        options: ["A code editor", "A PHP framework", "A dependency manager for PHP", "A testing tool"],
-        answer: "A dependency manager for PHP",
-        explanation: "Composer is the de-facto dependency management tool for PHP, similar to npm for Node.js or pip for Python. It allows you to declare and manage project dependencies."
-      }
+      { question: "How do you denote a variable in PHP?", code: "// ...", options: ["With `var`", "With `let`", "With `$`", "With `@`"], answer: "With `$`", explanation: "All variables in PHP are denoted with a leading dollar sign (`$`)." },
+      { question: "What is the difference between `==` and `===`?", code: "if ('5' ... 5)", options: ["They are the same", "`==` is for numbers, `===` is for strings", "`==` compares values after type juggling, `===` compares value and type", "`===` is faster"], answer: "`==` compares values after type juggling, `===` compares value and type", explanation: "`==` (equal) converts types before comparing. `===` (identical) checks value and type." },
+      { question: "What is Composer?", code: "composer require guzzlehttp/guzzle", options: ["A code editor", "A PHP framework", "A dependency manager for PHP", "A testing tool"], answer: "A dependency manager for PHP", explanation: "Composer is the de-facto dependency management tool for PHP, similar to npm or pip." },
+      { question: "Which superglobal variable holds information about headers, paths, and script locations?", code: "$_...", options: ["$_GET", "$_POST", "$_SESSION", "$_SERVER"], answer: "$_SERVER", explanation: "`$_SERVER` is a superglobal array containing information such as headers, paths, and script locations." },
+      { question: "How do you include another PHP file?", code: "...", options: ["`include 'file.php';`", "`require 'file.php';`", "`#include <file.php>`", "Both A and B are correct"], answer: "Both A and B are correct", explanation: "`include` will produce a warning but continue execution if the file is not found, while `require` will produce a fatal error." },
+      { question: "What is the purpose of the `echo` statement?", code: "echo 'Hello World!';", options: ["To return a value from a function", "To output data to the screen", "To read user input", "To create a variable"], answer: "To output data to the screen", explanation: "`echo` is a language construct used to display output." },
+      { question: "How do you create an associative array in PHP?", code: "$age = array(...);", options: ["`$age = ['Peter'=>35, 'Ben'=>37];`", "`$age = { 'Peter': 35 };`", "`$age = new Map();`", "`$age = ['Peter', 35];`"], answer: "`$age = ['Peter'=>35, 'Ben'=>37];`", explanation: "Associative arrays use named keys that you assign to them." },
+      { question: "What does `PDO` stand for?", code: "$pdo = new PDO(...);", options: ["PHP Data Object", "PHP Database Orientation", "Personal Data Organizer", "PHP Data Objects"], answer: "PHP Data Objects", explanation: "PDO is a database access layer providing a uniform method of access to multiple databases." },
+      { question: "What is the difference between `$_GET` and `$_POST`?", code: "// ...", options: ["There is no difference", "`$_GET` sends data in the URL, `$_POST` in the HTTP body", "`$_POST` is less secure", "`$_GET` is for forms only"], answer: "`$_GET` sends data in the URL, `$_POST` in the HTTP body", explanation: "`$_GET` is visible to everyone in the URL, while `$_POST` is not, making it more suitable for sensitive data." },
+      { question: "Which function is used to get the length of a string?", code: "// ...", options: ["`length()`", "`strlen()`", "`str_length()`", "`count()`"], answer: "`strlen()`", explanation: "The `strlen()` function returns the length of a given string." },
+      { question: "How do you start a session in PHP?", code: "...", options: ["`session_begin();`", "`start_session();`", "`session_start();`", "`new Session();`"], answer: "`session_start();`", explanation: "`session_start()` creates a session or resumes the current one based on a session identifier passed via a GET or POST request, or passed via a cookie." },
+      { question: "What is the purpose of the `@` error control operator?", code: "$file = @fopen(...);", options: ["To throw an exception", "To log the error to a file", "To suppress error messages for an expression", "To highlight an error"], answer: "To suppress error messages for an expression", explanation: "When prepended to an expression, any error messages that might be generated by that expression will be ignored." },
+      { question: "What does the `final` keyword prevent when used on a method?", code: "final public function myMethod() {}", options: ["It prevents the method from being called", "It prevents the method from being overridden in a child class", "It makes the method static", "It makes the method private"], answer: "It prevents the method from being overridden in a child class", explanation: "If a method is declared as `final`, it cannot be overridden by subclasses." },
+      { question: "How do you define a constant in PHP?", code: "// ...", options: ["`const MY_CONSTANT = 'value';`", "`define('MY_CONSTANT', 'value');`", "`let MY_CONSTANT = 'value';`", "Both A and B are correct"], answer: "Both A and B are correct", explanation: "`define()` creates a global constant, while `const` creates a class constant or a namespace-level constant." },
+      { question: "Which PHP framework is the most popular for building web applications?", code: "// ...", options: ["Symfony", "Zend Framework", "CodeIgniter", "Laravel"], answer: "Laravel", explanation: "Laravel is widely regarded as one of the most popular and powerful PHP frameworks, known for its elegant syntax." }
     ]
   },
   'Python': {
     icon: (props: any) => <Pilcrow {...props} />,
     description: "How well do you know Python's syntax and standard library quirks?",
     questions: [
-      {
-        question: "What is the output of `print('hello'[-1])`?",
-        code: "print('hello'[-1])",
-        options: ["'h'", "'o'", "IndexError", "'l'"],
-        answer: "'o'",
-        explanation: "Python supports negative indexing for sequences. `-1` refers to the last element, `-2` to the second last, and so on."
-      },
-      {
-        question: "What will be the value of `my_list` after this code runs?",
-        code: "my_list = [1, 2, 3]\nmy_list.append([4, 5])",
-        options: ["[1, 2, 3, [4, 5]]", "[1, 2, 3, 4, 5]", "TypeError", "[1, 2, 3, 4]"],
-        answer: "[1, 2, 3, [4, 5]]",
-        explanation: "The `append()` method adds its argument as a single element to the end of a list. The list `[4, 5]` is added as one nested element."
-      },
-      {
-        question: "What does `print(type(lambda: None))` output?",
-        code: "print(type(lambda: None))",
-        options: ["<class 'function'>", "<class 'lambda'>", "<class 'NoneType'>", "SyntaxError"],
-        answer: "<class 'function'>",
-        explanation: "Lambda expressions in Python create anonymous functions. Their type is simply 'function', just like functions defined with `def`."
-      }
+      { question: "What is the output of `print('hello'[-1])`?", code: "print('hello'[-1])", options: ["'h'", "'o'", "IndexError", "'l'"], answer: "'o'", explanation: "Python supports negative indexing. `-1` refers to the last element." },
+      { question: "What will be the value of `my_list` after this code runs?", code: "my_list = [1, 2, 3]\nmy_list.append([4, 5])", options: ["[1, 2, 3, [4, 5]]", "[1, 2, 3, 4, 5]", "TypeError", "[1, 2, 3, 4]"], answer: "[1, 2, 3, [4, 5]]", explanation: "The `append()` method adds its argument as a single element to the end of a list." },
+      { question: "What does `print(type(lambda: None))` output?", code: "print(type(lambda: None))", options: ["<class 'function'>", "<class 'lambda'>", "<class 'NoneType'>", "SyntaxError"], answer: "<class 'function'>", explanation: "Lambda expressions in Python create anonymous functions. Their type is 'function'." },
+      { question: "What is the difference between a list and a tuple?", code: "// ...", options: ["Lists are mutable, tuples are immutable", "Tuples are faster", "Lists can store mixed types, tuples cannot", "There is no difference"], answer: "Lists are mutable, tuples are immutable", explanation: "Lists can be changed after they are created, whereas tuples cannot." },
+      { question: "What does the `if __name__ == '__main__':` block do?", code: "// ...", options: ["It's the main function", "It executes the code inside only when the script is run directly", "It's a comment", "It defines a class"], answer: "It executes the code inside only when the script is run directly", explanation: "This prevents the code from running when the script is imported as a module into another script." },
+      { question: "What is a dictionary comprehension?", code: "{x: x**2 for x in (2, 4, 6)}", options: ["A way to filter a dictionary", "A concise way to create dictionaries", "A type of loop", "A method to sort dictionaries"], answer: "A concise way to create dictionaries", explanation: "Dictionary comprehensions provide a short and elegant syntax for creating dictionaries." },
+      { question: "What is the 'GIL' in CPython?", code: "// ...", options: ["Global Interpretation Language", "Global Interpreter Lock", "General Input Loop", "A Python library"], answer: "Global Interpreter Lock", explanation: "The GIL is a mutex that protects access to Python objects, preventing multiple native threads from executing Python bytecodes at the same time." },
+      { question: "How do you handle exceptions in Python?", code: "// ...", options: ["Using `try...catch`", "Using `try...except`", "Using `if...error`", "Using `on...error`"], answer: "Using `try...except`", explanation: "The `try` block lets you test a block of code for errors. The `except` block lets you handle the error." },
+      { question: "What is a decorator in Python?", code: "@my_decorator\ndef my_func(): ...", options: ["A way to style functions", "A function that takes another function and extends its behavior without explicitly modifying it", "A comment for functions", "A type of class"], answer: "A function that takes another function and extends its behavior without explicitly modifying it", explanation: "Decorators are a powerful way to add functionality to functions and classes." },
+      { question: "What is the difference between `.append()` and `.extend()` for lists?", code: "list1.append([4,5])\nlist2.extend([4,5])", options: ["They are the same", "`.append()` adds its argument as a single element, `.extend()` iterates and adds each item", "`.extend()` is faster", "`.append()` can only add single values"], answer: "`.append()` adds its argument as a single element, `.extend()` iterates and adds each item", explanation: "`.append([4,5])` results in `[..., [4,5]]`, while `.extend([4,5])` results in `[..., 4, 5]`." },
+      { question: "What is 'pip'?", code: "pip install requests", options: ["A Python code linter", "The standard package manager for Python", "A tool for creating virtual environments", "A Python interpreter"], answer: "The standard package manager for Python", explanation: "pip is used to install and manage software packages written in Python." },
+      { question: "What are f-strings?", code: "f'Hello, {name}'", options: ["A type of string used for files", "A way to format strings, available from Python 3.6+", "Functional strings", "A legacy string formatting method"], answer: "A way to format strings, available from Python 3.6+", explanation: "F-strings provide a concise and convenient way to embed Python expressions inside string literals for formatting." },
+      { question: "What is the purpose of a virtual environment?", code: "python -m venv myenv", options: ["To run Python in a virtual machine", "A self-contained directory tree that contains a Python installation for a particular version of Python", "A testing tool", "A way to write secure code"], answer: "A self-contained directory tree that contains a Python installation for a particular version of Python", explanation: "Virtual environments are used to manage dependencies for different projects, preventing conflicts." },
+      { question: "What will `[1, 2, 3] * 2` produce?", code: "// ...", options: ["[2, 4, 6]", "[1, 2, 3, 1, 2, 3]", "TypeError", "[1, 1, 2, 2, 3, 3]"], answer: "[1, 2, 3, 1, 2, 3]", explanation: "The `*` operator on a list performs repetition, creating a new list with the original elements repeated." },
+      { question: "What is a generator in Python?", code: "def my_gen(): yield 1", options: ["A function that generates random numbers", "A special type of function that returns a lazy iterator", "A class for generating objects", "A built-in module"], answer: "A special type of function that returns a lazy iterator", explanation: "Generators are a simple way to create iterators. They generate values one at a time using the `yield` keyword, which is memory efficient." }
     ]
   },
   'React': {
     icon: (props: any) => <CodeSquare {...props} />,
     description: "Hooks, components, and state management. Are you a React pro?",
     questions: [
-        {
-            question: "When does a component re-render in React?",
-            code: "function MyComponent() { ... }",
-            options: ["Only when its props change", "Only when its state changes", "When its state or props change", "On every function call"],
-            answer: "When its state or props change",
-            explanation: "A re-render is triggered whenever a component's state changes (via `useState` or `useReducer`) or when it receives new props from its parent."
-        },
-        {
-            question: "What is the purpose of the `key` prop in a list?",
-            code: "items.map(item => <li key={item.id}>{item.name}</li>)",
-            options: ["It is used for styling", "It's a unique identifier for the element in the DOM", "It helps React identify which items have changed", "It is passed as a prop to the component"],
-            answer: "It helps React identify which items have changed",
-            explanation: "`key` helps React's diffing algorithm efficiently update the UI. By providing a stable identity for each item, React can track additions, removals, and re-orders."
-        },
-        {
-            question: "What is the correct way to update state based on previous state?",
-            code: "setCount(...)",
-            options: ["setCount(count + 1)", "setCount(prev => prev + 1)", "this.setState({ count: count + 1 })", "count++"],
-            answer: "setCount(prev => prev + 1)",
-            explanation: "Using the functional update form `(prev => ...)` ensures you are working with the most up-to-date state value, which is crucial for avoiding race conditions."
-        }
+        { question: "When does a component re-render in React?", code: "function MyComponent() { ... }", options: ["Only when its props change", "Only when its state changes", "When its state or props change", "On every function call"], answer: "When its state or props change", explanation: "A re-render is triggered when state changes or new props are received." },
+        { question: "What is the purpose of the `key` prop in a list?", code: "items.map(item => <li key={item.id}>{...}</li>)", options: ["It is used for styling", "It's a unique identifier for the element in the DOM", "It helps React identify which items have changed", "It is passed as a prop to the component"], answer: "It helps React identify which items have changed", explanation: "`key` helps React's diffing algorithm efficiently update the UI by providing a stable identity for each item." },
+        { question: "What is the correct way to update state based on previous state?", code: "setCount(...)", options: ["setCount(count + 1)", "setCount(prev => prev + 1)", "this.setState({ count: count + 1 })", "count++"], answer: "setCount(prev => prev + 1)", explanation: "Using the functional update form `(prev => ...)` ensures you are working with the most up-to-date state value." },
+        { question: "What is the Virtual DOM?", code: "// ...", options: ["A direct representation of the real DOM", "A programming concept where a virtual representation of a UI is kept in memory and synced with the 'real' DOM", "A JavaScript library", "A browser feature"], answer: "A programming concept where a virtual representation of a UI is kept in memory and synced with the 'real' DOM", explanation: "React uses the Virtual DOM to minimize direct manipulation of the actual DOM, which improves performance." },
+        { question: "What is JSX?", code: "const element = <h1>Hello</h1>;", options: ["A templating language", "A syntax extension for JavaScript", "A separate programming language", "A CSS preprocessor"], answer: "A syntax extension for JavaScript", explanation: "JSX allows you to write HTML-like code in your JavaScript files, which is then compiled into `React.createElement()` calls." },
+        { question: "What are React Hooks?", code: "useState(), useEffect()", options: ["Functions that let you 'hook into' React state and lifecycle features from function components", "A way to handle events", "A type of component", "A state management library"], answer: "Functions that let you 'hook into' React state and lifecycle features from function components", explanation: "Hooks were introduced in React 16.8 and allow you to use state and other React features without writing a class." },
+        { question: "What is the purpose of `useEffect`?", code: "useEffect(() => { ... }, []);", options: ["To cause side effects in function components", "To update state", "To render a component", "To create a custom hook"], answer: "To cause side effects in function components", explanation: "It's used for data fetching, subscriptions, or manually changing the DOM, which are common side effects." },
+        { question: "What is 'prop drilling'?", code: "// ...", options: ["A performance optimization technique", "The process of passing props down through multiple levels of nested components", "A way to define props", "An error in React"], answer: "The process of passing props down through multiple levels of nested components", explanation: "Prop drilling can be cumbersome. It's often solved using state management libraries or the Context API." },
+        { question: "What is the difference between a controlled and an uncontrolled component?", code: "<input value={val} onChange={fn} />", options: ["Controlled components are faster", "Uncontrolled components have their state managed by the DOM, controlled by React state", "They are the same", "Controlled components use class components only"], answer: "Uncontrolled components have their state managed by the DOM, controlled by React state", explanation: "In a controlled component, form data is handled by a React component's state. In an uncontrolled component, form data is handled by the DOM itself." },
+        { question: "What does `React.memo` do?", code: "export default React.memo(MyComponent);", options: ["It memos a function", "It is a higher-order component that memoizes the rendered output of a component, preventing re-renders if props are the same", "It stores data in memory", "It's a hook for memoization"], answer: "It is a higher-order component that memoizes the rendered output of a component, preventing re-renders if props are the same", explanation: "It's a performance optimization for function components." },
+        { question: "What is the Context API used for?", code: "React.createContext()", options: ["To manage local state", "To share state across the entire app without 'prop drilling'", "To fetch data", "To style components"], answer: "To share state across the entire app without 'prop drilling'", explanation: "Context provides a way to pass data through the component tree without having to pass props down manually at every level." },
+        { question: "What are Fragments used for?", code: "<> ... </>", options: ["To group a list of children without adding extra nodes to the DOM", "To create a new DOM element", "To add comments", "For conditional rendering"], answer: "To group a list of children without adding extra nodes to the DOM", explanation: "Fragments let you group elements without a wrapper `div`, which is useful for CSS Flexbox/Grid layouts." },
+        { question: "Which lifecycle method is invoked immediately after a component is mounted?", code: "// ...", options: ["componentWillMount", "componentDidMount", "render", "constructor"], answer: "componentDidMount", explanation: "In class components, `componentDidMount` is the ideal place to perform side effects like data fetching." },
+        { question: "How do you conditionally render a component?", code: "{isLoggedIn && <Dashboard />}", options: ["Using a `switch` statement", "Using a ternary operator or `&&` logical operator", "You can't do it in JSX", "Using the `v-if` directive"], answer: "Using a ternary operator or `&&` logical operator", explanation: "You can embed any JavaScript expression in JSX by wrapping it in curly braces." },
+        { question: "Can you use Hooks in a class component?", code: "// ...", options: ["Yes", "No", "Only `useState`", "Only if you use a special library"], answer: "No", explanation: "Hooks are designed to be used only in function components." }
     ]
   },
   'React Native': {
     icon: (props: any) => <CodeSquare {...props} />,
     description: "Build mobile apps with React. Test your native components knowledge.",
     questions: [
-      {
-        question: "Which component is used for rendering text in React Native?",
-        code: "import { ... } from 'react-native';",
-        options: ["<p>", "<Text>", "<Typography>", "<span>"],
-        answer: "<Text>",
-        explanation: "React Native uses its own set of components that are compiled to native widgets. For text, you must use the `<Text>` component. Web tags like `<p>` or `<span>` do not work."
-      },
-      {
-        question: "How do you apply styles to a component in React Native?",
-        code: "const styles = ...",
-        options: ["Using CSS files", "With a `style` attribute and an object", "Using Tailwind classes", "With `StyleSheet.create()` for performance"],
-        answer: "With `StyleSheet.create()` for performance",
-        explanation: "While you can use inline style objects, the recommended approach is to use `StyleSheet.create()` to define styles. This sends the style definitions over the native bridge only once, improving performance."
-      },
-      {
-        question: "What is the 'Bridge' in React Native?",
-        code: "// ...",
-        options: ["A UI component", "A JavaScript engine", "A mechanism for communication between JS and Native threads", "A debugging tool"],
-        answer: "A mechanism for communication between JS and Native threads",
-        explanation: "The Bridge is at the heart of React Native's architecture. It allows the JavaScript thread (where your app logic runs) to communicate asynchronously with the native UI thread (which renders the UI)."
-      }
+      { question: "Which component is used for rendering text in React Native?", code: "import { ... } from 'react-native';", options: ["<p>", "<Text>", "<Typography>", "<span>"], answer: "<Text>", explanation: "React Native uses its own set of components. For text, you must use the `<Text>` component." },
+      { question: "How do you apply styles to a component in React Native?", code: "const styles = ...", options: ["Using CSS files", "With a `style` attribute and an object", "Using Tailwind classes", "With `StyleSheet.create()` for performance"], answer: "With `StyleSheet.create()` for performance", explanation: "Using `StyleSheet.create()` sends style definitions over the native bridge only once, improving performance." },
+      { question: "What is the 'Bridge' in React Native?", code: "// ...", options: ["A UI component", "A JavaScript engine", "A mechanism for communication between JS and Native threads", "A debugging tool"], answer: "A mechanism for communication between JS and Native threads", explanation: "The Bridge allows your JavaScript logic to communicate asynchronously with the native UI thread." },
+      { question: "Which component is the equivalent of a `div` in React Native?", code: "// ...", options: ["<View>", "<Container>", "<Div>", "<Block>"], answer: "<View>", explanation: "The `<View>` component is the most fundamental component for building a UI, a container that supports layout with flexbox." },
+      { question: "How do you handle user touches?", code: "<... onPress={fn}>", options: ["<Button>", "<TouchableOpacity>", "<Pressable>", "All of the above"], answer: "All of the above", explanation: "React Native provides multiple components for handling touches, with `<Pressable>` being the most modern and recommended one." },
+      { question: "What is `Expo`?", code: "// ...", options: ["A React Native component library", "A framework and a platform for universal React applications", "A debugging tool", "A state management library"], answer: "A framework and a platform for universal React applications", explanation: "Expo provides a set of tools and services that simplify the development and deployment of React Native apps." },
+      { question: "What is the difference between `rem` and density-independent pixels (`dp`)?", code: "// ...", options: ["They are the same", "React Native uses density-independent pixels (`dp`) to provide a consistent size across various screen densities", "`rem` is used for fonts, `dp` for layout", "`dp` is only for Android"], answer: "React Native uses density-independent pixels (`dp`) to provide a consistent size across various screen densities", explanation: "When you use a number for a style (e.g., `width: 100`), React Native automatically converts it to `dp`." },
+      { question: "Which component is used to display a list of data?", code: "// ...", options: ["<ListView>", "<ScrollView>", "<FlatList>", "Both B and C"], answer: "<FlatList>", explanation: "`FlatList` is a performant component for rendering simple, flat lists. It's preferred over `ScrollView` for long lists." },
+      { question: "What is 'hot reloading' in React Native?", code: "// ...", options: ["Restarting the entire app", "It only reloads the files that you changed, while maintaining the app's state", "A feature of Expo only", "The same as live reload"], answer: "It only reloads the files that you changed, while maintaining the app's state", explanation: "Hot reloading (now part of Fast Refresh) allows you to see changes instantly without losing your current state in the app." },
+      { question: "How do you navigate between screens in a React Native app?", code: "// ...", options: ["Using anchor tags `<a>`", "Using a navigation library like React Navigation", "Manually showing/hiding components", "Using the built-in `Navigator` component"], answer: "Using a navigation library like React Navigation", explanation: "React Navigation is the de-facto standard library for handling routing and navigation in React Native apps." },
+      { question: "Can you use web-based CSS libraries like Tailwind CSS directly in React Native?", code: "// ...", options: ["Yes, natively", "No, you need to use specific libraries that translate the utility classes to React Native styles", "Only for web builds", "Only with Expo"], answer: "No, you need to use specific libraries that translate the utility classes to React Native styles", explanation: "Libraries like `nativewind` allow you to use Tailwind-like syntax, but you can't use standard web CSS." },
+      { question: "What is the purpose of the `SafeAreaView` component?", code: "<SafeAreaView> ... </SafeAreaView>", options: ["To make the app secure", "To ensure content is rendered within the safe area boundaries of a device (e.g., avoiding notches)", "A replacement for `<View>`", "To handle user input safely"], answer: "To ensure content is rendered within the safe area boundaries of a device (e.g., avoiding notches)", explanation: "It's a crucial component for building UIs that look good on modern iPhones." },
+      { question: "How would you fetch data from an API in React Native?", code: "// ...", options: ["Using the `fetch` API", "Using a library like `axios`", "Using AJAX", "Both A and B are correct"], answer: "Both A and B are correct", explanation: "React Native provides the `fetch` API, similar to browsers. `axios` is also a very popular choice." },
+      { question: "What is the role of `Metro`?", code: "// ...", options: ["A UI framework", "The JavaScript bundler for React Native", "A state management tool", "A navigation library"], answer: "The JavaScript bundler for React Native", explanation: "Metro takes in all your JavaScript code and dependencies and combines them into a single file that the native app can run." },
+      { question: "What are 'Native Modules'?", code: "// ...", options: ["Modules written in JavaScript", "Objects that allow you to access native platform APIs (Java/Kotlin, Objective-C/Swift) from JavaScript", "Components that are built-in", "A type of styling"], answer: "Objects that allow you to access native platform APIs (Java/Kotlin, Objective-C/Swift) from JavaScript", explanation: "Native Modules are used when you need to access a platform API that React Native doesn't have a corresponding module for yet." }
     ]
   },
   'Ruby': {
     icon: (props: any) => <Gem {...props} />,
     description: "Metaprogramming, Rails, and developer happiness.",
     questions: [
-      {
-        question: "In Ruby, everything is a(n) ____?",
-        code: "1.class # => Integer",
-        options: ["method", "block", "object", "variable"],
-        answer: "object",
-        explanation: "One of Ruby's core philosophies is that everything, from numbers to `nil`, is an object with its own methods and properties."
-      },
-      {
-        question: "What is the difference between a `Proc` and a `lambda`?",
-        code: "p = Proc.new { return 1 }\nl = lambda { return 1 }",
-        options: ["They are the same", "Lambdas check arity, Procs do not", "Procs return from the enclosing method", "Both B and C are correct"],
-        answer: "Both B and C are correct",
-        explanation: "Lambdas behave more like methods: they strictly check the number of arguments (arity) and a `return` inside them returns from the lambda itself. Procs are more flexible with arguments, and a `return` inside a Proc will return from the method where the Proc was defined."
-      },
-      {
-        question: "What does `||=` do?",
-        code: "x ||= 10",
-        options: ["A logical OR operation", "A bitwise OR assignment", "Assigns the value only if the variable is nil or false", "It's a syntax error"],
-        answer: "Assigns the value only if the variable is nil or false",
-        explanation: "The conditional assignment operator `||=` assigns the value on the right to the variable on the left only if the variable is currently `nil` or `false`."
-      }
+      { question: "In Ruby, everything is a(n) ____?", code: "1.class # => Integer", options: ["method", "block", "object", "variable"], answer: "object", explanation: "One of Ruby's core philosophies is that everything, from numbers to `nil`, is an object." },
+      { question: "What is the difference between a `Proc` and a `lambda`?", code: "p = Proc.new { return 1 }\nl = lambda { return 1 }", options: ["They are the same", "Lambdas check arity, Procs do not", "Procs return from the enclosing method", "Both B and C are correct"], answer: "Both B and C are correct", explanation: "Lambdas behave more like methods (strict arity, return from self), while Procs are more flexible." },
+      { question: "What does `||=` do?", code: "x ||= 10", options: ["A logical OR operation", "A bitwise OR assignment", "Assigns the value only if the variable is nil or false", "It's a syntax error"], answer: "Assigns the value only if the variable is nil or false", explanation: "The conditional assignment operator `||=` assigns a value only if the variable is falsy." },
+      { question: "What is a 'gem' in the context of Ruby?", code: "gem install rails", options: ["A data type", "A Ruby application or library packaged for distribution", "A method in Ruby", "A variable"], answer: "A Ruby application or library packaged for distribution", explanation: "Gems are packages managed by the RubyGems package manager." },
+      { question: "What is the difference between `puts` and `print`?", code: "// ...", options: ["There is no difference", "`puts` adds a new line after its output, `print` does not", "`print` is faster", "`puts` is for strings only"], answer: "`puts` adds a new line after its output, `print` does not", explanation: "`puts` (put string) is generally used for display output that needs to be on separate lines." },
+      { question: "In Ruby, which of these values are 'falsy'?", code: "if ...", options: ["`0`, `''`, `[]`", "`nil` and `false`", "Only `nil`", "Only `false`"], answer: "`nil` and `false`", explanation: "Unlike many other languages, in Ruby only `nil` and `false` are considered falsy. `0`, `''`, and empty arrays are all truthy." },
+      { question: "What is `yield` used for?", code: "def my_method; yield; end", options: ["To stop execution", "To pass control from a method to a block that was passed to it", "To return a value", "To create a generator"], answer: "To pass control from a method to a block that was passed to it", explanation: "`yield` is a key part of how blocks and iterators work in Ruby." },
+      { question: "What is a 'Symbol' in Ruby?", code: ":my_symbol", options: ["A string that cannot be changed", "A highly efficient, reusable constant used as an identifier", "A type of comment", "A pointer"], answer: "A highly efficient, reusable constant used as an identifier", explanation: "Symbols are more memory-efficient than strings when used as identifiers, like hash keys." },
+      { question: "What does `attr_accessor` do?", code: "class MyClass; attr_accessor :name; end", options: ["Creates a getter method", "Creates a setter method", "Creates both a getter and a setter method", "Accesses an attribute"], answer: "Creates both a getter and a setter method", explanation: "It's a shortcut (metaprogramming) for creating `name` and `name=` instance methods." },
+      { question: "What is 'duck typing'?", code: "// ...", options: ["A way to type-check variables", "The idea that if an object walks like a duck and quacks like a duck, it's a duck", "A testing framework", "A Ruby gem"], answer: "The idea that if an object walks like a duck and quacks like a duck, it's a duck", explanation: "It means Ruby cares more about what methods an object can respond to, rather than its class type." },
+      { question: "What is Bundler used for?", code: "bundle install", options: ["To bundle files together", "To manage an application's gem dependencies", "A code editor", "A web server"], answer: "To manage an application's gem dependencies", explanation: "Bundler ensures that your application runs with the exact same gems and versions across different machines." },
+      { question: "Which method is used to iterate over an array and create a new array based on a condition?", code: "[1, 2, 3]. ...", options: ["`map`", "`each`", "`select` (or `filter`)", "`reduce`"], answer: "`select` (or `filter`)", explanation: "`select` (and its alias `filter`) returns a new array containing all elements for which the given block returns a true value." },
+      { question: "In Ruby on Rails, what is the 'MVC' pattern?", code: "// ...", options: ["Model-View-Controller", "Method-Variable-Class", "Module-View-Component", "A database structure"], answer: "Model-View-Controller", explanation: "MVC is an architectural pattern that separates an application into three main logical components: the model, the view, and the controller." },
+      { question: "What is the difference between a block, a proc, and a lambda?", code: "// ...", options: ["They are all identical", "A block is a piece of code that can't be stored in a variable, while procs and lambdas are objects", "Only lambdas can be passed to methods", "Blocks have strict arity checking"], answer: "A block is a piece of code that can't be stored in a variable, while procs and lambdas are objects", explanation: "Blocks are a syntactic construct, while Procs and Lambdas are objects that encapsulate a block of code." },
+      { question: "What does the `...` (splat) operator do?", code: "def my_method(*args)", options: ["It's a comment", "It gathers remaining arguments into an array", "It creates a range", "It accesses a file"], answer: "It gathers remaining arguments into an array", explanation: "The splat operator is used for methods that can take a variable number of arguments." }
     ]
   },
   'Rust': {
     icon: (props: any) => <Package {...props} />,
     description: "Memory safety, performance, and the borrow checker.",
     questions: [
-      {
-        question: "What is the primary goal of the borrow checker?",
-        code: "let r1 = &s;\nlet r2 = &mut s; // Error!",
-        options: ["To check for syntax errors", "To manage the heap", "To enforce memory safety without a garbage collector", "To optimize code"],
-        answer: "To enforce memory safety without a garbage collector",
-        explanation: "The borrow checker is Rust's key feature. It analyzes how variables are 'borrowed' (referenced) to prevent data races and other memory-related bugs at compile time."
-      },
-      {
-        question: "What is the difference between `String` and `&str`?",
-        code: "let s1: String = String::from(\"hi\");\nlet s2: &str = \"hi\";",
-        options: ["They are the same", "`String` is heap-allocated and growable, `&str` is a fixed-size string slice", "`&str` is mutable, `String` is not", "`String` is faster"],
-        answer: "`String` is heap-allocated and growable, `&str` is a fixed-size string slice",
-        explanation: "`String` is an owned, heap-allocated string buffer, while `&str` (a string slice) is a view into a string, often a string literal, and has a fixed size known at compile time."
-      },
-      {
-        question: "Which keyword is used for pattern matching?",
-        code: "// ...",
-        options: ["switch", "if/else", "match", "case"],
-        answer: "match",
-        explanation: "Rust uses the powerful `match` keyword for pattern matching, which is like a `switch` statement on steroids. It requires all possible cases to be handled, ensuring exhaustive checks."
-      }
+      { question: "What is the primary goal of the borrow checker?", code: "let r1 = &s;\nlet r2 = &mut s; // Error!", options: ["To check for syntax errors", "To manage the heap", "To enforce memory safety without a garbage collector", "To optimize code"], answer: "To enforce memory safety without a garbage collector", explanation: "The borrow checker analyzes references to prevent data races and other memory bugs at compile time." },
+      { question: "What is the difference between `String` and `&str`?", code: "let s1: String = String::from(\"hi\");\nlet s2: &str = \"hi\";", options: ["They are the same", "`String` is heap-allocated and growable, `&str` is a fixed-size string slice", "`&str` is mutable, `String` is not", "`String` is faster"], answer: "`String` is heap-allocated and growable, `&str` is a fixed-size string slice", explanation: "`String` is an owned, heap-allocated string, while `&str` (a string slice) is a view into a string." },
+      { question: "Which keyword is used for pattern matching?", code: "// ...", options: ["switch", "if/else", "match", "case"], answer: "match", explanation: "Rust uses the powerful `match` keyword, which requires all possible cases to be handled, ensuring exhaustive checks." },
+      { question: "What are 'ownership' rules in Rust?", code: "// ...", options: ["Rules for file permissions", "A set of rules that govern how Rust manages memory", "Rules for project management", "Guidelines for code style"], answer: "A set of rules that govern how Rust manages memory", explanation: "Ownership is Rust's central feature, and it includes rules like 'each value has a single owner' and 'when the owner goes out of scope, the value is dropped'." },
+      { question: "What is the purpose of the `?` operator in Rust?", code: "let content = fs::read_to_string(\"hello.txt\")?;", options: ["To mark a variable as optional", "To propagate errors up the call stack", "A ternary operator", "To unwrap an `Option`"], answer: "To propagate errors up the call stack", explanation: "The `?` operator is syntactic sugar for unwrapping a `Result` or `Option`, returning early with the error if it's an `Err` or `None`." },
+      { question: "What is a 'crate' in Rust?", code: "// ...", options: ["A data type", "A Rust package (a library or executable)", "A memory allocation unit", "A built-in function"], answer: "A Rust package (a library or executable)", explanation: "A crate is the smallest amount of code that the Rust compiler considers." },
+      { question: "What does `Cargo` do?", code: "cargo build", options: ["It's the Rust compiler", "It's Rust's build system and package manager", "It's a documentation generator", "It's a code linter"], answer: "It's Rust's build system and package manager", explanation: "Cargo handles building your code, downloading the libraries your code depends on, and building those libraries." },
+      { question: "What is a 'trait' in Rust?", code: "trait Summary { fn summarize(&self) -> String; }", options: ["A type of struct", "A way to define shared behavior, similar to an interface", "A macro", "A keyword for inheritance"], answer: "A way to define shared behavior, similar to an interface", explanation: "Traits define a set of methods that a type must implement to be considered of that trait type." },
+      { question: "What is the difference between a mutable and an immutable variable?", code: "let mut x = 5;", options: ["Mutable variables are slower", "Immutable variables cannot be changed after they are bound", "Mutable variables must be pointers", "There is no difference"], answer: "Immutable variables cannot be changed after they are bound", explanation: "By default, variables in Rust are immutable, promoting safety. You must use the `mut` keyword to make a variable mutable." },
+      { question: "What is the `Option` enum used for?", code: "fn find_user(id: u32) -> Option<User> { ... }", options: ["To provide configuration options", "To express the possibility of a value's absence", "To handle errors", "To create optional function parameters"], answer: "To express the possibility of a value's absence", explanation: "The `Option<T>` enum has two variants: `Some(T)` containing a value, and `None` indicating no value. This prevents null pointer errors." },
+      { question: "What is a 'lifetime' in Rust?", code: "fn longest<'a>(x: &'a str, y: &'a str) -> &'a str { ... }", options: ["The duration a program runs", "A construct that ensures references are valid for as long as they need to be", "A performance metric", "A type of comment"], answer: "A construct that ensures references are valid for as long as they need to be", explanation: "Lifetimes are a key part of the borrow checker, preventing dangling references." },
+      { question: "Can a `struct` have methods in Rust?", code: "impl Point { fn x(&self) -> f64 { ... } }", options: ["No, only functions", "Yes, defined within an `impl` block", "Only if it's a tuple struct", "Only if they are static"], answer: "Yes, defined within an `impl` block", explanation: "You can implement methods for a struct to specify the behavior that instances of the struct have." },
+      { question: "What is the purpose of `unwrap()`?", code: "let value = my_option.unwrap();", options: ["To wrap a value in an `Option`", "To get the value out of an `Option` or `Result`, crashing the program if it's `None` or `Err`", "To handle errors gracefully", "To encrypt a value"], answer: "To get the value out of an `Option` or `Result`, crashing the program if it's `None` or `Err`", explanation: "`.unwrap()` is a shortcut that is useful in tests or prototypes, but should be avoided in production code in favor of pattern matching." },
+      { question: "What is a macro in Rust?", code: "println!(\"Hello\");", options: ["A function that writes code", "A way to write code that writes other code (metaprogramming)", "A type of variable", "A compile-time error"], answer: "A way to write code that writes other code (metaprogramming)", explanation: "Macros, like `println!`, provide functionality that functions can't, such as handling a variable number of arguments." },
+      { question: "What is the `main` function?", code: "fn main() { ... }", options: ["A standard library function", "The entry point of every executable Rust program", "A user-defined function", "A method for structs"], answer: "The entry point of every executable Rust program", explanation: "When you run an executable, the `main` function is the first code that gets run." }
     ]
   },
   'SQL': {
     icon: (props: any) => <Database {...props} />,
     description: "JOINS, GROUP BY, and subqueries. How strong are your database skills?",
     questions: [
-      {
-        question: "Which JOIN returns all rows from the left table and matched rows from the right?",
-        code: "SELECT * FROM A ... JOIN B",
-        options: ["INNER JOIN", "LEFT JOIN", "RIGHT JOIN", "FULL OUTER JOIN"],
-        answer: "LEFT JOIN",
-        explanation: "A `LEFT JOIN` (or `LEFT OUTER JOIN`) returns all records from the left table, and the matched records from the right table. The result is NULL from the right side if there is no match."
-      },
-      {
-        question: "What is the purpose of the `GROUP BY` clause?",
-        code: "SELECT COUNT(id), country FROM users ...",
-        options: ["To sort the result set", "To filter records", "To aggregate rows that have the same values", "To join multiple tables"],
-        answer: "To aggregate rows that have the same values",
-        explanation: "The `GROUP BY` statement groups rows that have the same values in specified columns into summary rows, like 'find the number of customers in each country'."
-      },
-      {
-        question: "How do you select all columns from a table named `users`?",
-        code: "SELECT ... FROM users",
-        options: ["SELECT all", "SELECT columns(*)", "SELECT *", "SELECT all()"],
-        answer: "SELECT *",
-        explanation: "The asterisk `*` is a wildcard character in SQL that represents all columns in the specified table."
-      }
+      { question: "Which JOIN returns all rows from the left table and matched rows from the right?", code: "SELECT * FROM A ... JOIN B", options: ["INNER JOIN", "LEFT JOIN", "RIGHT JOIN", "FULL OUTER JOIN"], answer: "LEFT JOIN", explanation: "A `LEFT JOIN` returns all records from the left table, and the matched records from the right. NULL is returned from the right side if there's no match." },
+      { question: "What is the purpose of the `GROUP BY` clause?", code: "SELECT COUNT(id), country FROM users ...", options: ["To sort the result set", "To filter records", "To aggregate rows that have the same values", "To join multiple tables"], answer: "To aggregate rows that have the same values", explanation: "The `GROUP BY` statement groups rows that have the same values into summary rows." },
+      { question: "How do you select all columns from a table named `users`?", code: "SELECT ... FROM users", options: ["SELECT all", "SELECT columns(*)", "SELECT *", "SELECT all()"], answer: "SELECT *", explanation: "The asterisk `*` is a wildcard representing all columns." },
+      { question: "Which clause is used to filter the results of a query?", code: "SELECT * FROM users ...", options: ["WHERE", "FILTER", "HAVING", "CONDITION"], answer: "WHERE", explanation: "The `WHERE` clause is used to extract only those records that fulfill a specified condition." },
+      { question: "What is the difference between `WHERE` and `HAVING`?", code: "// ...", options: ["There is no difference", "`WHERE` filters rows before aggregation, `HAVING` filters groups after aggregation", "`HAVING` is faster", "`WHERE` is for strings, `HAVING` is for numbers"], answer: "`WHERE` filters rows before aggregation, `HAVING` filters groups after aggregation", explanation: "`WHERE` operates on individual rows, while `HAVING` operates on the aggregated results created by `GROUP BY`." },
+      { question: "What is a 'Primary Key'?", code: "// ...", options: ["A key to open the database", "A constraint that uniquely identifies each record in a table", "The first column in a table", "A foreign key"], answer: "A constraint that uniquely identifies each record in a table", explanation: "Primary keys must contain unique values and cannot contain NULL values." },
+      { question: "What is a 'Foreign Key'?", code: "// ...", options: ["A key from another country", "A key used to link two tables together", "A backup key", "A temporary key"], answer: "A key used to link two tables together", explanation: "A foreign key is a field (or collection of fields) in one table that refers to the Primary Key in another table." },
+      { question: "Which statement is used to delete data from a database?", code: "DELETE FROM ...", options: ["REMOVE", "ERASE", "DELETE", "DROP"], answer: "DELETE", explanation: "The `DELETE` statement is used to remove existing records in a table." },
+      { question: "What is the difference between `DELETE`, `TRUNCATE`, and `DROP`?", code: "// ...", options: ["They are all the same", "`DELETE` removes rows, `TRUNCATE` removes all rows, `DROP` removes the table", "`TRUNCATE` is faster than `DELETE`", "Both B and C are correct"], answer: "Both B and C are correct", explanation: "`DELETE` is a DML command, while `TRUNCATE` and `DROP` are DDL. `TRUNCATE` is faster as it doesn't log each row deletion." },
+      { question: "Which aggregate function returns the number of rows?", code: "SELECT ... FROM users", options: ["SUM()", "COUNT()", "AVG()", "MAX()"], answer: "COUNT()", explanation: "`COUNT()` returns the number of rows that matches a specified criterion." },
+      { question: "What is a 'subquery' or 'inner query'?", code: "SELECT * FROM users WHERE id IN (SELECT user_id FROM orders)", options: ["A query on a backup database", "A query nested inside another query", "A very fast query", "A read-only query"], answer: "A query nested inside another query", explanation: "A subquery is a `SELECT` statement that is embedded in a clause of another SQL statement." },
+      { question: "What does the `LIKE` operator do?", code: "WHERE name LIKE 'A%'", options: ["To compare two values for similarity", "To search for a specified pattern in a column", "To find values that are equal", "To perform a case-sensitive search"], answer: "To search for a specified pattern in a column", explanation: "The `LIKE` operator is used in a `WHERE` clause to search for patterns, often with wildcards like `%` (zero or more characters) and `_` (a single character)." },
+      { question: "What is an 'index' in a database?", code: "// ...", options: ["The first page of a book", "A data structure that improves the speed of data retrieval operations", "A way to sort data", "A type of table"], answer: "A data structure that improves the speed of data retrieval operations", explanation: "Indexes are used to quickly locate data without having to search every row in a database table every time a database table is accessed." },
+      { question: "What does `UNION` do?", code: "SELECT ... UNION SELECT ...", options: ["It joins two tables", "It combines the result-set of two or more SELECT statements (with distinct values)", "It creates a new table", "It performs a mathematical union"], answer: "It combines the result-set of two or more SELECT statements (with distinct values)", explanation: "Each `SELECT` statement within `UNION` must have the same number of columns with similar data types." },
+      { question: "What is 'Normalization'?", code: "// ...", options: ["A way to make data normal", "The process of organizing columns and tables to minimize data redundancy", "A performance tuning technique", "A security feature"], answer: "The process of organizing columns and tables to minimize data redundancy", explanation: "The goal of normalization is to divide larger tables into smaller, well-structured tables and define relationships between them." }
     ]
   },
   'Swift': {
     icon: (props: any) => <Bird {...props} />,
     description: "iOS development, safety, and modern syntax.",
     questions: [
-      {
-        question: "What does 'optional chaining' (`?`) do?",
-        code: "let name = person?.name",
-        options: ["It makes a property required", "It safely accesses a property that might be nil", "It unwraps an optional forcefully", "It creates a new optional"],
-        answer: "It safely accesses a property that might be nil",
-        explanation: "Optional chaining allows you to query properties, methods, and subscripts on an optional that might currently be `nil`. If the optional is `nil`, the expression gracefully returns `nil` instead of crashing."
-      },
-      {
-        question: "What is the difference between a `struct` and a `class`?",
-        code: "struct Point {}\nclass Person {}",
-        options: ["Structs are value types, classes are reference types", "Classes can have methods, structs cannot", "Structs are older syntax", "There is no difference"],
-        answer: "Structs are value types, classes are reference types",
-        explanation: "This is a fundamental concept in Swift. Structs are copied when they are passed around (value types), while classes share a single instance (reference types). Apple recommends preferring structs by default."
-      },
-      {
-        question: "Which keyword is used to handle errors in Swift?",
-        code: "do { ... } catch { ... }",
-        options: ["try/except", "if/err", "do/catch", "result/error"],
-        answer: "do/catch",
-        explanation: "Swift has a formal error handling model using `do-catch` blocks to handle errors thrown by functions marked with the `throws` keyword."
-      }
+      { question: "What does 'optional chaining' (`?`) do?", code: "let name = person?.name", options: ["It makes a property required", "It safely accesses a property that might be nil", "It unwraps an optional forcefully", "It creates a new optional"], answer: "It safely accesses a property that might be nil", explanation: "Optional chaining allows you to query properties on an optional that might be `nil`. If it is, the expression gracefully returns `nil`." },
+      { question: "What is the difference between a `struct` and a `class`?", code: "struct Point {}\nclass Person {}", options: ["Structs are value types, classes are reference types", "Classes can have methods, structs cannot", "Structs are older syntax", "There is no difference"], answer: "Structs are value types, classes are reference types", explanation: "Structs are copied when passed around (value types), while classes share a single instance (reference types). Apple recommends preferring structs." },
+      { question: "Which keyword is used to handle errors in Swift?", code: "do { ... } catch { ... }", options: ["try/except", "if/err", "do/catch", "result/error"], answer: "do/catch", explanation: "Swift has a formal error handling model using `do-catch` blocks to handle errors thrown by functions marked with `throws`." },
+      { question: "What is the nil-coalescing operator (`??`) used for?", code: "let name = optionalName ?? \"Default\"", options: ["To check for nil", "To provide a default value for an optional that is `nil`", "To force-unwrap an optional", "To create an optional"], answer: "To provide a default value for an optional that is `nil`", explanation: "The `??` operator unwraps an optional if it contains a value, or returns a default value if it's `nil`." },
+      { question: "What is the difference between `let` and `var` in Swift?", code: "// ...", options: ["`let` is for local scope, `var` is for global", "`let` declares a constant, `var` declares a variable", "`var` is for strings only", "There is no difference"], answer: "`let` declares a constant, `var` declares a variable", explanation: "`let` is used for values that will not change, promoting immutability, while `var` is for values that can change." },
+      { question: "What is a 'protocol' in Swift?", code: "protocol CanFly { func fly() }", options: ["A type of class", "A blueprint of methods, properties, and other requirements that suit a particular task", "A network protocol", "A data structure"], answer: "A blueprint of methods, properties, and other requirements that suit a particular task", explanation: "Protocols are similar to interfaces in other languages. Classes, structs, and enums can then adopt the protocol." },
+      { question: "What is Automatic Reference Counting (ARC)?", code: "// ...", options: ["A garbage collector", "Swift's memory management system that automatically frees up memory used by class instances when they are no longer needed", "A tool for counting references", "A performance optimization"], answer: "Swift's memory management system that automatically frees up memory used by class instances when they are no longer needed", explanation: "ARC automatically tracks and manages your app's memory usage, so you don't need to do it manually." },
+      { question: "What is a 'closure' in Swift?", code: "let sortedNames = names.sorted(by: { s1, s2 in s1 < s2 })", options: ["A way to close an app", "Self-contained blocks of functionality that can be passed around and used in your code", "A type of class", "A security feature"], answer: "Self-contained blocks of functionality that can be passed around and used in your code", explanation: "Closures are similar to blocks in C and Objective-C and lambdas in other programming languages." },
+      { question: "What does the `guard` statement do?", code: "guard let name = optionalName else { return }", options: ["It guards a variable from being changed", "It provides an early exit from a function if a condition is not met", "It's a type of loop", "It's for security"], answer: "It provides an early exit from a function if a condition is not met", explanation: "A `guard` statement is used to transfer program control out of a scope if one or more conditions aren’t met." },
+      { question: "What is SwiftUI?", code: "Text(\"Hello, World!\")", options: ["A programming language", "An innovative, exceptionally simple way to build user interfaces across all Apple platforms", "A version of Swift", "A design pattern"], answer: "An innovative, exceptionally simple way to build user interfaces across all Apple platforms", explanation: "SwiftUI is a declarative UI framework for building apps on Apple platforms." },
+      { question: "What is the purpose of an extension?", code: "extension String { ... }", options: ["To add new functionality to an existing class, structure, enumeration, or protocol type", "To extend the length of a string", "To create a subclass", "To make a type final"], answer: "To add new functionality to an existing class, structure,enumeration, or protocol type", explanation: "Extensions can add computed properties, new methods, and protocol conformances to existing types." },
+      { question: "What is a 'tuple'?", code: "let httpError = (404, \"Not Found\")", options: ["A type of array", "A group of multiple values into a single compound value", "An immutable list", "A key-value pair"], answer: "A group of multiple values into a single compound value", explanation: "The values within a tuple can be of any type and do not have to be of the same type as each other." },
+      { question: "What is the difference between `Any` and `AnyObject`?", code: "// ...", options: ["There is no difference", "`Any` can represent an instance of any type at all, `AnyObject` can represent an instance of any class type", "`AnyObject` is for structs", "`Any` is deprecated"], answer: "`Any` can represent an instance of any type at all, `AnyObject` can represent an instance of any class type", explanation: "`Any` is for both value and reference types, while `AnyObject` is only for reference (class) types." },
+      { question: "What is a 'computed property'?", code: "var description: String { return \"\(width)x\(height)\" }", options: ["A property that is stored in memory", "A property that calculates its value each time it's accessed", "A static property", "A private property"], answer: "A property that calculates its value each time it's accessed", explanation: "Computed properties do not store a value directly; instead, they provide a getter and an optional setter to retrieve and set other properties indirectly." },
+      { question: "What is the main function of 'Core Data'?", code: "// ...", options: ["To perform calculations", "A framework for managing the model layer objects in your application", "A UI framework", "A networking library"], answer: "A framework for managing the model layer objects in your application", explanation: "Core Data is a framework for object-graph management and persistence, commonly used as a database layer." }
     ]
   },
   'TypeScript': {
     icon: (props: any) => <Type {...props} />,
     description: "How well do you know your types, interfaces, and generics?",
     questions: [
-        {
-            question: "What's the difference between `interface` and `type`?",
-            code: "interface A {}\ntype B = {}",
-            options: ["Interfaces can be merged, types cannot", "Types can use unions, interfaces cannot", "They are exactly the same", "Interfaces are for objects, types are for primitives"],
-            answer: "Interfaces can be merged, types cannot",
-            explanation: "Declaration merging is a key feature of interfaces. If you define the same interface twice, TypeScript merges them. `type` aliases cannot be redeclared."
-        },
-        {
-            question: "What does the `never` type represent?",
-            code: "function error(message: string): never { throw new Error(message); }",
-            options: ["A function that returns nothing", "A value that can be null or undefined", "A value that will never occur", "An empty object type"],
-            answer: "A value that will never occur",
-            explanation: "The `never` type is used for values that should never exist. This is often the return type of functions that always throw an error or have an infinite loop."
-        },
-        {
-            question: "What is the `keyof` operator used for?",
-            code: "type Point = { x: number; y: number };\ntype P = keyof Point;",
-            options: ["To get the values of an object's keys", "To create a union of an object's keys", "To check if a key exists on an object", "To get the type of a specific key"],
-            answer: "To create a union of an object's keys",
-            explanation: "`keyof` takes an object type and produces a string or numeric literal union of its keys. In this example, `P` would be equivalent to `'x' | 'y'`."
-        }
+        { question: "What's the difference between `interface` and `type`?", code: "interface A {}\ntype B = {}", options: ["Interfaces can be merged, types cannot", "Types can use unions, interfaces cannot", "They are exactly the same", "Interfaces are for objects, types are for primitives"], answer: "Interfaces can be merged, types cannot", explanation: "Declaration merging is a key feature of interfaces. If you define the same interface twice, TypeScript merges them." },
+        { question: "What does the `never` type represent?", code: "function error(message: string): never { throw new Error(message); }", options: ["A function that returns nothing", "A value that can be null or undefined", "A value that will never occur", "An empty object type"], answer: "A value that will never occur", explanation: "The `never` type is used for values that should never exist, like the return type of a function that always throws." },
+        { question: "What is the `keyof` operator used for?", code: "type Point = { x: number; y: number };\ntype P = keyof Point;", options: ["To get the values of an object's keys", "To create a union of an object's keys", "To check if a key exists on an object", "To get the type of a specific key"], answer: "To create a union of an object's keys", explanation: "`keyof` takes an object type and produces a string or numeric literal union of its keys (`'x' | 'y'`)." },
+        { question: "What is a 'generic' in TypeScript?", code: "function identity<T>(arg: T): T { return arg; }", options: ["A general type", "A tool to create reusable components that can work over a variety of types rather than a single one", "A type of class", "A built-in utility type"], answer: "A tool to create reusable components that can work over a variety of types rather than a single one", explanation: "Generics allow you to write functions and classes that are type-safe and can work with any type." },
+        { question: "What is the `any` type?", code: "let notSure: any = 4;", options: ["A type that can be any value, opting out of type-checking", "A type for numbers only", "A secure version of `string`", "A type that is always `null`"], answer: "A type that can be any value, opting out of type-checking", explanation: "Using `any` is a way to work around the type system, but it should be used sparingly as it sacrifices type safety." },
+        { question: "What is the difference between `any` and `unknown`?", code: "// ...", options: ["They are the same", "`unknown` is the type-safe counterpart of `any`", "`any` is more restrictive", "`unknown` is deprecated"], answer: "`unknown` is the type-safe counterpart of `any`", explanation: "You can assign anything to `unknown`, but you can't do anything with an `unknown` value without first performing a type check." },
+        { question: "What is a 'union type'?", code: "let id: string | number;", options: ["A type that is a combination of object types", "A type that can be one of several types", "A special type for numbers", "A type for arrays"], answer: "A type that can be one of several types", explanation: "Union types allow a variable to hold a value of multiple, distinct types." },
+        { question: "What is a 'tuple' in TypeScript?", code: "let x: [string, number];", options: ["An array with a fixed number of elements whose types are known", "An immutable array", "A type of object", "A key-value pair"], answer: "An array with a fixed number of elements whose types are known", explanation: "Tuples allow you to express an array where the type of a fixed number of elements is known, but need not be the same." },
+        { question: "What does the `as` keyword do?", code: "let someValue: unknown = \"this is a string\";\nlet strLength: number = (someValue as string).length;", options: ["It performs a safe type conversion", "It's a type assertion that tells the compiler to treat a value as a certain type", "It creates an alias for a type", "It's for asynchronous operations"], answer: "It's a type assertion that tells the compiler to treat a value as a certain type", explanation: "Type assertion is like a type cast in other languages, but it performs no special checking or restructuring of data." },
+        { question: "What is an `enum`?", code: "enum Color {Red, Green, Blue}", options: ["A way to give more friendly names to sets of numeric values", "A type of function", "A data structure", "A generic type"], answer: "A way to give more friendly names to sets of numeric values", explanation: "Enums allow a developer to define a set of named constants." },
+        { question: "What is a 'type guard'?", code: "if (typeof pet === 'string') { ... }", options: ["A security feature", "An expression that performs a runtime check that guarantees the type in some scope", "A function that returns a boolean", "A comment for types"], answer: "An expression that performs a runtime check that guarantees the type in some scope", explanation: "Type guards are used to narrow down the type of a variable within a conditional block." },
+        { question: "What is the purpose of `tsconfig.json`?", code: "// ...", options: ["To store TypeScript code", "To specify the root files and the compiler options required to compile a TypeScript project", "To list npm dependencies", "To configure a linter"], answer: "To specify the root files and the compiler options required to compile a TypeScript project", explanation: "This file is the heart of a TypeScript project, controlling how the code is compiled." },
+        { question: "What is 'declaration merging'?", code: "interface Box { height: number; }\ninterface Box { width: number; }", options: ["Merging two variables", "The process where the compiler merges two or more separate declarations declared with the same name into a single definition", "A feature of `type` aliases", "A way to combine files"], answer: "The process where the compiler merges two or more separate declarations declared with the same name into a single definition", explanation: "This is a unique feature of interfaces. The two `Box` interfaces above would result in a single interface with both `height` and `width`." },
+        { question: "Which utility type creates a type with all properties of another type set to optional?", code: "...", options: ["`Required<T>`", "`Readonly<T>`", "`Partial<T>`", "`Pick<T>`"], answer: "`Partial<T>`", explanation: "`Partial<T>` constructs a type with all properties of `T` set to optional. This utility will return a type that represents all subsets of a given type." },
+        { question: "Does TypeScript get executed by the browser or Node.js directly?", code: "// ...", options: ["Yes", "No, it must be transpiled into JavaScript first", "Only in Node.js", "Only in browsers"], answer: "No, it must be transpiled into JavaScript first", explanation: "TypeScript is a superset of JavaScript that compiles to plain JavaScript, which can then be executed in any JavaScript environment." }
     ]
   },
   'Vue.js': {
     icon: (props: any) => <CodeSquare {...props} />,
     description: "The progressive framework, known for its approachability and simplicity.",
     questions: [
-      {
-        question: "What is the Vue instance property used to store data?",
-        code: "new Vue({ ... })",
-        options: ["state", "props", "data", "variables"],
-        answer: "data",
-        explanation: "The `data` property on a Vue instance is where you declare the reactive state for a component. When these values change, the view re-renders."
-      },
-      {
-        question: "Which directive is used for conditional rendering?",
-        code: "<div ... >Content</div>",
-        options: ["v-if", "v-show", "v-for", "Both v-if and v-show"],
-        answer: "Both v-if and v-show",
-        explanation: "`v-if` conditionally renders an element (it's added/removed from the DOM). `v-show` toggles the element's `display` CSS property. Both are used for conditional rendering."
-      },
-      {
-        question: "What are Single-File Components (SFCs)?",
-        code: "<template>...</template><script>...</script><style>...</style>",
-        options: ["Components with no script tag", "Components written in a single JS file", "Files with a `.vue` extension containing HTML, JS, and CSS", "Components that can't have children"],
-        answer: "Files with a `.vue` extension containing HTML, JS, and CSS",
-        explanation: "SFCs are a hallmark of Vue development, allowing you to encapsulate the template, logic, and styling of a component in a single `.vue` file for better organization."
-      }
+      { question: "What is the Vue instance property used to store data?", code: "new Vue({ ... })", options: ["state", "props", "data", "variables"], answer: "data", explanation: "The `data` property on a Vue instance is where you declare the reactive state for a component." },
+      { question: "Which directive is used for conditional rendering?", code: "<div ... >Content</div>", options: ["v-if", "v-show", "v-for", "Both v-if and v-show"], answer: "Both v-if and v-show", explanation: "`v-if` conditionally renders an element (it's added/removed from the DOM). `v-show` toggles its `display` CSS property." },
+      { question: "What are Single-File Components (SFCs)?", code: "<template>...</template><script>...</script><style>...</style>", options: ["Components with no script tag", "Components written in a single JS file", "Files with a `.vue` extension containing HTML, JS, and CSS", "Components that can't have children"], answer: "Files with a `.vue` extension containing HTML, JS, and CSS", explanation: "SFCs are a hallmark of Vue, allowing you to encapsulate a component's template, logic, and styling in one file." },
+      { question: "What is the purpose of the `v-model` directive?", code: "<input v-model='message'>", options: ["To bind a model from a database", "To create two-way data binding on form inputs and components", "To define a model in the component", "To style a component"], answer: "To create two-way data binding on form inputs and components", explanation: "`v-model` is syntactic sugar that combines `v-bind:value` and `v-on:input`." },
+      { question: "How do you pass data from a parent component to a child component?", code: "<ChildComponent :my-prop='data' />", options: ["Using Vuex", "Using props", "Using events", "Using `v-model`"], answer: "Using props", explanation: "Props are the standard way to pass data down the component tree from parent to child." },
+      { question: "How does a child component communicate with its parent?", code: "this.$emit('my-event', data)", options: ["By modifying props directly", "By emitting custom events", "Using a global event bus", "Both B and C"], answer: "Both B and C", explanation: "Child components emit events, and parent components listen for them. A global event bus is another option for non-parent-child communication." },
+      { question: "What are 'computed properties'?", code: "computed: { reversedMessage() { ... } }", options: ["Properties that are computed on the server", "Properties that are cached based on their reactive dependencies and only re-evaluate when a dependency has changed", "Methods that compute a value", "A way to store data"], answer: "Properties that are cached based on their reactive dependencies and only re-evaluate when a dependency has changed", explanation: "Computed properties are highly efficient as they are cached and only update when needed." },
+      { question: "What is the difference between a `computed property` and a `method`?", code: "// ...", options: ["There is no difference", "Computed properties are cached, methods are not", "Methods can accept arguments, computed properties cannot", "Both B and C are correct"], answer: "Both B and C are correct", explanation: "Computed properties are cached based on their dependencies. Use a method when you don't need caching or need to pass arguments." },
+      { question: "What is Vuex?", code: "new Vuex.Store({ ... })", options: ["A UI component library", "The official state management pattern and library for Vue.js applications", "A router for Vue", "A build tool"], answer: "The official state management pattern and library for Vue.js applications", explanation: "Vuex serves as a centralized store for all the components in an application." },
+      { question: "What is the Vue lifecycle hook that is called after the instance has been mounted?", code: "// ...", options: ["created", "mounted", "updated", "beforeMount"], answer: "mounted", explanation: "`mounted` is called after the component has been added to the DOM, and is useful for DOM-related operations." },
+      { question: "What is the purpose of the `v-for` directive?", code: "<li v-for='item in items'>{{ item }}</li>", options: ["To create a form", "To render a block or element multiple times based on an array or object", "For conditional rendering", "To bind a variable"], answer: "To render a block or element multiple times based on an array or object", explanation: "`v-for` is Vue's directive for list rendering." },
+      { question: "What are 'slots' used for?", code: "<slot></slot>", options: ["To reserve a space in the layout", "A content distribution mechanism that allows you to pass content from a parent to a child component", "For storing data", "A type of animation"], answer: "A content distribution mechanism that allows you to pass content from a parent to a child component", explanation: "Slots are Vue's implementation of the Content Distribution API, inspired by the Web Components spec." },
+      { question: "What is Vue Router?", code: "// ...", options: ["A state management library", "The official router for Vue.js", "A build tool", "A backend framework"], answer: "The official router for Vue.js", explanation: "It deeply integrates with Vue.js core to make building Single Page Applications with Vue.js a breeze." },
+      { question: "In the Composition API, which function is used to declare reactive state?", code: "// ...", options: ["`data()`", "`state()`", "`reactive()` or `ref()`", "`computed()`"], answer: "`reactive()` or `ref()`", explanation: "The Composition API introduces `ref` for primitive values and `reactive` for objects to create reactive state." },
+      { question: "What does the `key` attribute do in a `v-for` loop?", code: "<div v-for='item in items' :key='item.id'>", options: ["It's a security key", "It gives Vue a hint so that it can track each node’s identity, and thus reuse and reorder existing elements", "It's the primary key from the database", "It's used for styling"], answer: "It gives Vue a hint so that it can track each node’s identity, and thus reuse and reorder existing elements", explanation: "Providing a unique `key` for each item helps Vue to patch the Virtual DOM efficiently." }
     ]
   }
 };
 
 
-type Language = keyof typeof quizData;
+type Language = keyof typeof allQuizData;
+type QuizQuestion = {
+  question: string;
+  code?: string;
+  options: string[];
+  answer: string;
+  explanation: string;
+};
+
+// Function to shuffle an array and pick the first N items
+function shuffleAndPick<T>(array: T[], n: number): T[] {
+  const shuffled = array.sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, n);
+}
 
 export default function InteractivePage() {
   const [selectedLanguage, setSelectedLanguage] = useState<Language | null>(null);
+  const [quizQuestions, setQuizQuestions] = useState<QuizQuestion[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [score, setScore] = useState(0);
@@ -665,6 +534,12 @@ export default function InteractivePage() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
   
+  const handleSelectLanguage = (language: Language) => {
+    const questions = allQuizData[language].questions;
+    setQuizQuestions(shuffleAndPick(questions, 15));
+    setSelectedLanguage(language);
+  }
+
   if (!selectedLanguage) {
     return (
       <div className="container mx-auto max-w-6xl py-12 px-4">
@@ -676,13 +551,13 @@ export default function InteractivePage() {
             <p className="text-muted-foreground mt-2 text-lg">Choose your battlefield and test your knowledge.</p>
         </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 animate-in fade-in-50 duration-500">
-          {Object.keys(quizData).map((lang) => {
+          {Object.keys(allQuizData).map((lang) => {
             const language = lang as Language;
-            const Icon = quizData[language].icon;
+            const Icon = allQuizData[language].icon;
             return (
               <Card 
                 key={language} 
-                onClick={() => setSelectedLanguage(language)}
+                onClick={() => handleSelectLanguage(language)}
                 className="cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-2xl flex flex-col text-center"
               >
                 <CardHeader>
@@ -692,7 +567,7 @@ export default function InteractivePage() {
                   <CardTitle>{language}</CardTitle>
                 </CardHeader>
                 <CardContent className="flex-grow">
-                  <CardDescription>{quizData[language].description}</CardDescription>
+                  <CardDescription>{allQuizData[language].description}</CardDescription>
                 </CardContent>
               </Card>
             );
@@ -702,8 +577,6 @@ export default function InteractivePage() {
     );
   }
 
-  const quiz = quizData[selectedLanguage];
-  const quizQuestions = quiz.questions;
   const currentQuestion = quizQuestions[currentQuestionIndex];
   const isCorrect = selectedOption === currentQuestion.answer;
 
@@ -734,6 +607,10 @@ export default function InteractivePage() {
     setIsAnswered(false);
     if (changeLanguage) {
         setSelectedLanguage(null);
+        setQuizQuestions([]);
+    } else {
+        const questions = allQuizData[selectedLanguage].questions;
+        setQuizQuestions(shuffleAndPick(questions, 15));
     }
   };
 
