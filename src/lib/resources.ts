@@ -13,29 +13,41 @@ export type Resource = {
 const resourcesCollectionName = 'resources';
 
 /**
- * Fetches resources exclusively from the server-side using Firebase Admin.
- * If the database is not configured or the fetch fails, it returns an empty array.
+ * Fetches resources. It first tries to fetch from Firebase Admin.
+ * If the database is not configured or the fetch fails, it falls back
+ * to returning the local resources.json data.
  */
 export async function getResources(): Promise<Resource[]> {
-  // If adminDb is not initialized (meaning admin SDK is not configured), return empty.
+  // If adminDb is not initialized, fall back to local data immediately.
   if (!adminDb) {
-    return [];
+    return resourcesData as Resource[];
   }
   
   try {
     const resourcesCollection = adminDb.collection(resourcesCollectionName);
     const resourcesSnapshot = await resourcesCollection.orderBy('createdAt', 'desc').get();
-
-    const resourcesList = resourcesSnapshot.docs.map(doc => ({
+    
+    const firestoreResources = resourcesSnapshot.docs.map(doc => ({
       id: doc.id,
       ...doc.data(),
     })) as Resource[];
+
+    // Combine firestore resources with local resources, giving priority to firestore
+    const allResources = [...firestoreResources, ...resourcesData];
     
-    return resourcesList;
+    // Remove duplicates, preferring the one from firestore
+    const uniqueResources = allResources.reduce((acc, current) => {
+        if (!acc.find(item => item.id === current.id)) {
+            acc.push(current);
+        }
+        return acc;
+    }, [] as Resource[]);
+
+    return uniqueResources;
 
   } catch (error) {
-     console.error("Could not fetch resources from Firestore via Admin SDK. Error:", error);
-     // Return empty array on error. The admin page will handle showing this state.
-    return [];
+     console.error("Could not fetch resources from Firestore. Falling back to local data. Error:", error);
+     // On any other error, also fall back to local data.
+    return resourcesData as Resource[];
   }
 }
