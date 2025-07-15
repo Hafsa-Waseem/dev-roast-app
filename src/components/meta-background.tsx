@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -63,15 +64,6 @@ const LanguageIcons: { [key: string]: React.FC<any> } = {
     )
   };
 
-// Helper to get random position and animation properties
-const getRandomStyle = () => ({
-  top: `${Math.random() * 90}vh`,
-  left: `${Math.random() * 90}vw`,
-  animationDuration: `${Math.random() * 15 + 10}s`,
-  animationDelay: `${Math.random() * 5}s`,
-  transform: `scale(${Math.random() * 0.5 + 0.7}) rotate(${Math.random() * 60 - 30}deg)`
-});
-
 class Star {
   x: number;
   y: number;
@@ -115,11 +107,30 @@ export function MetaBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const generatedElements = FLOATING_ELEMENTS.map((el, i) => ({
-      id: i,
-      ...el,
-      style: getRandomStyle(),
-    }));
+    // Grid-based positioning to prevent overlaps
+    const GRID_SIZE = 5; // 5x5 grid
+    const shuffledElements = [...FLOATING_ELEMENTS].sort(() => 0.5 - Math.random());
+    
+    const generatedElements = shuffledElements.map((el, i) => {
+      const row = Math.floor(i / GRID_SIZE);
+      const col = i % GRID_SIZE;
+
+      // Calculate position within the grid cell, with some randomness
+      const top = row * (100 / GRID_SIZE) + Math.random() * 5;
+      const left = col * (100 / GRID_SIZE) + Math.random() * 5;
+
+      return {
+        id: i,
+        ...el,
+        style: {
+          top: `${top}vh`,
+          left: `${left}vw`,
+          animationDuration: `${Math.random() * 15 + 10}s`,
+          animationDelay: `${Math.random() * 5}s`,
+          transform: `scale(${Math.random() * 0.5 + 0.7}) rotate(${Math.random() * 60 - 30}deg)`
+        },
+      };
+    });
     setElements(generatedElements);
 
     let charIndex = 0;
