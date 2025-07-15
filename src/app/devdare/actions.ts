@@ -10,13 +10,20 @@ const completionsCollection = 'completions';
 
 // --- Get a random dare ---
 export async function getRandomDare() {
+  // If Firestore isn't configured, return a default dare to avoid crashing.
   if (!adminDb) {
-    return { error: 'Database not configured.' };
+    console.warn('Firebase Admin is not configured. Returning default dare.');
+    return { 
+        dare: { 
+            id: 'default-dare', 
+            text: 'Configure your Firebase Admin SDK to get a real dare!' 
+        } 
+    };
   }
   try {
     const daresSnapshot = await adminDb.collection(daresCollection).get();
     if (daresSnapshot.empty) {
-      return { dare: { id: 'default', text: 'No dares found! Add one from the admin panel.' } };
+      return { dare: { id: 'no-dares', text: 'No dares found in the database. Add some!' } };
     }
     const dares = daresSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     const randomDare = dares[Math.floor(Math.random() * dares.length)];
@@ -24,38 +31,6 @@ export async function getRandomDare() {
   } catch (error) {
     console.error('Error fetching dare:', error);
     return { error: 'Could not fetch a dare.' };
-  }
-}
-
-// --- Add a new dare (for admin) ---
-const addDareSchema = z.object({
-  dareText: z.string().min(10, 'Dare text must be at least 10 characters long.'),
-});
-
-export async function handleAddDare(prevState: any, formData: FormData) {
-  if (!adminDb) return { message: 'Database not configured.', errors: null };
-
-  const validatedFields = addDareSchema.safeParse({
-    dareText: formData.get('dareText'),
-  });
-
-  if (!validatedFields.success) {
-    return {
-      message: 'Validation failed.',
-      errors: validatedFields.error.flatten().fieldErrors,
-    };
-  }
-
-  try {
-    await adminDb.collection(daresCollection).add({
-      text: validatedFields.data.dareText,
-      createdAt: FieldValue.serverTimestamp(),
-    });
-    revalidatePath('/admin/add-dare');
-    return { message: 'Dare added successfully!', errors: null };
-  } catch (error) {
-    console.error('Error adding dare:', error);
-    return { message: 'Failed to add dare.', errors: null };
   }
 }
 
@@ -67,7 +42,9 @@ const completeDareSchema = z.object({
 });
 
 export async function handleCompleteDare(prevState: any, formData: FormData) {
-  if (!adminDb) return { error: 'Database not configured.' };
+  if (!adminDb) {
+    return { error: 'Database not configured. Cannot save completion.' };
+  }
 
   const validatedFields = completeDareSchema.safeParse({
     dareId: formData.get('dareId'),
@@ -82,6 +59,11 @@ export async function handleCompleteDare(prevState: any, formData: FormData) {
   const { dareId, deviceId, name } = validatedFields.data;
 
   try {
+    // Prevent saving completions for default/error dares
+    if (dareId === 'default-dare' || dareId === 'no-dares') {
+        return { error: "This is a placeholder dare and cannot be completed." };
+    }
+
     await adminDb.collection(completionsCollection).add({
       dareId: adminDb.collection(daresCollection).doc(dareId),
       deviceId,
@@ -100,10 +82,11 @@ export async function handleCompleteDare(prevState: any, formData: FormData) {
 // --- Get leaderboard data ---
 export async function getLeaderboard() {
   if (!adminDb) {
+    console.warn('Firebase Admin is not configured. Returning empty leaderboard.');
     return [];
   }
   try {
-    const completionsSnapshot = await adminDb.collection(completionsCollection).get();
+    const completionsSnapshot = await adminDb.collection(completionsCollection).orderBy('timestamp', 'desc').get();
     if (completionsSnapshot.empty) {
       return [];
     }
@@ -114,7 +97,7 @@ export async function getLeaderboard() {
       const data = doc.data();
       const key = data.name || data.deviceId;
       if (!completionsByPerson[key]) {
-        completionsByPerson[key] = { name: data.name, count: 0 };
+        completionsByPerson[key] = { name: data.name || `AnonymousDev-${data.deviceId.substring(0,6)}`, count: 0 };
       }
       completionsByPerson[key].count++;
     });

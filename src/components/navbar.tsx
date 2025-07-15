@@ -21,7 +21,6 @@ const navLinks = [
   { href: '/memes', label: 'Memes' },
   { href: '/blogs', label: 'Blogs' },
   { href: '/articles', label: 'Articles' },
-  { href: '/admin/add-dare', label: 'Add Dare' }, // temporary admin link
 ];
 
 export function Navbar() {
