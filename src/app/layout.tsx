@@ -50,9 +50,9 @@ export default function RootLayout({
         }} />
       </head>
       <body className="font-body antialiased flex flex-col min-h-dvh bg-background text-foreground" suppressHydrationWarning>
+        <MetaBackground />
         <Navbar />
-        <main className="flex-grow relative">
-          <MetaBackground />
+        <main className="flex-grow">
           <div className="relative z-10">
              {children}
           </div>
