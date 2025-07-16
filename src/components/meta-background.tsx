@@ -213,7 +213,7 @@ export function MetaBackground() {
   };
 
   return (
-    <div className="fixed inset-0 -z-10 h-dvh w-dvw overflow-hidden">
+    <div className="absolute inset-0 -z-10 h-full w-full overflow-hidden">
       <div
         className="absolute inset-0 h-full w-full opacity-50"
         style={{
@@ -225,13 +225,13 @@ export function MetaBackground() {
       
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="h-[50vmin] w-[50vmin] animate-[spin_40s_linear_infinite] rounded-full border-2 border-dashed border-primary/20" />
-        <div className="absolute h-[70vmin] w-[70vmin] animate-[spin_50s_linear_infinite_reverse] rounded-full border border-accent/20" />
+      <div className="absolute bottom-4 right-4 h-[30vmin] w-[30vmin] opacity-70">
+        <div className="absolute inset-0 animate-[spin_40s_linear_infinite] rounded-full border-2 border-dashed border-primary/20" />
+        <div className="absolute inset-0 h-full w-full animate-[spin_50s_linear_infinite_reverse] rounded-full border border-accent/20" />
         
         <svg
             viewBox="0 0 100 100"
-            className="absolute h-[60vmin] w-[60vmin] animate-[spin_45s_linear_infinite] fill-primary/30"
+            className="absolute inset-0 h-full w-full animate-[spin_45s_linear_infinite] fill-primary/30"
         >
             <defs>
                 <path
@@ -248,15 +248,15 @@ export function MetaBackground() {
       </div>
       
       <div className="relative h-full w-full">
-         <div className="absolute top-4 left-4 font-mono text-3xl text-primary/40 drop-shadow-[0_0_8px_var(--meta-glow-color)]">
-           HAAS
-         </div>
+        <div className="absolute top-4 left-4 font-mono text-3xl text-primary/40 drop-shadow-[0_0_8px_var(--meta-glow-color)]">
+          HAAS
+        </div>
          
-         {elements.map((el) => (
-             <div key={el.id} style={el.style}>
-                 {getElementComponent(el)}
-             </div>
-         ))}
+        {elements.map((el) => (
+            <div key={el.id} style={el.style}>
+                {getElementComponent(el)}
+            </div>
+        ))}
       </div>
 
       <div className="absolute bottom-4 left-4 font-mono text-sm text-[var(--meta-glow-color)]">
