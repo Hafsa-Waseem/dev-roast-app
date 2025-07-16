@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { cn } from '@/lib/utils';
 
 const FLOATING_ELEMENTS = [
   { type: 'emoji', content: '⚛️' },
@@ -10,6 +11,12 @@ const FLOATING_ELEMENTS = [
   { type: 'emoji', content: '🔥' },
   { type: 'emoji', content: '💬' },
   { type: 'emoji', content: '👑' },
+  { type: 'emoji', content: '💻' },
+  { type: 'emoji', content: '📁' },
+  { type: 'emoji', content: '📱' },
+  { type: 'emoji', content: '☁️' },
+  { type: 'emoji', content: '💡' },
+  { type: 'emoji', content: '⚙️' },
   { type: 'quote', content: 'console.log("here")' },
   { type: 'quote', content: 'git blame life' },
   { type: 'quote', content: 'works on my machine' },
@@ -18,6 +25,7 @@ const FLOATING_ELEMENTS = [
   { type: 'quote', content: 'restarting...' },
   { type: 'code', content: 'const x = 42;' },
   { type: 'code', content: '<div>Hello</div>' },
+  { type: 'code', content: '</>' },
   { type: 'key', content: 'Ctrl' },
   { type: 'key', content: 'C' },
   { type: 'key', content: 'V' },
@@ -194,19 +202,19 @@ export function MetaBackground() {
       case 'icon':
         const Icon = LanguageIcons[el.content];
         if (!Icon) return null;
-        return <Icon className={`${classBase} ${glowClass} h-10 w-10 text-primary/80`} />;
+        return <Icon className={cn(classBase, glowClass, 'h-10 w-10 text-primary/80')} />;
       case 'emoji':
-        return <span className={`${classBase} text-4xl`}>{el.content}</span>;
+        return <span className={cn(classBase, 'text-4xl')}>{el.content}</span>;
       case 'quote':
-        return <span className={`${classBase} rounded bg-black/30 px-2 py-1 text-sm font-mono text-white/50 backdrop-blur-sm`}>{el.content}</span>;
+        return <span className={cn(classBase, 'rounded bg-black/30 px-2 py-1 text-sm font-mono text-white/50 backdrop-blur-sm')}>{el.content}</span>;
       case 'code':
-        return <span className={`${classBase} rounded bg-black/50 border border-primary/20 px-2 py-1 text-sm font-mono text-primary/70 backdrop-blur-sm`}>{el.content}</span>;
+        return <span className={cn(classBase, 'rounded bg-black/50 border border-primary/20 px-2 py-1 text-sm font-mono text-primary/70 backdrop-blur-sm')}>{el.content}</span>;
       case 'key':
-        return <kbd className={`${classBase} rounded border border-white/20 bg-white/10 px-2 py-1 text-sm font-sans text-white/60`}>{el.content}</kbd>;
+        return <kbd className={cn(classBase, 'rounded border border-white/20 bg-white/10 px-2 py-1 text-sm font-sans text-white/60')}>{el.content}</kbd>;
       case 'badge':
-        return <span className={`${classBase} ${glowClass} rounded-full bg-primary/70 px-3 py-1 text-xs font-bold text-primary-foreground animate-[spin_20s_linear_infinite]`}>{el.content}</span>;
+        return <span className={cn(classBase, glowClass, 'rounded-full bg-primary/70 px-3 py-1 text-xs font-bold text-primary-foreground animate-[spin_20s_linear_infinite]')}>{el.content}</span>;
       case 'mindmap':
-        return <span className={`${classBase} rounded-lg border border-dashed border-white/30 bg-black/20 px-3 py-1 text-sm text-white/70`}>{el.content}</span>;
+        return <span className={cn(classBase, 'rounded-lg border border-dashed border-white/30 bg-black/20 px-3 py-1 text-sm text-white/70')}>{el.content}</span>;
       default:
         return null;
     }
