@@ -105,11 +105,8 @@ export function MetaBackground() {
   const [currentCommand, setCurrentCommand] = useState('');
   const [commandIndex, setCommandIndex] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
-
     const GRID_COLS = 5;
     const GRID_ROWS = 5;
     const shuffledElements = [...FLOATING_ELEMENTS].sort(() => 0.5 - Math.random());
@@ -194,6 +191,10 @@ export function MetaBackground() {
     const glowClass = 'drop-shadow-[0_0_5px_var(--meta-glow-color)]';
     
     switch (el.type) {
+      case 'icon':
+        const Icon = LanguageIcons[el.content];
+        if (!Icon) return null;
+        return <Icon className={`${classBase} ${glowClass} h-10 w-10 text-primary/80`} />;
       case 'emoji':
         return <span className={`${classBase} text-4xl`}>{el.content}</span>;
       case 'quote':
@@ -206,9 +207,6 @@ export function MetaBackground() {
         return <span className={`${classBase} ${glowClass} rounded-full bg-primary/70 px-3 py-1 text-xs font-bold text-primary-foreground animate-[spin_20s_linear_infinite]`}>{el.content}</span>;
       case 'mindmap':
         return <span className={`${classBase} rounded-lg border border-dashed border-white/30 bg-black/20 px-3 py-1 text-sm text-white/70`}>{el.content}</span>;
-      case 'icon':
-        const Icon = LanguageIcons[el.content];
-        return <Icon className={`${classBase} ${glowClass} h-10 w-10 text-primary/80`} />;
       default:
         return null;
     }
@@ -250,28 +248,20 @@ export function MetaBackground() {
       </div>
       
       <div className="relative h-full w-full">
-         {isMounted && (
-            <>
-              <div className="absolute top-4 left-4 font-mono text-3xl text-primary/40 drop-shadow-[0_0_8px_var(--meta-glow-color)]">
-                HAAS
-              </div>
-              
-              {elements.map((el) => (
-                  <div key={el.id} style={el.style}>
-                      {getElementComponent(el)}
-                  </div>
-              ))}
-            </>
-         )}
+         <div className="absolute top-4 left-4 font-mono text-3xl text-primary/40 drop-shadow-[0_0_8px_var(--meta-glow-color)]">
+           HAAS
+         </div>
+         
+         {elements.map((el) => (
+             <div key={el.id} style={el.style}>
+                 {getElementComponent(el)}
+             </div>
+         ))}
       </div>
 
       <div className="absolute bottom-4 left-4 font-mono text-sm text-[var(--meta-glow-color)]">
-        {isMounted && (
-            <>
-                <span>&gt; {currentCommand}</span>
-                <span className="inline-block h-4 w-2 animate-[blink-caret_1s_step-end_infinite] border-r-2 border-[var(--meta-glow-color)]"></span>
-            </>
-        )}
+        <span>&gt; {currentCommand}</span>
+        <span className="inline-block h-4 w-2 animate-[blink-caret_1s_step-end_infinite] border-r-2 border-[var(--meta-glow-color)]"></span>
       </div>
     </div>
   );
