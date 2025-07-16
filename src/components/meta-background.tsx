@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -113,14 +112,14 @@ export function MetaBackground() {
   const [currentCommand, setCurrentCommand] = useState('');
   const [commandIndex, setCommandIndex] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
+  
   useEffect(() => {
     const generateGrid = () => {
       const width = window.innerWidth;
       const height = window.innerHeight;
       const cols = 6;
       const rows = 5;
-      const size = 60; // Approximate size of the floating element
+      const size = 60; 
 
       const shuffled = [...FLOATING_ELEMENTS].sort(() => 0.5 - Math.random());
       const result: any[] = [];
@@ -150,7 +149,7 @@ export function MetaBackground() {
       setElements(generateGrid());
     }
 
-    handleResize(); // Initial generation
+    handleResize();
     window.addEventListener('resize', handleResize);
 
 
@@ -230,7 +229,7 @@ export function MetaBackground() {
       case 'mindmap':
         return <span className={cn(classBase, 'rounded-lg border border-dashed border-white/30 bg-black/20 px-3 py-1 text-sm text-white/70')}>{el.content}</span>;
       default:
-        return <span className={cn(classBase, 'text-4xl')}>{el.content}</span>; // Fallback for simple emojis
+        return <span className={cn(classBase, 'text-4xl')}>{el.content}</span>;
     }
   };
 
