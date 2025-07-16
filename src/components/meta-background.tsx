@@ -70,7 +70,7 @@ const LanguageIcons: { [key: string]: React.FC<any> } = {
     brain: (props) => (
       <svg {...props} viewBox="0 0 24 24"><path d="M12 2a9.5 9.5 0 0 0-9.5 9.5c0 2.22 1.54 4.54 2.5 5.56V21a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2h3v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-3.94c.96-1.02 2.5-3.34 2.5-5.56A9.5 9.5 0 0 0 12 2zm-3.5 12.5a1 1 0 1 1 1-1a1 1 0 0 1-1 1zm2-4a1 1 0 1 1 1-1a1 1 0 0 1-1 1zm3 0a1 1 0 1 1 1-1a1 1 0 0 1-1 1zm2.5 4a1 1 0 1 1 1-1a1 1 0 0 1-1 1z" fill="currentColor"/></svg>
     )
-  };
+};
 
 class Star {
   x: number;
@@ -115,33 +115,44 @@ export function MetaBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    const GRID_COLS = 5;
-    const GRID_ROWS = 5;
-    const shuffledElements = [...FLOATING_ELEMENTS].sort(() => 0.5 - Math.random());
-    
-    const generatedElements = shuffledElements.slice(0, GRID_COLS * GRID_ROWS).map((el, i) => {
-      const row = Math.floor(i / GRID_COLS);
-      const col = i % GRID_COLS;
+    const generateGrid = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const cols = 6;
+      const rows = 5;
+      const size = 60; // Approximate size of the floating element
 
-      const cellWidth = 100 / GRID_COLS;
-      const cellHeight = 100 / GRID_ROWS;
-      
-      const left = col * cellWidth + Math.random() * (cellWidth / 2);
-      const top = row * cellHeight + Math.random() * (cellHeight / 2);
+      const shuffled = [...FLOATING_ELEMENTS].sort(() => 0.5 - Math.random());
+      const result: any[] = [];
 
-      return {
-        id: i,
-        ...el,
-        style: {
-          top: `${top}%`,
-          left: `${left}%`,
-          animationDuration: `${Math.random() * 15 + 10}s`,
-          animationDelay: `${Math.random() * 5}s`,
-          transform: `scale(${Math.random() * 0.5 + 0.7}) rotate(${Math.random() * 60 - 30}deg)`
-        },
-      };
-    });
-    setElements(generatedElements);
+      for (let i = 0; i < cols * rows && i < shuffled.length; i++) {
+        const row = Math.floor(i / cols);
+        const col = i % cols;
+        const left = col * (width / cols) + Math.random() * ((width / cols) - size);
+        const top = row * (height / rows) + Math.random() * ((height / rows) - size);
+
+        result.push({
+          id: i,
+          ...shuffled[i],
+          style: {
+            top: `${(top / height) * 100}%`,
+            left: `${(left / width) * 100}%`,
+            animationDuration: `${Math.random() * 15 + 10}s`,
+            animationDelay: `${Math.random() * 5}s`,
+            transform: `scale(${Math.random() * 0.5 + 0.7}) rotate(${Math.random() * 60 - 30}deg)`
+          },
+        });
+      }
+      return result;
+    };
+
+    const handleResize = () => {
+      setElements(generateGrid());
+    }
+
+    handleResize(); // Initial generation
+    window.addEventListener('resize', handleResize);
+
 
     let charIndex = 0;
     const interval = setInterval(() => {
@@ -154,9 +165,12 @@ export function MetaBackground() {
       }
     }, 150);
 
-    return () => clearInterval(interval);
+    return () => {
+        clearInterval(interval);
+        window.removeEventListener('resize', handleResize);
+    }
   }, [commandIndex]);
-  
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -170,7 +184,7 @@ export function MetaBackground() {
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
         stars = [];
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 5; i++) {
             stars.push(new Star(ctx));
         }
     }
@@ -216,7 +230,7 @@ export function MetaBackground() {
       case 'mindmap':
         return <span className={cn(classBase, 'rounded-lg border border-dashed border-white/30 bg-black/20 px-3 py-1 text-sm text-white/70')}>{el.content}</span>;
       default:
-        return null;
+        return <span className={cn(classBase, 'text-4xl')}>{el.content}</span>; // Fallback for simple emojis
     }
   };
 
@@ -261,7 +275,7 @@ export function MetaBackground() {
         </div>
          
         {elements.map((el) => (
-            <div key={el.id} style={el.style}>
+            <div key={el.id} style={el.style} className="absolute animate-[float_linear_infinite]">
                 {getElementComponent(el)}
             </div>
         ))}
