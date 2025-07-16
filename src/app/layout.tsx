@@ -51,12 +51,10 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased flex flex-col min-h-dvh bg-background text-foreground" suppressHydrationWarning>
         <div className="fixed inset-0 -z-20 h-dvh w-dvw bg-background" />
+        <MetaBackground />
         <Navbar />
-        <main className="flex-grow relative">
-          <MetaBackground />
-          <div className="relative z-10">
-             {children}
-          </div>
+        <main className="flex-grow relative z-10">
+          {children}
         </main>
         <Footer />
         <Toaster />

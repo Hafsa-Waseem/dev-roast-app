@@ -113,7 +113,7 @@ export function MetaBackground() {
   const [commandIndex, setCommandIndex] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isMounted, setIsMounted] = useState(false);
-
+  
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -151,9 +151,9 @@ export function MetaBackground() {
       }
       return result;
     };
-
+    
     const handleResize = () => {
-      setElements(generateGrid());
+        setElements(generateGrid());
     }
 
     handleResize();
@@ -189,6 +189,7 @@ export function MetaBackground() {
     let stars: Star[] = [];
 
     const handleResize = () => {
+        if (!canvas) return;
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
         stars = [];
@@ -243,59 +244,59 @@ export function MetaBackground() {
   };
   
   return (
-    <div className="absolute inset-0 -z-10 h-full w-full overflow-hidden">
-        {isMounted && (
-            <>
-                <div
-                    className="absolute inset-0 h-full w-full opacity-50"
-                    style={{
-                    backgroundImage:
-                        'repeating-linear-gradient(var(--grid-glow-color) 0 1px, transparent 1px 100px), repeating-linear-gradient(90deg, var(--grid-glow-color) 0 1px, transparent 1px 100px)',
-                    animation: 'grid-pan 60s linear infinite',
-                    }}
-                />
-                
-                <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
+    <div className="fixed inset-0 -z-10 h-dvh w-dvw overflow-hidden">
+      {isMounted && (
+        <>
+            <div
+                className="absolute inset-0 h-full w-full opacity-50"
+                style={{
+                backgroundImage:
+                    'repeating-linear-gradient(var(--grid-glow-color) 0 1px, transparent 1px 100px), repeating-linear-gradient(90deg, var(--grid-glow-color) 0 1px, transparent 1px 100px)',
+                animation: 'grid-pan 60s linear infinite',
+                }}
+            />
+            
+            <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
-                <div className="absolute bottom-4 right-4 h-[30vmin] w-[30vmin] opacity-70">
-                    <div className="absolute inset-0 animate-[spin_40s_linear_infinite] rounded-full border-2 border-dashed border-primary/20" />
-                    <div className="absolute inset-0 h-full w-full animate-[spin_50s_linear_infinite_reverse] rounded-full border border-accent/20" />
-                    
-                    <svg
-                        viewBox="0 0 100 100"
-                        className="absolute inset-0 h-full w-full animate-[spin_45s_linear_infinite] fill-primary/30"
-                    >
-                        <defs>
-                            <path
-                                id="circle"
-                                d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
-                            />
-                        </defs>
-                        <text letterSpacing="0.2" fontSize="5">
-                            <textPath xlinkHref="#circle">
-                                HAAS · HAAS · HAAS · HAAS · HAAS · HAAS · HAAS · HAAS · HAAS · HAAS · HAAS · HAAS ·
-                            </textPath>
-                        </text>
-                    </svg>
-                </div>
+            <div className="absolute bottom-4 right-4 h-[30vmin] w-[30vmin] opacity-70">
+                <div className="absolute inset-0 animate-[spin_40s_linear_infinite] rounded-full border-2 border-dashed border-primary/20" />
+                <div className="absolute inset-0 h-full w-full animate-[spin_50s_linear_infinite_reverse] rounded-full border border-accent/20" />
                 
-                <div className="relative h-full w-full">
-                    <div className="absolute top-4 left-4 font-mono text-3xl text-primary/40 drop-shadow-[0_0_8px_var(--meta-glow-color)]">
-                    HAAS
+                <svg
+                    viewBox="0 0 100 100"
+                    className="absolute inset-0 h-full w-full animate-[spin_45s_linear_infinite] fill-primary/30"
+                >
+                    <defs>
+                        <path
+                            id="circle"
+                            d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
+                        />
+                    </defs>
+                    <text letterSpacing="0.2" fontSize="5">
+                        <textPath xlinkHref="#circle">
+                            HAAS · HAAS · HAAS · HAAS · HAAS · HAAS · HAAS · HAAS · HAAS · HAAS · HAAS · HAAS ·
+                        </textPath>
+                    </text>
+                </svg>
+            </div>
+            
+            <div className="relative h-full w-full">
+                <div className="absolute top-4 left-4 font-mono text-3xl text-primary/40 drop-shadow-[0_0_8px_var(--meta-glow-color)]">
+                HAAS
+                </div>
+                {elements.map((el) => (
+                    <div key={el.id} style={el.style}>
+                        {getElementComponent(el)}
                     </div>
-                    {elements.map((el) => (
-                        <div key={el.id} style={el.style}>
-                            {getElementComponent(el)}
-                        </div>
-                    ))}
-                </div>
+                ))}
+            </div>
 
-                <div className="absolute bottom-4 left-4 font-mono text-sm text-[var(--meta-glow-color)]">
-                    <span>&gt; {currentCommand}</span>
-                    <span className="inline-block h-4 w-2 animate-[blink-caret_1s_step-end_infinite] border-r-2 border-[var(--meta-glow-color)]"></span>
-                </div>
-            </>
-        )}
+            <div className="absolute bottom-4 left-4 font-mono text-sm text-[var(--meta-glow-color)]">
+                <span>&gt; {currentCommand}</span>
+                <span className="inline-block h-4 w-2 animate-[blink-caret_1s_step-end_infinite] border-r-2 border-[var(--meta-glow-color)]"></span>
+            </div>
+        </>
+      )}
     </div>
   );
 }
