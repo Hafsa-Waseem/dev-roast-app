@@ -114,14 +114,7 @@ export function MetaBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isMounted, setIsMounted] = useState(false);
   
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-  
-  useEffect(() => {
-    if (!isMounted) return;
-
-    const generateGrid = () => {
+  const generateGrid = () => {
       const width = window.innerWidth;
       const height = window.innerHeight;
       const cols = 6;
@@ -151,6 +144,9 @@ export function MetaBackground() {
       }
       return result;
     };
+
+  useEffect(() => {
+    setIsMounted(true);
     
     const handleResize = () => {
         setElements(generateGrid());
@@ -174,7 +170,7 @@ export function MetaBackground() {
         clearInterval(interval);
         window.removeEventListener('resize', handleResize);
     }
-  }, [isMounted, commandIndex]);
+  }, [commandIndex]);
 
   useEffect(() => {
     if (!isMounted) return;
@@ -187,7 +183,7 @@ export function MetaBackground() {
     let animationFrameId: number;
     let stars: Star[] = [];
 
-    const handleResize = () => {
+    const handleResizeCanvas = () => {
         if (!canvas || !ctx) return;
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
@@ -196,7 +192,7 @@ export function MetaBackground() {
             stars.push(new Star(ctx));
         }
     }
-    handleResize();
+    handleResizeCanvas();
 
     const render = () => {
         if (!ctx) return;
@@ -209,10 +205,10 @@ export function MetaBackground() {
     };
     render();
     
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResizeCanvas);
     return () => {
         cancelAnimationFrame(animationFrameId);
-        window.removeEventListener('resize', handleResize);
+        window.removeEventListener('resize', handleResizeCanvas);
     }
   }, [isMounted]);
 
@@ -243,7 +239,7 @@ export function MetaBackground() {
   };
   
   return (
-    <div className="fixed inset-0 -z-10 h-dvh w-dvw overflow-hidden">
+    <div className="absolute inset-0 -z-10 h-full w-full overflow-hidden">
       {isMounted && (
         <>
             <div
