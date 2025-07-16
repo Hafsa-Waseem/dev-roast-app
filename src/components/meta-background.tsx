@@ -112,8 +112,15 @@ export function MetaBackground() {
   const [currentCommand, setCurrentCommand] = useState('');
   const [commandIndex, setCommandIndex] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   
   useEffect(() => {
+    if (!isMounted) return;
+
     const generateGrid = () => {
       const width = window.innerWidth;
       const height = window.innerHeight;
@@ -168,9 +175,11 @@ export function MetaBackground() {
         clearInterval(interval);
         window.removeEventListener('resize', handleResize);
     }
-  }, [commandIndex]);
+  }, [isMounted, commandIndex]);
 
   useEffect(() => {
+    if (!isMounted) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -205,7 +214,7 @@ export function MetaBackground() {
         cancelAnimationFrame(animationFrameId);
         window.removeEventListener('resize', handleResize);
     }
-  }, []);
+  }, [isMounted]);
 
   const getElementComponent = (el: any) => {
     const classBase = 'absolute animate-[float_linear_infinite]';
@@ -229,9 +238,13 @@ export function MetaBackground() {
       case 'mindmap':
         return <span className={cn(classBase, 'rounded-lg border border-dashed border-white/30 bg-black/20 px-3 py-1 text-sm text-white/70')}>{el.content}</span>;
       default:
-        return <span className={cn(classBase, 'text-4xl')}>{el.content}</span>;
+        return null;
     }
   };
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div className="absolute inset-0 -z-10 h-full w-full overflow-hidden">
@@ -274,7 +287,7 @@ export function MetaBackground() {
         </div>
          
         {elements.map((el) => (
-            <div key={el.id} style={el.style} className="absolute animate-[float_linear_infinite]">
+            <div key={el.id} style={el.style}>
                 {getElementComponent(el)}
             </div>
         ))}
