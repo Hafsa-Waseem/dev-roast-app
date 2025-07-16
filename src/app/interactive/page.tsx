@@ -608,7 +608,7 @@ export default function InteractivePage() {
     if (changeLanguage) {
         setSelectedLanguage(null);
         setQuizQuestions([]);
-    } else {
+    } else if (selectedLanguage) {
         const questions = allQuizData[selectedLanguage].questions;
         setQuizQuestions(shuffleAndPick(questions, 15));
     }

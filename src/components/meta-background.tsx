@@ -105,8 +105,11 @@ export function MetaBackground() {
   const [currentCommand, setCurrentCommand] = useState('');
   const [commandIndex, setCommandIndex] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    setIsMounted(true);
+
     const GRID_COLS = 5;
     const GRID_ROWS = 5;
     const shuffledElements = [...FLOATING_ELEMENTS].sort(() => 0.5 - Math.random());
@@ -246,21 +249,29 @@ export function MetaBackground() {
         </svg>
       </div>
       
-      <div className="absolute inset-0">
-          <div className="absolute top-4 left-4 font-mono text-3xl text-primary/40 drop-shadow-[0_0_8px_var(--meta-glow-color)]">
-            HAAS
-          </div>
-          
-          {elements.map((el) => (
-              <div key={el.id} style={el.style}>
-                  {getElementComponent(el)}
+      <div className="relative h-full w-full">
+         {isMounted && (
+            <>
+              <div className="absolute top-4 left-4 font-mono text-3xl text-primary/40 drop-shadow-[0_0_8px_var(--meta-glow-color)]">
+                HAAS
               </div>
-          ))}
+              
+              {elements.map((el) => (
+                  <div key={el.id} style={el.style}>
+                      {getElementComponent(el)}
+                  </div>
+              ))}
+            </>
+         )}
       </div>
 
       <div className="absolute bottom-4 left-4 font-mono text-sm text-[var(--meta-glow-color)]">
-        <span>&gt; {currentCommand}</span>
-        <span className="inline-block h-4 w-2 animate-[blink-caret_1s_step-end_infinite] border-r-2 border-[var(--meta-glow-color)]"></span>
+        {isMounted && (
+            <>
+                <span>&gt; {currentCommand}</span>
+                <span className="inline-block h-4 w-2 animate-[blink-caret_1s_step-end_infinite] border-r-2 border-[var(--meta-glow-color)]"></span>
+            </>
+        )}
       </div>
     </div>
   );
