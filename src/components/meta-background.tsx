@@ -159,7 +159,6 @@ export function MetaBackground() {
     handleResize();
     window.addEventListener('resize', handleResize);
 
-
     let charIndex = 0;
     const interval = setInterval(() => {
       const command = TERMINAL_COMMANDS[commandIndex];
@@ -189,7 +188,7 @@ export function MetaBackground() {
     let stars: Star[] = [];
 
     const handleResize = () => {
-        if (!canvas) return;
+        if (!canvas || !ctx) return;
         canvas.width = canvas.offsetWidth;
         canvas.height = canvas.offsetHeight;
         stars = [];
@@ -225,21 +224,21 @@ export function MetaBackground() {
       case 'icon':
         const Icon = LanguageIcons[el.content];
         if (!Icon) return null;
-        return <Icon className={cn(classBase, glowClass, 'h-10 w-10 text-primary/80')} />;
+        return <Icon className={cn(classBase, glowClass, 'h-10 w-10 text-primary/80')} style={el.style} />;
       case 'emoji':
-        return <span className={cn(classBase, 'text-4xl')}>{el.content}</span>;
+        return <span className={cn(classBase, 'text-4xl')} style={el.style}>{el.content}</span>;
       case 'quote':
-        return <span className={cn(classBase, 'rounded bg-black/30 px-2 py-1 text-sm font-mono text-white/50 backdrop-blur-sm')}>{el.content}</span>;
+        return <span className={cn(classBase, 'rounded bg-black/30 px-2 py-1 text-sm font-mono text-white/50 backdrop-blur-sm')} style={el.style}>{el.content}</span>;
       case 'code':
-        return <span className={cn(classBase, 'rounded bg-black/50 border border-primary/20 px-2 py-1 text-sm font-mono text-primary/70 backdrop-blur-sm')}>{el.content}</span>;
+        return <span className={cn(classBase, 'rounded bg-black/50 border border-primary/20 px-2 py-1 text-sm font-mono text-primary/70 backdrop-blur-sm')} style={el.style}>{el.content}</span>;
       case 'key':
-        return <kbd className={cn(classBase, 'rounded border border-white/20 bg-white/10 px-2 py-1 text-sm font-sans text-white/60')}>{el.content}</kbd>;
+        return <kbd className={cn(classBase, 'rounded border border-white/20 bg-white/10 px-2 py-1 text-sm font-sans text-white/60')} style={el.style}>{el.content}</kbd>;
       case 'badge':
-        return <span className={cn(classBase, glowClass, 'rounded-full bg-primary/70 px-3 py-1 text-xs font-bold text-primary-foreground animate-[spin_20s_linear_infinite]')}>{el.content}</span>;
+        return <span className={cn(classBase, glowClass, 'rounded-full bg-primary/70 px-3 py-1 text-xs font-bold text-primary-foreground animate-[spin_20s_linear_infinite]')} style={el.style}>{el.content}</span>;
       case 'mindmap':
-        return <span className={cn(classBase, 'rounded-lg border border-dashed border-white/30 bg-black/20 px-3 py-1 text-sm text-white/70')}>{el.content}</span>;
+        return <span className={cn(classBase, 'rounded-lg border border-dashed border-white/30 bg-black/20 px-3 py-1 text-sm text-white/70')} style={el.style}>{el.content}</span>;
       default:
-        return null;
+        return <span className={cn(classBase, 'text-4xl')} style={el.style}>{el.content}</span>;
     }
   };
   
@@ -281,14 +280,14 @@ export function MetaBackground() {
             </div>
             
             <div className="relative h-full w-full">
-                <div className="absolute top-4 left-4 font-mono text-3xl text-primary/40 drop-shadow-[0_0_8px_var(--meta-glow-color)]">
+              <div className="absolute top-4 left-4 font-mono text-3xl text-primary/40 drop-shadow-[0_0_8px_var(--meta-glow-color)]">
                 HAAS
-                </div>
-                {elements.map((el) => (
-                    <div key={el.id} style={el.style}>
-                        {getElementComponent(el)}
-                    </div>
-                ))}
+              </div>
+              {elements.map((el) => (
+                  <div key={el.id}>
+                      {getElementComponent(el)}
+                  </div>
+              ))}
             </div>
 
             <div className="absolute bottom-4 left-4 font-mono text-sm text-[var(--meta-glow-color)]">
