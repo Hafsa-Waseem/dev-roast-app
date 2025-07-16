@@ -212,7 +212,7 @@ export function MetaBackground() {
   };
 
   return (
-    <div className="absolute inset-0 -z-10 h-full w-full overflow-hidden">
+    <div className="fixed inset-0 -z-10 h-dvh w-dvw overflow-hidden">
       <div
         className="absolute inset-0 h-full w-full opacity-50"
         style={{
@@ -240,22 +240,22 @@ export function MetaBackground() {
             </defs>
             <text letterSpacing="0.2" fontSize="5">
                 <textPath xlinkHref="#circle">
-                    HAAS · HAAS · HAAS · HAAS · HAAS · HAAS ·
+                    HAAS · HAAS · HAAS · HAAS · HAAS · HAAS · HAAS · HAAS · HAAS · HAAS · HAAS · HAAS ·
                 </textPath>
             </text>
         </svg>
       </div>
       
-      <div className="relative h-full w-full">
-        <div className="absolute top-4 left-4 font-mono text-3xl text-primary/40 drop-shadow-[0_0_8px_var(--meta-glow-color)]">
-          HAAS
-        </div>
-        
-        {elements.map((el) => (
-            <div key={el.id} style={el.style}>
-                {getElementComponent(el)}
-            </div>
-        ))}
+      <div className="absolute inset-0">
+          <div className="absolute top-4 left-4 font-mono text-3xl text-primary/40 drop-shadow-[0_0_8px_var(--meta-glow-color)]">
+            HAAS
+          </div>
+          
+          {elements.map((el) => (
+              <div key={el.id} style={el.style}>
+                  {getElementComponent(el)}
+              </div>
+          ))}
       </div>
 
       <div className="absolute bottom-4 left-4 font-mono text-sm text-[var(--meta-glow-color)]">
