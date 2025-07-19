@@ -90,30 +90,34 @@ export async function handleAdminLogin(prevState: any, formData: FormData) {
 const addResourceSchema = z.object({
     title: z.string().min(3, 'Title is required and must be at least 3 characters.'),
     description: z.string().min(10, 'Description is required and must be at least 10 characters.'),
-    pdfFile: z.any()
-      .refine((file) => file instanceof File && file.size > 0, 'PDF file is required.')
-      .refine((file) => file instanceof File && file.type === 'application/pdf', 'File must be a PDF.'),
 });
 
 export async function handleAddResource(prevState: any, formData: FormData) {
     if (!adminDb || !adminStorage) {
         return { success: false, message: 'Admin database or storage is not configured.' };
     }
-
+    
     const validatedFields = addResourceSchema.safeParse({
         title: formData.get('title'),
         description: formData.get('description'),
-        pdfFile: formData.get('pdfFile'),
     });
-    
+
     if (!validatedFields.success) {
-        const pdfError = validatedFields.error.flatten().fieldErrors.pdfFile?.[0];
-        const titleError = validatedFields.error.flatten().fieldErrors.title?.[0];
-        const descriptionError = validatedFields.error.flatten().fieldErrors.description?.[0];
-        return { success: false, message: pdfError || titleError || descriptionError || 'Invalid form data.' };
+        const { fieldErrors } = validatedFields.error.flatten();
+        return { success: false, message: fieldErrors.title?.[0] || fieldErrors.description?.[0] || 'Invalid form data.' };
+    }
+    
+    const pdfFile = formData.get('pdfFile');
+
+    if (!(pdfFile instanceof File) || pdfFile.size === 0) {
+        return { success: false, message: 'PDF file is required.' };
     }
 
-    const { title, description, pdfFile } = validatedFields.data;
+    if (pdfFile.type !== 'application/pdf') {
+        return { success: false, message: 'File must be a PDF.' };
+    }
+
+    const { title, description } = validatedFields.data;
 
     try {
         const fileBuffer = Buffer.from(await pdfFile.arrayBuffer());
@@ -216,6 +220,3 @@ export async function handleDeleteResource(id: string) {
     return { success: false, message: 'Failed to delete resource.' };
   }
 }
-
-
-    
