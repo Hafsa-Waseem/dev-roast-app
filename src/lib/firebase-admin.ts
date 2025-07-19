@@ -5,7 +5,7 @@ let isInitialized = admin.apps.length > 0;
 
 if (!isInitialized) {
   try {
-    const serviceAccountString = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
+    const serviceAccountString = process.env.NEXT_PUBLIC_FIREBASE_SERVICE_ACCOUNT_JSON;
     const storageBucket = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
     
     if (serviceAccountString && storageBucket) {
