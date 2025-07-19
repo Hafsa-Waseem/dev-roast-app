@@ -19,6 +19,7 @@ const navLinks = [
   { href: '/memes', label: 'Memes' },
   { href: '/blogs', label: 'Blogs' },
   { href: '/articles', label: 'Articles' },
+  { href: '/admin/dashboard', label: 'Admin' },
 ];
 
 export function Navbar() {
