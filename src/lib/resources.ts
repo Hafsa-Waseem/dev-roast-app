@@ -7,6 +7,7 @@ export type Resource = {
   title: string;
   description: string;
   href: string;
+  fileName?: string; // Add fileName for storage management
   createdAt?: any;
 };
 
@@ -16,11 +17,12 @@ const resourcesCollectionName = 'resources';
  * Fetches resources. It first tries to fetch from Firebase Admin.
  * If the database is not configured or the fetch fails, it falls back
  * to returning the local resources.json data.
+ * @param adminOnly - If true, only fetches from Firestore and does not include local JSON data.
  */
-export async function getResources(): Promise<Resource[]> {
+export async function getResources(adminOnly = false): Promise<Resource[]> {
   // If adminDb is not initialized, fall back to local data immediately.
   if (!adminDb) {
-    return resourcesData as Resource[];
+    return adminOnly ? [] : (resourcesData as Resource[]);
   }
   
   try {
@@ -31,6 +33,10 @@ export async function getResources(): Promise<Resource[]> {
       id: doc.id,
       ...doc.data(),
     })) as Resource[];
+
+    if (adminOnly) {
+      return firestoreResources;
+    }
 
     // Combine firestore resources with local resources, giving priority to firestore
     const allResources = [...firestoreResources, ...resourcesData];
@@ -48,6 +54,8 @@ export async function getResources(): Promise<Resource[]> {
   } catch (error) {
      console.error("Could not fetch resources from Firestore. Falling back to local data. Error:", error);
      // On any other error, also fall back to local data.
-    return resourcesData as Resource[];
+    return adminOnly ? [] : (resourcesData as Resource[]);
   }
 }
+
+    

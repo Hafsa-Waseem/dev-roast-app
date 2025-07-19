@@ -1,3 +1,4 @@
+
 'use server';
 
 import { generateRoast, GenerateRoastInput } from '@/ai/flows/generate-roast';
@@ -7,6 +8,7 @@ import { redirect } from 'next/navigation';
 import { adminStorage } from '@/lib/firebase-admin';
 import { adminDb } from '@/lib/firebase-admin';
 import { FieldValue } from 'firebase-admin/firestore';
+import { revalidatePath } from 'next/cache';
 
 // Roast Generation Action
 const roastSchema = z.object({
@@ -85,10 +87,12 @@ export async function handleAdminLogin(prevState: any, formData: FormData) {
 }
 
 // Add Resource Action
-const resourceSchema = z.object({
+const addResourceSchema = z.object({
     title: z.string().min(3, 'Title is required and must be at least 3 characters.'),
     description: z.string().min(10, 'Description is required and must be at least 10 characters.'),
-    pdfFile: z.instanceof(File).refine(file => file.size > 0, 'PDF file is required.').refine(file => file.type === 'application/pdf', 'File must be a PDF.'),
+    pdfFile: z.any()
+      .refine((file) => file instanceof File && file.size > 0, 'PDF file is required.')
+      .refine((file) => file instanceof File && file.type === 'application/pdf', 'File must be a PDF.'),
 });
 
 export async function handleAddResource(prevState: any, formData: FormData) {
@@ -96,14 +100,17 @@ export async function handleAddResource(prevState: any, formData: FormData) {
         return { success: false, message: 'Admin database or storage is not configured.' };
     }
 
-    const validatedFields = resourceSchema.safeParse({
+    const validatedFields = addResourceSchema.safeParse({
         title: formData.get('title'),
         description: formData.get('description'),
         pdfFile: formData.get('pdfFile'),
     });
     
     if (!validatedFields.success) {
-        return { success: false, message: validatedFields.error.flatten().fieldErrors.pdfFile?.[0] || 'Invalid form data.' };
+        const pdfError = validatedFields.error.flatten().fieldErrors.pdfFile?.[0];
+        const titleError = validatedFields.error.flatten().fieldErrors.title?.[0];
+        const descriptionError = validatedFields.error.flatten().fieldErrors.description?.[0];
+        return { success: false, message: pdfError || titleError || descriptionError || 'Invalid form data.' };
     }
 
     const { title, description, pdfFile } = validatedFields.data;
@@ -126,12 +133,89 @@ export async function handleAddResource(prevState: any, formData: FormData) {
             title,
             description,
             href: publicUrl,
+            fileName: fileName,
             createdAt: FieldValue.serverTimestamp(),
         });
         
+        revalidatePath('/admin/dashboard');
+        revalidatePath('/resources');
         return { success: true, message: 'Resource added successfully!' };
     } catch (error) {
         console.error('Error uploading resource:', error);
         return { success: false, message: 'An unexpected error occurred during upload.' };
     }
 }
+
+
+// Edit Resource Action
+const editResourceSchema = z.object({
+  id: z.string(),
+  title: z.string().min(3, 'Title must be at least 3 characters.'),
+  description: z.string().min(10, 'Description must be at least 10 characters.'),
+});
+
+export async function handleEditResource(prevState: any, formData: FormData) {
+  if (!adminDb) {
+    return { success: false, message: 'Admin database is not configured.' };
+  }
+  
+  const validatedFields = editResourceSchema.safeParse(Object.fromEntries(formData.entries()));
+  
+  if (!validatedFields.success) {
+    const titleError = validatedFields.error.flatten().fieldErrors.title?.[0];
+    const descriptionError = validatedFields.error.flatten().fieldErrors.description?.[0];
+    return { success: false, message: titleError || descriptionError || 'Invalid data.' };
+  }
+
+  const { id, title, description } = validatedFields.data;
+
+  try {
+    const resourceRef = adminDb.collection('resources').doc(id);
+    await resourceRef.update({ title, description });
+    revalidatePath('/admin/dashboard');
+    revalidatePath('/resources');
+    return { success: true, message: 'Resource updated successfully!' };
+  } catch (error) {
+    console.error('Error updating resource:', error);
+    return { success: false, message: 'Failed to update resource.' };
+  }
+}
+
+// Delete Resource Action
+export async function handleDeleteResource(id: string) {
+  if (!adminDb || !adminStorage) {
+    return { success: false, message: 'Admin database or storage is not configured.' };
+  }
+
+  try {
+    const resourceRef = adminDb.collection('resources').doc(id);
+    const doc = await resourceRef.get();
+
+    if (!doc.exists) {
+      return { success: false, message: 'Resource not found.' };
+    }
+
+    const data = doc.data();
+    if (data?.fileName) {
+      // Delete the file from Cloud Storage
+      const file = adminStorage.bucket().file(data.fileName);
+      await file.delete().catch(err => {
+        // Log error but don't block DB deletion if file doesn't exist
+        console.warn(`Could not delete file ${data.fileName} from storage:`, err.message);
+      });
+    }
+    
+    // Delete the document from Firestore
+    await resourceRef.delete();
+    
+    revalidatePath('/admin/dashboard');
+    revalidatePath('/resources');
+    return { success: true, message: 'Resource deleted successfully!' };
+  } catch (error) {
+    console.error('Error deleting resource:', error);
+    return { success: false, message: 'Failed to delete resource.' };
+  }
+}
+
+
+    

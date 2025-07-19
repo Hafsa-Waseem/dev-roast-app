@@ -1,16 +1,17 @@
 
-// src/app/admin/dashboard/_components/upload-form.tsx
+// src/app/admin/dashboard/_components/edit-resource-form.tsx
 'use client';
 
-import { useActionState, useRef, useEffect } from 'react';
+import { useActionState, useEffect } from 'react';
 import { useFormStatus } from 'react-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Loader2, UploadCloud } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { handleAddResource } from '@/app/actions';
+import { handleEditResource } from '@/app/actions';
+import type { Resource } from '@/lib/resources';
 
 const initialState = {
   success: false,
@@ -24,21 +25,22 @@ function SubmitButton() {
       {pending ? (
         <>
           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          Uploading...
+          Saving...
         </>
       ) : (
-        <>
-          <UploadCloud className="mr-2 h-4 w-4" />
-          Upload Resource
-        </>
+        'Save Changes'
       )}
     </Button>
   );
 }
 
-export function UploadForm() {
-  const [state, formAction] = useActionState(handleAddResource, initialState);
-  const formRef = useRef<HTMLFormElement>(null);
+type EditResourceFormProps = {
+  resource: Resource;
+  onSuccess: () => void;
+};
+
+export function EditResourceForm({ resource, onSuccess }: EditResourceFormProps) {
+  const [state, formAction] = useActionState(handleEditResource, initialState);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -48,7 +50,7 @@ export function UploadForm() {
           title: 'Success!',
           description: state.message,
         });
-        formRef.current?.reset();
+        onSuccess();
       } else {
         toast({
           title: 'Error',
@@ -56,16 +58,16 @@ export function UploadForm() {
           variant: 'destructive',
         });
       }
-      state.message = ''; // Reset for next submission
+      state.message = ''; // Reset for next interaction
     }
-  }, [state, toast]);
-
+  }, [state, toast, onSuccess]);
 
   return (
-    <form ref={formRef} action={formAction} className="space-y-4">
+    <form action={formAction} className="space-y-4">
+      <input type="hidden" name="id" value={resource.id} />
       <div className="space-y-2">
         <Label htmlFor="title">Resource Title</Label>
-        <Input id="title" name="title" placeholder="e.g., React Cheat Sheet" required />
+        <Input id="title" name="title" defaultValue={resource.title} required />
       </div>
 
       <div className="space-y-2">
@@ -73,14 +75,9 @@ export function UploadForm() {
         <Textarea
           id="description"
           name="description"
-          placeholder="A brief description of the resource."
+          defaultValue={resource.description}
           required
         />
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="pdfFile">PDF File</Label>
-        <Input id="pdfFile" name="pdfFile" type="file" accept=".pdf" required />
       </div>
 
       <SubmitButton />
