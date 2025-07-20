@@ -3,10 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { UploadForm } from './_components/upload-form';
 import { getResources } from "@/lib/resources";
 import { ResourceTable } from "./_components/resource-table";
-import { Separator } from "@/components/ui/separator";
 
 export default async function AdminDashboardPage() {
-  const resources = await getResources(true); // Fetch all, including non-local
+  const resources = await getResources();
 
   return (
     <div className="container mx-auto py-10">
@@ -52,5 +51,3 @@ export default async function AdminDashboardPage() {
     </div>
   );
 }
-
-    
