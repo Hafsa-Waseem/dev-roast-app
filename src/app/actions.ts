@@ -1,14 +1,19 @@
-
 'use server';
 
-import { generateRoast, GenerateRoastInput } from '@/ai/flows/generate-roast';
 import { z } from 'zod';
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
-import { adminStorage } from '@/lib/firebase-admin';
-import { adminDb } from '@/lib/firebase-admin';
-import { FieldValue } from 'firebase-admin/firestore';
 import { revalidatePath } from 'next/cache';
+import fs from 'fs/promises';
+import path from 'path';
+import resourcesData from '@/data/resources.json';
+import { generateRoast, GenerateRoastInput } from '@/ai/flows/generate-roast';
+
+type Resource = {
+  id: string;
+  title: string;
+  description: string;
+  href: string;
+  fileName?: string;
+};
 
 // Roast Generation Action
 const roastSchema = z.object({
@@ -56,35 +61,12 @@ export async function handleGenerateRoast(prevState: any, formData: FormData) {
   }
 }
 
-// Admin Login Action
-const loginSchema = z.object({
-    email: z.string().email(),
-    password: z.string().min(6),
-});
-
-export async function handleAdminLogin(prevState: any, formData: FormData) {
-    const validatedFields = loginSchema.safeParse(Object.fromEntries(formData.entries()));
-
-    if (!validatedFields.success) {
-        return { success: false, message: 'Invalid email or password format.' };
-    }
-
-    const { email, password } = validatedFields.data;
-    const adminEmail = process.env.ADMIN_EMAIL;
-    const adminPassword = process.env.ADMIN_PASSWORD;
-
-    if (email === adminEmail && password === adminPassword) {
-        cookies().set('admin-auth', 'true', {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            maxAge: 60 * 60 * 24, // 1 day
-            path: '/',
-        });
-        redirect('/admin/dashboard');
-    }
-
-    return { success: false, message: 'Invalid credentials.' };
+// Helper to write to the local resources.json
+async function writeResources(resources: Resource[]) {
+  const filePath = path.join(process.cwd(), 'src/data/resources.json');
+  await fs.writeFile(filePath, JSON.stringify(resources, null, 2), 'utf-8');
 }
+
 
 // Add Resource Action
 const addResourceSchema = z.object({
@@ -93,10 +75,6 @@ const addResourceSchema = z.object({
 });
 
 export async function handleAddResource(prevState: any, formData: FormData) {
-    if (!adminDb || !adminStorage) {
-        return { success: false, message: 'Admin database or storage is not configured.' };
-    }
-    
     const validatedFields = addResourceSchema.safeParse({
         title: formData.get('title'),
         description: formData.get('description'),
@@ -118,28 +96,27 @@ export async function handleAddResource(prevState: any, formData: FormData) {
     }
 
     const { title, description } = validatedFields.data;
+    const resources: Resource[] = [...resourcesData];
 
     try {
         const fileBuffer = Buffer.from(await pdfFile.arrayBuffer());
-        const fileName = `resources/${Date.now()}-${pdfFile.name}`;
-        const file = adminStorage.bucket().file(fileName);
-
-        await file.save(fileBuffer, {
-            metadata: {
-                contentType: 'application/pdf',
-            },
-        });
-
-        const publicUrl = `https://storage.googleapis.com/${adminStorage.bucket().name}/${fileName}`;
+        const fileName = `${Date.now()}-${pdfFile.name.replace(/\s+/g, '_')}`;
+        const publicPath = path.join('public', 'pdfs', fileName);
+        const filePath = path.join(process.cwd(), publicPath);
         
-        const resourceRef = adminDb.collection('resources').doc();
-        await resourceRef.set({
+        await fs.mkdir(path.dirname(filePath), { recursive: true });
+        await fs.writeFile(filePath, fileBuffer);
+
+        const newResource: Resource = {
+            id: `resource-${Date.now()}`,
             title,
             description,
-            href: publicUrl,
+            href: `/pdfs/${fileName}`, 
             fileName: fileName,
-            createdAt: FieldValue.serverTimestamp(),
-        });
+        };
+
+        resources.unshift(newResource);
+        await writeResources(resources);
         
         revalidatePath('/admin/dashboard');
         revalidatePath('/resources');
@@ -159,10 +136,6 @@ const editResourceSchema = z.object({
 });
 
 export async function handleEditResource(prevState: any, formData: FormData) {
-  if (!adminDb) {
-    return { success: false, message: 'Admin database is not configured.' };
-  }
-  
   const validatedFields = editResourceSchema.safeParse(Object.fromEntries(formData.entries()));
   
   if (!validatedFields.success) {
@@ -172,10 +145,16 @@ export async function handleEditResource(prevState: any, formData: FormData) {
   }
 
   const { id, title, description } = validatedFields.data;
+  const resources: Resource[] = [...resourcesData];
+  const resourceIndex = resources.findIndex(r => r.id === id);
+
+  if (resourceIndex === -1) {
+    return { success: false, message: 'Resource not found.' };
+  }
 
   try {
-    const resourceRef = adminDb.collection('resources').doc(id);
-    await resourceRef.update({ title, description });
+    resources[resourceIndex] = { ...resources[resourceIndex], title, description };
+    await writeResources(resources);
     revalidatePath('/admin/dashboard');
     revalidatePath('/resources');
     return { success: true, message: 'Resource updated successfully!' };
@@ -187,30 +166,28 @@ export async function handleEditResource(prevState: any, formData: FormData) {
 
 // Delete Resource Action
 export async function handleDeleteResource(id: string) {
-  if (!adminDb || !adminStorage) {
-    return { success: false, message: 'Admin database or storage is not configured.' };
+  let resources: Resource[] = [...resourcesData];
+  const resourceToDelete = resources.find(r => r.id === id);
+
+  if (!resourceToDelete) {
+    return { success: false, message: 'Resource not found.' };
   }
 
   try {
-    const resourceRef = adminDb.collection('resources').doc(id);
-    const doc = await resourceRef.get();
-
-    if (!doc.exists) {
-      return { success: false, message: 'Resource not found.' };
-    }
-
-    const data = doc.data();
-    if (data?.fileName) {
-      // Delete the file from Cloud Storage
-      const file = adminStorage.bucket().file(data.fileName);
-      await file.delete().catch(err => {
+    // Delete the file from public/pdfs
+    if (resourceToDelete.fileName) {
+      const filePath = path.join(process.cwd(), 'public', 'pdfs', resourceToDelete.fileName);
+      try {
+        await fs.unlink(filePath);
+      } catch (fileError: any) {
         // Log error but don't block DB deletion if file doesn't exist
-        console.warn(`Could not delete file ${data.fileName} from storage:`, err.message);
-      });
+        console.warn(`Could not delete file ${resourceToDelete.fileName}:`, fileError.message);
+      }
     }
     
-    // Delete the document from Firestore
-    await resourceRef.delete();
+    // Delete the entry from the JSON file
+    resources = resources.filter(r => r.id !== id);
+    await writeResources(resources);
     
     revalidatePath('/admin/dashboard');
     revalidatePath('/resources');
@@ -219,4 +196,11 @@ export async function handleDeleteResource(id: string) {
     console.error('Error deleting resource:', error);
     return { success: false, message: 'Failed to delete resource.' };
   }
+}
+
+// Admin Login Action is removed as we are not using cookie-based auth anymore for this simple setup.
+// If needed, a more robust auth system can be added later.
+export async function handleAdminLogin(prevState: any, formData: FormData) {
+    console.log("Admin login is currently disabled.");
+    return { success: false, message: 'Admin login is not configured.' };
 }
