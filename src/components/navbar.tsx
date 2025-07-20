@@ -9,7 +9,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from './ui/button';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { hasCookie } from 'cookies-next';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -19,11 +20,16 @@ const navLinks = [
   { href: '/memes', label: 'Memes' },
   { href: '/blogs', label: 'Blogs' },
   { href: '/articles', label: 'Articles' },
-  { href: '/admin/dashboard', label: 'Admin' },
 ];
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    // Check for the admin cookie on the client side
+    setIsAdmin(hasCookie('admin-auth'));
+  }, []);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/80 backdrop-blur-lg">
@@ -40,6 +46,11 @@ export function Navbar() {
               {link.label}
             </Link>
           ))}
+          {isAdmin && (
+            <Link href="/admin/dashboard" className="text-foreground transition-all duration-300 hover:text-primary hover:scale-110 transform">
+              Admin
+            </Link>
+          )}
         </nav>
         <div className="flex flex-1 items-center justify-end space-x-2 md:hidden">
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -61,6 +72,11 @@ export function Navbar() {
                       {link.label}
                     </Link>
                   ))}
+                   {isAdmin && (
+                    <Link href="/admin/dashboard" className="text-lg font-medium transition-all duration-300 hover:text-primary hover:translate-x-2" onClick={() => setIsOpen(false)}>
+                      Admin
+                    </Link>
+                  )}
                 </nav>
               </div>
             </SheetContent>
