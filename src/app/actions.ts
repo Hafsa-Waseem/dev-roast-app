@@ -6,6 +6,8 @@ import fs from 'fs/promises';
 import path from 'path';
 import resourcesData from '@/data/resources.json';
 import { generateRoast, GenerateRoastInput } from '@/ai/flows/generate-roast';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 type Resource = {
   id: string;
@@ -101,10 +103,10 @@ export async function handleAddResource(prevState: any, formData: FormData) {
     try {
         const fileBuffer = Buffer.from(await pdfFile.arrayBuffer());
         const fileName = `${Date.now()}-${pdfFile.name.replace(/\s+/g, '_')}`;
-        const publicPath = path.join('public', 'pdfs', fileName);
-        const filePath = path.join(process.cwd(), publicPath);
+        const publicPath = path.join('public', 'pdfs');
+        const filePath = path.join(process.cwd(), publicPath, fileName);
         
-        await fs.mkdir(path.dirname(filePath), { recursive: true });
+        await fs.mkdir(path.join(process.cwd(), publicPath), { recursive: true });
         await fs.writeFile(filePath, fileBuffer);
 
         const newResource: Resource = {
@@ -198,9 +200,21 @@ export async function handleDeleteResource(id: string) {
   }
 }
 
-// Admin Login Action is removed as we are not using cookie-based auth anymore for this simple setup.
-// If needed, a more robust auth system can be added later.
+// Admin Login Action
 export async function handleAdminLogin(prevState: any, formData: FormData) {
-    console.log("Admin login is currently disabled.");
-    return { success: false, message: 'Admin login is not configured.' };
+  const password = formData.get('password');
+  if (password === process.env.ADMIN_PASSWORD) {
+    cookies().set('admin-auth', 'true', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 60 * 60 * 24, // 1 day
+      path: '/',
+    });
+    redirect('/admin/dashboard');
+  } else {
+    return {
+      success: false,
+      message: 'Invalid password. Please try again.',
+    };
+  }
 }
