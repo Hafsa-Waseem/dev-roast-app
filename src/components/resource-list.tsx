@@ -40,6 +40,33 @@ export function ResourceList({ initialResources }: ResourceListProps) {
     });
   };
 
+  const handleDownloadClick = (e: React.MouseEvent<HTMLButtonElement>, resource: Resource) => {
+    e.preventDefault();
+
+    // 1. Inject the ad script
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = '//pierconditioner.com/36/e7/9b/36e79b63a5d334a6a26fe2cfda672d66.js';
+    document.head.appendChild(script);
+
+    // 2. Trigger the download after a short delay to allow the ad to load
+    setTimeout(() => {
+        const link = document.createElement('a');
+        link.href = resource.href;
+        const isExternal = resource.href.startsWith('http');
+        if (!isExternal) {
+            link.download = resource.href.split('/').pop() || 'download';
+        } else {
+             link.target = '_blank';
+             link.rel = 'noopener noreferrer';
+        }
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }, 1500); // 1.5 second delay
+  };
+
+
   const filteredResources = useMemo(() => {
     if (!searchTerm) {
       return initialResources;
@@ -65,9 +92,7 @@ export function ResourceList({ initialResources }: ResourceListProps) {
 
       {filteredResources.length > 0 ? (
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {filteredResources.map((resource) => {
-            const isExternal = resource.href.startsWith('http');
-            return (
+          {filteredResources.map((resource) => (
               <Card key={resource.id} id={resource.id} className="flex flex-col overflow-hidden transition-transform duration-300 hover:-translate-y-1 scroll-mt-20">
                 <CardContent className="p-6 flex flex-col flex-grow items-center text-center">
                   <div className="p-4 bg-primary/10 rounded-full mb-4">
@@ -84,16 +109,12 @@ export function ResourceList({ initialResources }: ResourceListProps) {
                   </p>
                 </CardContent>
                 <CardFooter className="p-4 mt-auto border-t border-card-foreground/10 flex items-center justify-center gap-2">
-                  <Button asChild className="flex-1">
-                    <a
-                      href={resource.href}
-                      download={!isExternal}
-                      target={isExternal ? '_blank' : '_self'}
-                      rel={isExternal ? 'noopener noreferrer' : ''}
-                    >
-                      <Download className="mr-2 h-4 w-4" />
-                      Download
-                    </a>
+                  <Button 
+                    onClick={(e) => handleDownloadClick(e, resource)}
+                    className="flex-1"
+                  >
+                    <Download className="mr-2 h-4 w-4" />
+                    Download
                   </Button>
                   <Button
                     variant="outline"
@@ -105,8 +126,8 @@ export function ResourceList({ initialResources }: ResourceListProps) {
                   </Button>
                 </CardFooter>
               </Card>
-            );
-          })}
+            )
+          )}
         </div>
       ) : (
          <div className="text-center py-16 px-4 rounded-2xl border border-dashed border-card-foreground/20 bg-card/20 backdrop-blur-xl shadow-lg">
