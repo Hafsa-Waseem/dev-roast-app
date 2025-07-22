@@ -58,6 +58,22 @@ export default function RootLayout({
             {children}
           </div>
         </main>
+
+        <div className="my-6 flex justify-center">
+  <ins
+    className="adsbygoogle"
+    style={{ display: 'block' }}
+    data-ad-client="ca-pub-5699659351458850"
+    data-ad-slot="2428037929"
+    data-ad-format="auto"
+    data-full-width-responsive="true"
+  />
+  <Script id="footer-display-ad" strategy="afterInteractive">
+    {`(adsbygoogle = window.adsbygoogle || []).push({});`}
+  </Script>
+</div>
+
+        
         <Footer />
         <Toaster />
       </body>
