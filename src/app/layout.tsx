@@ -62,7 +62,7 @@ export default function RootLayout({
         <div className="my-6 flex justify-center">
   <ins
     className="adsbygoogle"
-    style={{ display: 'block' }}
+    style={{ display: 'block', width: '100%', height: '100px' }}
     data-ad-client="ca-pub-5699659351458850"
     data-ad-slot="2428037929"
     data-ad-format="auto"
