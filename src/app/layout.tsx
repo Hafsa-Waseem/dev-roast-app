@@ -35,10 +35,14 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-         {/* Google Adsense */}
-        <Script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5699659351458850" crossOrigin="anonymous" />
+        {/* ✅ Google AdSense */}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5699659351458850"
+          crossOrigin="anonymous"
+        />
 
-           {/* Google Analytics */}
+        {/* ✅ Google Analytics */}
         <Script async src="https://www.googletagmanager.com/gtag/js?id=G-QB1N9YWEGY" />
         <Script id="gtag-init" dangerouslySetInnerHTML={{
           __html: `
@@ -59,21 +63,25 @@ export default function RootLayout({
           </div>
         </main>
 
+        {/* ✅ Footer Ad — with enforced width & height */}
         <div className="my-6 flex justify-center">
-  <ins
-    className="adsbygoogle"
-    style={{ display: 'block', width: '100%', height: '100px' }}
-    data-ad-client="ca-pub-5699659351458850"
-    data-ad-slot="2428037929"
-    data-ad-format="auto"
-    data-full-width-responsive="true"
-  />
-  <Script id="footer-display-ad" strategy="afterInteractive">
-    {`(adsbygoogle = window.adsbygoogle || []).push({});`}
-  </Script>
-</div>
+          <ins
+            className="adsbygoogle"
+            style={{
+              display: 'block',
+              width: '728px', 
+              height: '90px',
+            }}
+            data-ad-client="ca-pub-5699659351458850"
+            data-ad-slot="2428037929"
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+          />
+          <Script id="footer-display-ad" strategy="afterInteractive">
+            {`(adsbygoogle = window.adsbygoogle || []).push({});`}
+          </Script>
+        </div>
 
-        
         <Footer />
         <Toaster />
       </body>
