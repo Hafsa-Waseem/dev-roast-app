@@ -63,14 +63,13 @@ export default function RootLayout({
           </div>
         </main>
 
-        {/* ✅ Footer Ad — with enforced width & height */}
+      
         <div className="my-6 flex justify-center">
           <ins
             className="adsbygoogle"
             style={{
               display: 'block',
-              width: '728px', 
-              height: '90px',
+            width: '100%', height: '100px' 
             }}
             data-ad-client="ca-pub-5699659351458850"
             data-ad-slot="2428037929"
