@@ -40,32 +40,38 @@ export function ResourceList({ initialResources }: ResourceListProps) {
     });
   };
 
-  const handleDownloadClick = (e: React.MouseEvent<HTMLButtonElement>, resource: Resource) => {
-    e.preventDefault();
-
-    // 1. Inject the ad script
-    const script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.src = '//pierconditioner.com/36/e7/9b/36e79b63a5d334a6a26fe2cfda672d66.js';
-    document.head.appendChild(script);
-
-    // 2. Trigger the download after a short delay to allow the ad to load
-    setTimeout(() => {
-        const link = document.createElement('a');
-        link.href = resource.href;
-        const isExternal = resource.href.startsWith('http');
-        if (!isExternal) {
-            link.download = resource.href.split('/').pop() || 'download';
-        } else {
-             link.target = '_blank';
-             link.rel = 'noopener noreferrer';
-        }
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }, 1500); // 1.5 second delay
+  const getAdsterraDirectLink = (resourceDownloadUrl: string) => {
+    const adsterraBaseUrl = 'https://pierconditioner.com/36/e7/9b/36e79b63a5d334a6a26fe2cfda672d66.js';
+    // This is a common pattern for smart links, but might need adjustment
+    // based on Adsterra's specific documentation for Smart Direct Links.
+    // We encode the final destination URL to be passed to the ad server.
+    const encodedUrl = encodeURIComponent(window.location.origin + resourceDownloadUrl);
+    // This is a hypothetical structure. The actual implementation might differ.
+    // For now, we will assume the script handles the click and redirects.
+    // A more direct approach is to wrap the download link in their smart link URL.
+    // The provided script is an interstitial, not a direct link wrapper.
+    // A typical direct link would be something like:
+    // 'https://ad-network.com/smart-link-key?destination=ENCODED_URL'
+    // Since we only have the script, we will re-implement the script injection logic
+    // but without the problematic timeout. The script itself should handle showing the ad
+    // and then allowing the user to proceed.
+    return resourceDownloadUrl; // Returning the original for now, logic is in the button.
   };
 
+  const handleDownloadClick = (e: React.MouseEvent<HTMLAnchorElement>, resource: Resource) => {
+    // This function will now be responsible for triggering the ad.
+    // The download will happen on the ad network's terms (e.g., after a timer or ad close).
+    // This approach is more robust than a blind setTimeout.
+    const adScriptUrl = '//pierconditioner.com/36/e7/9b/36e79b63a5d334a6a26fe2cfda672d66.js';
+    
+    // Check if script already exists to avoid duplicates
+    if (!document.querySelector(`script[src='${adScriptUrl}']`)) {
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = adScriptUrl;
+      document.head.appendChild(script);
+    }
+  };
 
   const filteredResources = useMemo(() => {
     if (!searchTerm) {
@@ -92,7 +98,12 @@ export function ResourceList({ initialResources }: ResourceListProps) {
 
       {filteredResources.length > 0 ? (
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {filteredResources.map((resource) => (
+          {filteredResources.map((resource) => {
+              // This is the Adsterra Smart Direct Link format.
+              // It requires a unique key and the destination URL.
+              const adsterraSmartLink = `https://disputecater.com/vq6p1p1x?key=2ea015cb84244f781a5db125b03511f5&sub_id1=${encodeURIComponent(resource.id)}`;
+
+              return (
               <Card key={resource.id} id={resource.id} className="flex flex-col overflow-hidden transition-transform duration-300 hover:-translate-y-1 scroll-mt-20">
                 <CardContent className="p-6 flex flex-col flex-grow items-center text-center">
                   <div className="p-4 bg-primary/10 rounded-full mb-4">
@@ -109,12 +120,22 @@ export function ResourceList({ initialResources }: ResourceListProps) {
                   </p>
                 </CardContent>
                 <CardFooter className="p-4 mt-auto border-t border-card-foreground/10 flex items-center justify-center gap-2">
-                  <Button 
-                    onClick={(e) => handleDownloadClick(e, resource)}
-                    className="flex-1"
-                  >
-                    <Download className="mr-2 h-4 w-4" />
-                    Download
+                   <Button asChild className="flex-1">
+                      <a 
+                        href={adsterraSmartLink} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        onClick={() => {
+                          // After the ad link is opened, we redirect the original page to the actual file.
+                          // This provides a fallback. The target='_blank' should open the ad in a new tab.
+                          setTimeout(() => {
+                            window.location.href = resource.href;
+                          }, 500); // Small delay
+                        }}
+                      >
+                        <Download className="mr-2 h-4 w-4" />
+                        Download
+                      </a>
                   </Button>
                   <Button
                     variant="outline"
@@ -127,7 +148,7 @@ export function ResourceList({ initialResources }: ResourceListProps) {
                 </CardFooter>
               </Card>
             )
-          )}
+          })}
         </div>
       ) : (
          <div className="text-center py-16 px-4 rounded-2xl border border-dashed border-card-foreground/20 bg-card/20 backdrop-blur-xl shadow-lg">
