@@ -9,6 +9,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Terminal, Lightbulb, CheckCircle2, XCircle, ThumbsUp, ThumbsDown, ArrowLeft, Code, Pilcrow, FileCode, Type, Braces, BrainCircuit, Bot, Database, Wind, Gem, Package, Bird, CodeSquare } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
+import Script from 'next/script';
 
 const allQuizData = {
   'Angular': {
@@ -550,6 +551,20 @@ export default function InteractivePage() {
             <h1 className="text-4xl font-bold">Tech Quiz Arena</h1>
             <p className="text-muted-foreground mt-2 text-lg">Choose your battlefield and test your knowledge.</p>
         </div>
+
+        {/* Feed Ad */}
+        <div className="my-8">
+            <ins className="adsbygoogle"
+                style={{display:'block'}}
+                data-ad-format="fluid"
+                data-ad-layout-key="-ej-1w-j-8t+pc"
+                data-ad-client="ca-pub-5699659351458850"
+                data-ad-slot="4082301885"></ins>
+            <Script id="feed-ad-interactive" strategy="lazyOnload">
+                {`(adsbygoogle = window.adsbygoogle || []).push({});`}
+            </Script>
+        </div>
+
         <div className="grid md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 animate-in fade-in-50 duration-500">
           {Object.keys(allQuizData).map((lang) => {
             const language = lang as Language;
