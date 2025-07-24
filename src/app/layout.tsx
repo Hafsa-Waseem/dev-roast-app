@@ -40,11 +40,12 @@ export default function RootLayout({
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5699659351458850"
           crossOrigin="anonymous"
+          strategy="afterInteractive"
         />
 
         {/* ✅ Google Analytics */}
-        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-QB1N9YWEGY" />
-        <Script id="gtag-init" dangerouslySetInnerHTML={{
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-QB1N9YWEGY" strategy="afterInteractive" />
+        <Script id="gtag-init" strategy="afterInteractive" dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -63,6 +64,17 @@ export default function RootLayout({
           </div>
         </main>
 
+        {/* Multiplex Ad */}
+        <div className="my-6 container">
+            <ins className="adsbygoogle"
+                style={{display:'block'}}
+                data-ad-format="autorelaxed"
+                data-ad-client="ca-pub-5699659351458850"
+                data-ad-slot="4657016953"></ins>
+            <Script id="multiplex-ad" strategy="afterInteractive">
+                {`(adsbygoogle = window.adsbygoogle || []).push({});`}
+            </Script>
+        </div>
       
         <div className="my-6 flex justify-center">
           <ins

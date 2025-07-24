@@ -1,6 +1,7 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { getPosts } from '@/lib/posts';
+import Script from 'next/script';
 
 export default async function BlogsPage() {
   const allPosts = await getPosts();
@@ -29,6 +30,20 @@ export default async function BlogsPage() {
             <p className="text-center text-muted-foreground py-12">No blog posts found. Check back later!</p>
           )}
         </div>
+        
+        {/* In-article Ad */}
+        <div className="my-8">
+            <ins className="adsbygoogle"
+                style={{display:'block', textAlign:'center'}}
+                data-ad-layout="in-article"
+                data-ad-format="fluid"
+                data-ad-client="ca-pub-5699659351458850"
+                data-ad-slot="5817554378"></ins>
+            <Script id="in-article-ad-blogs" strategy="lazyOnload">
+                {`(adsbygoogle = window.adsbygoogle || []).push({});`}
+            </Script>
+        </div>
+
       </div>
     </div>
   );
